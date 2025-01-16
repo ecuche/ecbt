@@ -1,0 +1,78 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}
+
+  <div class="container-fluid mt-3 col-lg-8">
+    <!-- Start Row -->
+      <div class="row mb-1">
+          <div class="card-body">
+            <div class="d-flex mb-1 align-items-center">
+              <h4 class="card-title mb-0">Test Review</h4>
+            </div>
+            <div class="table-responsive border rounded-4" data-bs-theme="dark">
+              <table class="table text-nowrap table-dark  mb-0 align-middle">
+                <thead class="text-dark fs-4">
+                  <tr>
+                  <th>
+                      <h6 class="fs-4 fw-semibold text-white mb-0">#</h6>
+                    </th>
+                    <th>
+                      <h6 class="fs-4 fw-semibold text-white mb-0">Test Name</h6>
+                    </th>
+                    <th>
+                      <h6 class="fs-4 fw-semibold text-white mb-0">Code</h6>
+                    </th>
+                    <th>
+                      <h6 class="fs-4 fw-semibold text-white mb-0">Instructor</h6>
+                    </th>
+                    <th>
+                      <h6 class="fs-4 fw-semibold text-white mb-0">View</h6>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% $i = 1; %}
+                {% foreach ($results as $key => $result): %}
+                  <tr>
+                    <td>
+                      <div class="ms-3">
+                        <span class="fw-normal">{{ $i }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mt-1">
+                        <span class="fw-normal">{= $result->paperName =}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                      <span class="fw-normal">{! $result->code !}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                      <span class="fw-normal">{= $result->userName =}</span>
+                      </div>
+                    </td>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <a href="{{URL_ROOT}}/paper/{{ $result->code }}/result/show">
+                          <span class="fw-normal">view result</span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  {% $i++; %}
+                  {% endforeach; %}  
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+  </div>
+{% endblock %}
+
+                 

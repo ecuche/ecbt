@@ -1,0 +1,164 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}   
+
+<div class=" bg-light-subtle w-100 d-flex align-items-center justify-content-center mt-5">
+  <div class="row w-70 mt-5  d-flex justify-content-center">
+
+    <div class="row col-md-10 col-lg-8 d-flex align-items-stretch justify-content-center">
+      <!-- start Input Addons Both Side Icon -->
+      <div class="card w-100">
+        <div class="card-body">
+          <div class="d-flex mb-3 align-items-center">
+            <h4 class="card-title mb-0">Enter Test code</h4>
+          </div>
+            <form action="{{URL_ROOT}}/search/test" method="post">
+              <div class="input-group mb-3">
+                {! $CSRF !}
+                <input type="text" class="form-control" value="{{$paper->code}}" name="code" placeholder="Enter Test Code" maxlength="6" pattern=".{6}" style="text-transform:uppercase" required>
+                <button type="submit" class="input-group-text"><i class="ti ti-search fs-4"></i></button>
+              </div>
+            </form>
+        </div>
+      </div>
+      <!-- end Input Addons Both Side Icon -->
+
+          <div class="row card">
+            <div class="card-body">
+              <h4 class="card-title">Search Result For "{{$paper->code}}"</h4>
+              <div class="vstack gap-3">
+                <div class="pb-3 border-bottom">
+                  <a href="javascript:void(0)" class="text-dark fw-semibold link-primary fs-5">{{$paper->name}}</a>
+                  <p class="d-flex">
+                    By &nbsp; <a href="javascript:void(0)" class="text-primary d-block"> {= $instructor->name =}</a>
+                  </p>
+                  <p class="mb-0">
+                    {{ $paper->description}}
+                  </p>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          <div class="row card pt-2">
+            {% if(!empty($result)): %}
+            <div class="d-flex card-header text-bg-warning">
+              <h5 class="col-8 mb-0 text-white">You have already written this exam</h5>
+              <a class="btn btn-info" href="{{URL_ROOT}}/paper/{!$paper->code!}/result/show">View Result</a>
+            </div>
+            {% endif; %}
+            <div class="form-horizontal">
+              <div class="form-body">
+                <div class="card-body">
+                  <h5 class="card-title mb-0">Test Info</h5>
+                </div>
+                <hr class="m-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-xl-6">
+                      <div class="form-group row">
+                        <label class="form-label text-end col-xl-3">Test Title:</label>
+                        <div class="col-xl-9">
+                          <p>{{$paper->name}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <!--/span-->
+                    <div class="col-xl-6">
+                      <div class="form-group row">
+                        <label class="form-label text-end col-xl-3">Code:</label>
+                        <div class="col-xl-9">
+                          <p>{{$paper->code}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!--/span-->
+                  </div>
+                  <!--/row-->
+                  <div class="row">
+                  
+                    <div class="col-xl-6">
+                      <div class="form-group row">
+                        <label class="form-label text-end col-xl-3">Instructor:</label>
+                        <div class="col-xl-9">
+                          <p>{=$instructor->name=}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <!--/span-->
+                    <div class="col-xl-6">
+                      <div class="form-group row">
+                        <label class="form-label text-end col-xl-3">Status:</label>
+                        <div class="col-xl-9">
+                          <p>
+                              {% if($paper->status === 1): %}
+                              <span class="badge bg-success rounded-pill">Approved</span>
+                              {% elseif($paper->status === 0): %}
+                              <span class="badge bg-info rounded-pill">Pending</span>
+                              {% else: %}
+                              <span class="badge bg-danger rounded-pill">Suspended</span>
+                              {% endif; %}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xl-6">
+                      <div class="form-group row">
+                        <label class="form-label text-end col-xl-3">Total Questions:</label>
+                        <div class="col-xl-9">
+                          <p>{{$paper->poll}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xl-6">
+                      <div class="form-group row">
+                        <label class="form-label text-end col-xl-3">Test Time:</label>
+                        <div class="col-xl-9">
+                          <p>{{$paper->time}} Minuites</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row text-start justify-content-center">
+                      <div class="form-group text-center">
+                        <label class="form-label">Instructions:</label>
+                        <div class="">
+                          <p>{{$paper->instruction}}</p>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                {% if(empty($result)): %}
+                <div class="form-actions border-top">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-xl-6">
+                        <div class="row">
+                          <div class="col-xl-offset-3 col-xl-9">
+                            <form action="{{URL_ROOT}}/paper/{!$paper->code!}/test/start" method="post" id="form">
+                              {! $CSRF !}
+                              <button type="button" class="btn px-4 fs-4 bg-primary fw-medium text-body  {% echo $paper->status !== 1 ? ' disabled' : '' %}" id="progress-bar">
+                              <i class="ti ti-edit fs-5"></i>
+                                start
+                              </button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xl-6"></div>
+                    </div>
+                  </div>
+                </div>
+                {% endif; %}
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

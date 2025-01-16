@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-bs-theme="dark" data-color-theme="Blue_Theme" data-layout="vertical">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" type="image/png" href="{{URL_ROOT}}/assets/images/logos/logo-icon.svg" />
+  <link rel="stylesheet" href="{{URL_ROOT}}/assets/libs/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{URL_ROOT}}/assets/bootstrap/icon/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="{{URL_ROOT}}/assets/css/styles.css" />
+  <link rel="stylesheet" href="{{URL_ROOT}}/assets/css/mine.css" />
+  <title>{% yield title %}</title>
+</head>
+<body>
+  <div class="preloader">
+    <img src="{{URL_ROOT}}/assets/images/logos/logo-icon.svg" alt="loader" class="lds-ripple img-fluid" />
+  </div>
+  <div id="main-wrapper">

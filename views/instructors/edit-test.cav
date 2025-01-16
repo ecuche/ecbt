@@ -1,0 +1,73 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}   
+<div class="d-flex align-items-center justify-content-center w-100">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-8 col-lg-6 col-xxl-3 auth-card">
+        <div class="card mb-0 auth-card">
+          <div class="py-4 px-5">
+          <div class=" mb-4 border-bottom">
+            <h4 class="card-title mb-3">
+              <span class="lstick d-inline-block align-middle"></span>Edit Paper
+              {% if($paper->status == 0): %}
+              <a class="btn btn-success float-end" href="{{URL_ROOT}}/instructor/paper/{! $paper->code !}/status/activate">Activate</a>
+              {% elseif($paper->status == 1): %}
+              <a class="btn btn-danger float-end" href="{{URL_ROOT}}/instructor/paper/{! $paper->code !}/status/deactivate">Deactivate</a>
+              {% endif; %}
+            </h4>
+          </div>
+            <form method="POST" action="{{URL_ROOT}}/instructor/paper/{! $paper->code !}/update">
+                {% if(!empty($alert)): %}
+                {% foreach($alert as $key => $value): %}
+                <div class="mb-3">
+                  <div class="alert alert-{{$key}} alert-dismissible fade show" role="alert">
+                    <strong>{{$value}}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                  </div>
+                {% endforeach %}
+              {% endif; %}
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Paper Name</label>
+                <input type="text" class="form-control {% echo !empty($errors->name) ? 'is-invalid' : ''; %}" value="{{$paper->name}}" id="exampleInputEmail1" aria-describedby="emailHelp" disabled required>
+                <div class="invalid-feedback">{{$errors->name}}</div>
+              </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Test Time (in mins)</label>
+                    <input type="number" class="form-control {% echo !empty($errors->time) ? 'is-invalid' : ''; %}" name="time" value="{{$paper->time}}" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <div class="invalid-feedback">{{$errors->time}}</div>
+                </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Number of questions to be answered</label>
+                <input type="number" class="form-control {% echo !empty($errors->poll) ? 'is-invalid' : ''; %}" name="poll" value="{{$paper->poll}}" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <div class="invalid-feedback">{{$errors->poll}}</div>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Pass Mark in % (Dont include %) </label>
+                <input type="number" class="form-control {% echo !empty($errors->pass_mark) ? 'is-invalid' : ''; %}" name="pass_mark" value="{{$paper->pass_mark}}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="50%" >
+                <div class="invalid-feedback">{{$errors->pass_mark}}</div>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Test Description</label>
+                <textarea name="description" class="form-control {% echo !empty($errors->description) ? 'is-invalid' : ''; %}">{{$paper->description}}</textarea>
+                <div class="invalid-feedback">{{$errors->description}}</div>
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Instructions</label>
+                <textarea name="instruction" class="form-control {% echo !empty($errors->instruction) ? 'is-invalid' : ''; %}">{{$paper->instruction}}</textarea>
+                <div class="invalid-feedback">{{$errors->instruction}}</div>
+              </div>
+              {! $CSRF !}
+              <div class="mb-3">
+                  <button type="submit" class="btn btn-primary w-100 py-8 mb-3 rounded-2">Submit</button>
+              </div>
+              <div class="mb-3">
+                  <a href="{{URL_ROOT}}/instructor/paper/{!$paper->code!}/list" class="btn btn-info w-100 mb-4 rounded-2">Question List</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

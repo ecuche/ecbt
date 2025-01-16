@@ -1,0 +1,157 @@
+{% extends "students/base-sheet" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}
+<url class="hidden" id="home_url" href="{{URL_ROOT}}"></url>
+
+  <div class="container-fluid mt-3">
+    <!-- Start Row -->
+    <div class="row mb-1">
+      <div class="row">
+        <div class="col-12 d-flex align-items-top">
+          <div class="card w-100">
+            <div class="card-body">
+              <div class="row mb-0">
+                <div class="col align-items-stretch">
+                  <h4 class="card-title">
+                    <span class="lstick d-inline-block align-middle"></span>Instructions
+                  </h4>
+                  <div class="text-danger">{! $paper->instruction !}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex no-block">
+                <div class="me-3 align-self-center">
+                  <span class="lstick d-inline-block align-middle"></span>
+                  <img src="{{URL_ROOT}}/assets/images/icon/income.png" alt="Income">
+                </div>
+                <div class="align-self-center">
+                  <h6 class="text-muted mt-2 mb-0">Test Name</h6>
+                  <h2>{= $paper->name =}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex no-block">
+                <div class="me-3 align-self-center">
+                  <span class="lstick d-inline-block align-middle"></span>
+                  <img src="{{URL_ROOT}}/assets/images/icon/expense.png" alt="Income">
+                </div>
+                <div class="align-self-center">
+                  <h6 class="text-muted mt-2 mb-0">Test Code</h6>
+                  <h2>{! $paper->code !}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex no-block">
+                <div class="me-3 align-self-center">
+                  <span class="lstick d-inline-block align-middle"></span>
+                  <img src="{{URL_ROOT}}/assets/images/icon/assets.png" alt="Income">
+                </div>
+                <div class="align-self-center">
+                  <h6 class="text-muted mt-2 mb-0">Pass Mark</h6>
+                  <h2>{{ $paper->pass_mark }}%</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="card bg-danger-subtle">
+            <div class="card-body">
+              <div class="d-flex no-block">
+                <div class="me-3 align-self-center">
+                  <span class="lstick d-inline-block align-middle"></span>
+                  <img src="{{URL_ROOT}}/assets/images/icon/staff.png" alt="Income">
+                </div>
+                <div class="align-self-center">
+                  <h6 class="text-muted mt-2 mb-0">Time</h6>
+                  <h3 id="defaultCountdown" class="{% echo $rem_time <= 600 ? 'text-danger' : 'text-success'; %}">{{ $rem_time }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+          <div class="card-body">
+            <div class="d-flex mb-1 align-items-center">
+              <h4 class="card-title mb-0">Test Review</h4>
+            </div>
+            <div class="table-responsive border rounded-4" data-bs-theme="dark">
+              <table class="table text-nowrap table-dark  mb-0 align-middle">
+                <thead class="text-dark fs-4">
+                  <tr>
+                  <th>
+                      <h6 class="fs-4 fw-semibold text-white mb-0">#</h6>
+                    </th>
+                    <th>
+                      <h6 class="fs-4 fw-semibold text-white mb-0">Question</h6>
+                    </th>
+                    <th>
+                      <h6 class="fs-4 fw-semibold text-white mb-0">Provided Answer</h6>
+                    </th>
+                    <th>
+                      <h6 class="fs-4 fw-semibold text-white mb-0">Selected</h6>
+                    </th>
+                    <th>
+                      <h6 class="fs-4 fw-semibold text-white mb-0">Change</h6>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% foreach ($questions as $key => $question): %}
+                  <tr>
+                    <td>
+                      <div class="ms-3">
+                        <span class="fw-normal">{{ $question['id'] }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="mt-1">
+                        <span class="fw-normal">{! $question['question'] !}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex align-items-center">
+                      <span class="fw-normal">{! $question['chosen'] !}</span>
+                      </div>
+                    </td>
+                    <td>
+                      {% if(!empty($question['chosen'])): %}
+                      <span class="badge bg-success-subtle text-success">selected</span>
+                      {% else: %}
+                      <span class="badge bg-danger-subtle text-danger">Not selected</span>
+                      {% endif; %}
+                    </td>
+                    <td>
+                      <form action="{{URL_ROOT}}/paper/{{ $paper->code }}/test/sheet" method="post" class="formSubmit">
+                        <input type="hidden" name="q_id" value="{{ $question['id']}}">
+                        <a class="fs-4 fw-semibold mb-0 text-muted submitAnchor" href="javascript:void(0)">Change</a>
+                      </form>
+                    </td>
+                  </tr>
+                  {% endforeach; %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

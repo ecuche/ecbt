@@ -1,0 +1,3 @@
+{% include "shared/header" %}
+{% yield body %}
+{% include "shared/bottom" %}

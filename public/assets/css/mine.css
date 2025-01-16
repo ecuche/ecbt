@@ -1,0 +1,130 @@
+.w-90 {
+    width: 90%;
+}
+
+.w-80 {
+    width: 80%;
+}
+
+.w-70 {
+    width: 70%;
+}
+
+.w-60 {
+    width: 60%;
+}
+
+.w-50 {
+    width: 50%;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-30 {
+    width: 30%;
+}
+
+.w-20 {
+    width: 20%;
+}
+
+.w-10 {
+    width: 10%;
+}
+
+.min-vh-90 {
+    min-height: 90vh;
+}
+
+.min-vh-80 {
+    min-height: 80vh;
+}
+
+.min-vh-70 {
+    min-height: 70vh;
+}
+
+.min-vh-60 {
+    min-height: 60vh;
+}
+
+.min-vh-50 {
+    min-height: 50vh;
+}
+
+.min-vh-40 {
+    min-height: 40vh;
+}
+
+.min-vh-30 {
+    min-height: 30vh;
+}
+
+.min-vh-20 {
+    min-height: 20vh;
+}
+
+.min-vh-10 {
+    min-height: 10vh;
+}
+
+
+.answer-radio input[type='radio'] {
+    display: none;
+  }
+  
+  .answer-radio input[type='radio']:checked + label {
+    position: relative;
+    background-color: #1a1a1a; /* Assuming $themeDark is #1a1a1a */
+    padding-left: 40px;
+  }
+  
+  .answer-radio input[type='radio']:checked + label:before {
+    content: '✓';
+    background-color: #141414; /* Assuming $themeDark is #1a1a1a */
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 30px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+  }
+  
+  .answer-radio label {
+    padding: 5px 10px;
+    margin: 0;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.6s cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+  
+  .answer-radio label:hover {
+    background-color: #1a1a1a; /* Assuming $themeDark is #1a1a1a */
+  }
+
+
+
+.zoomable-image {
+    max-width: 300px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.zoomable-image:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.modal-dialog-centered img {
+    max-width: 100%;
+    max-height: 90vh;
+}
+
+.hidden {
+    display: none;
+}

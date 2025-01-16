@@ -1,0 +1,6 @@
+{% include "shared/header" %}
+{% include "shared/sidebar" %}
+{% include "shared/navbar" %}
+{% yield body %}
+{% include "shared/footer" %}
+{% include "shared/bottom" %}

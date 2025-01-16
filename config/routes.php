@@ -1,0 +1,89 @@
+<?php
+$router = new Framework\Router;
+
+// Homes Routes
+$router->add('/', ["controller" => "homes", "method" => "index"]);
+$router->add('/register', ["controller" => "homes", "method" => "register", "auth"=>false]);
+$router->add('/forgot-password', ["controller" => "homes", "method" => "forgot-password", "auth"=>false]);
+$router->add('/register-new-user', ["controller" => "homes", "method" => "register-new-user", "form"=> "post"]);
+$router->add('/log-in-user', ["controller" => "homes", "method" => "log-in-user", "form"=> "post"]);
+$router->add('/recover-account', ["controller" => "homes", "method" => "recover-account", "form"=> "post"]);
+$router->add("/reset/password/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/{hash:[a-zA-Z0-9]{64}}", ["controller" => "homes", "method" => "reset-password", "auth"=>false]);
+$router->add("/password/reset/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/{hash:[a-zA-Z0-9]{64}}", ["controller" => "homes", "method" => "password-reset", "form"=> "post"]);
+$router->add("/activate/account/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/{hash:[a-zA-Z0-9]{64}}", ["controller" => "homes", "method" => "activate-account"]);
+$router->add('/logout', ["controller" => "homes", "method" => "log-out-user"]);
+$router->add('/contact-us', ["controller" => "homes", "method" => "contact-us", "form"=> "post"]);
+$router->add('/contact', ["controller" => "homes", "method" => "contact"]);
+$router->add('/about-us', ["controller" => "homes", "method" => "about-us"]);
+$router->add('/404', ["controller" => "homes", "method" => "e404"]);
+$router->add('/500', ["controller" => "homes", "method" => "e500"]);
+$router->add('/test', ["controller" => "homes", "method" => "test"]);
+
+// Admin/Users Routes
+$router->add('/admin/{controller}/{method}', ["namespace" => "Admin"]);
+
+// Users Routes
+$router->add("/dashboard", ["controller" => "users", "method" => "dashboard"]);
+$router->add("/profile/update", ["controller" => "users", "method" => "update-profile", "auth"=>true]);
+$router->add("/update/profile", ["controller" => "users", "method" => "profile-update", "form" => "post"]);
+$router->add("/profile/view", ["controller" => "users", "method" => "view-profile", "auth"=>true]);
+$router->add("/update/password", ["controller" => "users", "method" => "password-update", "auth"=>true]);
+$router->add("/password/update", ["controller" => "users", "method" => "update-password", "form" => "post"]);
+$router->add("/users/profile/{username:\w+([-+.+@']\w+)*}", ["controller" => "users", "method" => "profile"]);
+$router->add('/users/word/{word:[\w-]+}', ["controller" => "users", "method" => "word"]);
+$router->add("/users/emailexists/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}", ["controller" => "users", "method" => "emailExists"]);
+$router->add('/users', ["controller" => "users", "method" => "index", "middleware" => "message|message|message"]);
+$router->add('/users/show', ["controller" => "users", "method" => "show"]);
+
+//students Routes
+$router->add("student/dashboard", ["controller" => "students", "method" => "dashboard",  "auth"=>true]);
+$router->add("find/test", ["controller" => "students", "method" => "find-test",  "auth"=>true]);
+$router->add("search/test", ["controller" => "students", "method" => "search-test",  "auth"=>true, 'form'=>'post']);
+$router->add("test/{code:[A-Z0-9]{6}}/search/result", ["controller" => "students", "method" => "search-result",  "auth"=>true]);
+$router->add("results/show/all", ["controller" => "students", "method" => "show-all-results",  "auth"=>true]);
+$router->add("paper/{code:[A-Z0-9]{6}}/result/show", ["controller" => "students", "method" => "show-test-result",  "auth"=>true]);
+$router->add("paper/{code:[A-Z0-9]{6}}/test/sheet", ["controller" => "students", "method" => "test-sheet",  "auth"=>true]);
+$router->add("paper/{code:[A-Z0-9]{6}}/test/preview", ["controller" => "students", "method" => "test-preview",  "auth"=>true]);
+$router->add("paper/{code:[A-Z0-9]{6}}/test/start", ["controller" => "students", "method" => "start-test",  "auth"=>true, 'form' => 'post']);
+$router->add("paper/{code:[A-Z0-9]{6}}/test/submit", ["controller" => "students", "method" => "submit-test",  "auth"=>true]);
+$router->add("paper/test/prev-next", ["controller" => "students", "method" => "prev-next",  "auth"=>true, 'form' => 'post']);
+$router->add("paper/test/submit-option-selected", ["controller" => "students", "method" => "submit-option-selected",  "auth"=>true, 'form' => 'post']);
+
+
+//Instructor Routes
+$router->add("instructor/dashboard", ["controller" => "instructors", "method" => "dashboard",  "auth"=>true]);
+$router->add("instructor/new-test", ["controller" => "instructors", "method" => "new-test",  "auth"=>true]);
+$router->add("instructor/papers", ["controller" => "instructors", "method" => "papers-list",  "auth"=>true]);
+$router->add("instructor/new-test/submit", ["controller" => "instructors", "method" => "insert-new-test",  "auth"=>true, "form"=>"post"]);
+
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/edit", ["controller" => "instructors", "method" => "edit-paper",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/update", ["controller" => "instructors", "method" => "update-paper",  "auth"=>true, "form"=>"post"]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/list", ["controller" => "instructors", "method" => "questions-list",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/status/{status:[\w-]+}", ["controller" => "instructors", "method" => "change-paper-status",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/delete", ["controller" => "instructors", "method" => "delete-paper",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/participants/show", ["controller" => "instructors", "method" => "show-participants",  "auth"=>true]);
+
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/create/questions", ["controller" => "instructors", "method" => "create-questions",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/add/question", ["controller" => "instructors", "method" => "add-question",  "auth"=>true, 'form'=>'post']);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/edit/question", ["controller" => "instructors", "method" => "edit-question",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/update/question", ["controller" => "instructors", "method" => "update-question",  "auth"=>true, 'form'=>'post']);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/delete/question", ["controller" => "instructors", "method" => "delete-question",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/delete-question-image", ["controller" => "instructors", "method" => "delete-question-image",  "auth"=>true]);
+$router->add("instructor/my-students", ["controller" => "instructors", "method" => "my-students",  "auth"=>true]);
+
+
+
+// Generic Controllers CRUD Routes
+$router->add('/{controller}/show/{id:\d+}', ["method" => "show", "middleware"=>"deny"]);
+$router->add('/{controller}/edit/{id:\d+}', ["method" => "edit"]);
+$router->add('/{controller}/update/{id:\d+}', ["method" => "update", "form"=> "post"]);
+$router->add('/{controller}/delete/{id:\d+}', ["method" => "delete"]);
+$router->add('/{controller}/destroy/{id:\d+}', ["method" => "destroy", "form" => "post"]);
+
+// Generic Routes
+$router->add("/{controller}/{method}");
+// $router->add("{username:\w+([-+.+@']\w+)*}", ["controller" => "users", "method" => "profile"]);
+// $router->add("/{controller}/{method}/{id:\d+}");
+// $router->add('/{title}/{id:\d+}/{page:\d+}', ["controller" => "users", "method" => "showPage"]);
+
+return $router;

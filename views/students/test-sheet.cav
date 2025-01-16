@@ -1,0 +1,226 @@
+{% extends "students/base-sheet" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}
+<url class="hidden" id="home_url" href="{{URL_ROOT}}"></url>
+
+  <div class="container-fluid mt-4">
+    <!-- Start Row -->
+    <div class="row mb-1">
+      <div class="row">
+        <div class="col-lg-3 col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex no-block">
+                <div class="me-3 align-self-center">
+                  <span class="lstick d-inline-block align-middle"></span>
+                  <img src="{{URL_ROOT}}/assets/images/icon/income.png" alt="Income">
+                </div>
+                <div class="align-self-center">
+                  <h6 class="text-muted mt-2 mb-0">Test Name</h6>
+                  <h2>{= $paper->name =}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex no-block">
+                <div class="me-3 align-self-center">
+                  <span class="lstick d-inline-block align-middle"></span>
+                  <img src="{{URL_ROOT}}/assets/images/icon/expense.png" alt="Income">
+                </div>
+                <div class="align-self-center">
+                  <h6 class="text-muted mt-2 mb-0">Test Code</h6>
+                  <h2>{! $paper->code !}</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex no-block">
+                <div class="me-3 align-self-center">
+                  <span class="lstick d-inline-block align-middle"></span>
+                  <img src="{{URL_ROOT}}/assets/images/icon/assets.png" alt="Income">
+                </div>
+                <div class="align-self-center">
+                  <h6 class="text-muted mt-2 mb-0">Pass Mark</h6>
+                  <h2>{{ $paper->pass_mark }}%</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="card bg-danger-subtle">
+            <div class="card-body">
+              <div class="d-flex no-block">
+                <div class="me-3 align-self-center">
+                  <span class="lstick d-inline-block align-middle"></span>
+                  <img src="{{URL_ROOT}}/assets/images/icon/staff.png" alt="Income">
+                </div>
+                <div class="align-self-center">
+                  <h6 class="text-muted mt-2 mb-0">Time</h6>
+                  <h3 id="defaultCountdown" class="{% echo $rem_time <= 600 ? 'text-danger' : 'text-success'; %}">{{ $rem_time }}</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row ajaxContainer">
+      {% if(!empty($question->image)): %}
+        <div class="col-lg-4 d-flex align-items-stretch">
+          <div class="card w-100">
+            <div class="card-body">
+              <h4 class="card-title">
+                <span class="lstick d-inline-block align-middle"></span>IMAGE
+              </h4>
+             
+                <img src="{! $image !}" class="w-40 rounded mx-auto d-block zoomable-image" alt="Image">
+            </div>
+          </div>
+        </div>
+        {% endif; %}
+        <div class="col-lg-{% echo empty($question->image) ? '12' : '8' %} d-flex align-items-stretch">
+          <div class="card w-100">
+            <div class="card-body">
+              <div class="row mb-5">
+                <div class="col align-items-stretch">
+                  <h4 class="card-title">
+                    <span class="lstick d-inline-block align-middle"></span>QUESTION {{ $question->id }}
+                  </h4>
+                  {! $question->question !}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 d-flex align-items-stretch">
+          <div class="card w-100">
+            <div class="card-body">
+              <table class="table vm fs-3">
+                <tbody>
+                  <tr>
+                    <td class="b-0">Instructor</td>
+                    <td class="text-end fw-medium b-0">{=$instructor->name=}</td>
+                  </tr>
+                  <tr>
+                    <td class="b-0">Test Time </td>
+                    <td class="text-end fw-medium b-0">{{$paper->time}} Mins</td>
+                  </tr>
+                  <tr>
+                    <td>Total Questions</td>
+                    <td class="text-end fw-medium">{{$paper->poll}}</td>
+                  </tr>
+                  <tr>
+                    <td class="d-flex">
+                      <a href="{{URL_ROOT}}/paper/{{ $paper->code }}/test/preview" class="btn btn-secondary me-2">Preview</a>
+                      <form action="{{URL_ROOT}}/paper/{{ $paper->code }}/test/submit" method="post" class="formSubmit">
+                        {! $CSRF !}
+                        <button type="submit" class="btn btn-danger mymodal" data-bs-toggle="modal" data-bs-target="#pop-tool-modal">submit</button>
+                      </form>
+                    </td>
+                    <td class="text-end fw-medium"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8 d-flex flex-column align-items-stretch">
+          <div class="card w-100 h-100 d-flex flex-column">
+            <div class="card-body align-items-top">
+              <div class="row">
+                <div class="col align-items-stretch">
+                  <h4 class="card-title">
+                    <span class="lstick d-inline-block align-middle"></span>ANSWERS
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <div class="card-body align-items-stretch">
+              <div class="answer-radio h4 mx-3">
+                {% $i = range("A", "Z"); %}
+                {% $j = range("a", "z"); %}
+                {% foreach (json_decode($question->options) as $key => $option): %}
+                  <div class="mb-1">
+                    <input type="radio" name="answer" class="option" q_id="{{ $question->id}}" ans_code="{{ $option->hash }}" value="{{ $j[$key] }}" id="{{ $j[$key] }}"
+                    {% echo $question->hash == $option->hash ? 'checked' : ''%}>
+                    <label for="{{ $j[$key] }}">
+                      <span class="text-uppercase fw-bold">{{ $i[$key] }}.</span>&nbsp;&nbsp; {{ $option->answer }}
+                    </label>
+                  </div>
+                {% endforeach; %}
+              </div>
+            </div>
+            <div class="row mb-3 mx-2 my-3">
+              <div class="d-flex col flex-column justify-content-end">
+                <tr>
+                  <td>Total Answered</td>
+                  <td class="text-end fw-medium">{{ $count_answered}} %</td>
+                </tr>
+              </div>
+              <div class="col mt-auto d-flex justify-content-end align-items-bottom">
+                <button class="btn btn-secondary me-2 previous" next="previous" q_id="{{$question->id}}" id="previous" {% echo  $question->id <= 1 ? 'disabled' : ''; %}>Previous</button>
+                <button class="btn btn-secondary me-2 next" next="next" q_id="{{$question->id}}" id="next" {% echo  $question->id >= count((array)$questions) ? 'disabled' : ''; %}>Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 d-flex flex-column align-items-stretch">
+          <div class="card w-100">
+            <div class="mx-auto mt-5">
+              <nav aria-label="Page navigation">
+                <ul class="pagination pagination-md flex-wrap">
+                  {% $i = 1 %}
+                  {% foreach($questions as $key => $value): %}
+                  <li class="page-item{% echo $question->id == $i ? ' disabled' : ''; %}" aria-current="page">
+                    {% if($question->id == $i){$color = 'secondary';}elseif(!empty($value['chosen'])){$color = 'success';}else{$color = 'danger';} %}
+                    <a class="page-link pagi text-bg-{{$color}}" href="javascript:void(0)" value="{{ $value['id'] }}">{{ $i }}</a>
+                  </li>
+                    {% $i++ %}
+                  {% endforeach; %}
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for image enlarge -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+      <img src="" alt="Zoomed Image" id="modalImage" class="w-100">
+    </div>
+  </div>
+</div>
+
+<!-- Modal for delete-->
+<div class="modal fade" id="pop-tool-modal" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header d-flex align-items-center">
+        <h4 class="modal-title" id="myLargeModalLabel">
+          Are you sure you want to Submit?
+        </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <a href="" class="btn bg-danger-subtle text-danger waves-effect text-start modalSubmit">
+          Submit
+        </a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

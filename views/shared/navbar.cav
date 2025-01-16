@@ -1,0 +1,120 @@
+<div class="page-wrapper">
+      <button class="btn btn-primary p-3 rounded-circle d-flex align-items-center justify-content-center customizer-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+        <i class="icon ti ti-settings fs-7"></i>
+      </button>
+
+    <header class="topbar card rounded-0 border-0">
+        <div class="with-vertical">
+        
+          <nav class="navbar navbar-expand-lg px-lg-0 px-3 py-0">
+            <div class="d-none d-lg-block">
+              <div class="brand-logo d-flex align-items-center justify-content-between ps-lg-3">
+                <a href="{{URL_ROOT}}" class="text-nowrap logo-img d-flex align-items-center gap-1" id="home_url">
+                  
+                  <!--End Logo icon -->
+                  <!-- Logo text -->
+                  <span class="logo-text">
+                  {% echo strtoupper(SITE_NAME) %}
+                  </span>
+                </a>
+              </div>
+            </div>
+            {% if(isset($_SESSION['id'])): %}
+            <ul class="navbar-nav align-items-center ps-xl-3">
+              <li class="nav-item nav-icon-hover-bg rounded-circle">
+                <a class="nav-link sidebartoggler" id="headerCollapse" href="javascript:void(0)">
+                  <iconify-icon icon="solar:hamburger-menu-line-duotone"></iconify-icon>
+                </a>
+              </li>
+            </ul>
+            {% endif; %}
+            <div class="d-block d-lg-none">
+              <div class="brand-logo d-flex align-items-center justify-content-between ps-lg-3">
+                <a href="{{URL_ROOT}}" class="text-nowrap logo-img d-flex align-items-center gap-1">
+                  <!--End Logo icon -->
+                  <!-- Logo text -->
+                  <span class="logo-text">
+                  {% echo strtoupper(SITE_NAME) %}
+                  </span>
+                </a>
+              </div>
+            </div>
+            <a class="navbar-toggler nav-icon-hover-bg rounded-circle p-0 border-0" href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="p-2">
+                <i class="ti ti-dots fs-7"></i>
+              </span>
+            </a>
+            <div class="collapse navbar-collapse justify-content-end pe-2" id="navbarNav">
+              <div class="d-flex align-items-center justify-content-between">
+                <ul class="navbar-nav flex-row mx-auto align-items-center justify-content-center">
+                  <li class="nav-item nav-icon-hover-bg rounded-circle">
+                    <a class="nav-link moon dark-layout" href="javascript:void(0)">
+                      <iconify-icon icon="solar:moon-line-duotone" class="moon"></iconify-icon>
+                    </a>
+                    <a class="nav-link sun light-layout" href="javascript:void(0)">
+                      <iconify-icon icon="solar:sun-2-line-duotone" class="sun"></iconify-icon>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{URL_ROOT}}/contact">Contact Us</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{URL_ROOT}}/about-us">About</a>
+                  </li>
+                 
+
+                 {% if(isset($_SESSION['id'])): %}
+                    <li class="nav-item dropdown">
+                    <a class="nav-link" href="javascript:void(0)" id="drop2" aria-expanded="false">
+                      <img src="{{URL_ROOT}}/assets/images/profile/user-1.jpg" alt="user" width="30" class="profile-pic rounded-circle" />
+                    </a>
+                    <div class="dropdown-menu pt-0 content-dd overflow-hidden pt-0 dropdown-menu-end user-dd animated flipInY" aria-labelledby="drop2">
+                      <div class="profile-dropdown position-relative" data-simplebar>
+                        <div class="py-3 px-7 pb-0">
+                          <h5 class="mb-0 fs-5 fw-semibold">User Profile</h5>
+                        </div>
+                        <div class="d-flex align-items-center py-9 mx-7 border-bottom">
+                          <img src="{{URL_ROOT}}/assets/images/profile/user-1.jpg" class="rounded-circle" width="80" height="80" alt="adminpro-img" />
+                          <div class="ms-3">
+                            <h5 class="mb-1 fs-4">{= $_SESSION['name'] =}</h5>
+                            <span class="mb-1 d-block">{= $_SESSION['role'] =}</span>
+                            <p class="mb-0 d-flex align-items-center gap-2">
+                              <i class="ti ti-mail fs-4"></i> {= $_SESSION['email'] =}
+                            </p>
+                          </div>
+                        </div>
+                        <div class="message-body">
+                          <a href="{{URL_ROOT}}/profile/view" class="py-8 px-7 mt-8 d-flex align-items-center">
+                            <span class="d-flex align-items-center justify-content-center bg-primary-subtle rounded p-6 fs-7 text-primary">
+                              <iconify-icon icon="solar:user-circle-line-duotone"></iconify-icon>
+                            </span>
+                            <div class="w-75 d-inline-block v-middle ps-3">
+                              <h6 class="mb-1 fs-3 fw-semibold lh-base">My Profile</h6>
+                              <span class="fs-2 d-block text-body-secondary">Account Settings</span>
+                            </div>
+                          </a>
+                        </div>
+                        <div class="d-grid py-4 px-7 pt-8">
+                          <a href="{{URL_ROOT}}/logout" class="btn btn-primary">Log Out</a>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                  {% endif; %}
+                  <!-- ------------------------------- -->
+                  <!-- end profile Dropdown -->
+                  <!-- ------------------------------- -->
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <!-- ---------------------------------- -->
+          <!-- End Vertical Layout Header -->
+          <!-- ---------------------------------- -->
+        </div>
+        
+    </header>
+    </div>
+<div class="position-relative overflow-hidden bg-light-subtle min-vh-100 w-100 d-flex align-items-center justify-content-center py-5">
+     

@@ -1,0 +1,105 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}   
+<link href="{{URL_ROOT}}/assets/libs/froala/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+
+<div class="col-lg-10 mx-auto">
+  <div class="card">
+    <div class="px-4 py-3 border-bottom">
+      <h4 class="card-title mb-0">{= $paper->name =} : {= $paper->code =}</h4>
+      <h6 class="card-title mb-0">Add Question Layout</h6>
+    </div>
+    <div class="card-body p-4 justify-content-center">
+
+          {% if(!empty($alert)): %}
+            {% foreach($alert as $key => $value): %}
+              <div class="alert alert-{{$key}} alert-dismissible fade show" role="alert">
+                <strong>{{$value}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endforeach %}
+          {% endif; %}
+    
+      <form  action="{{URL_ROOT}}/instructor/paper/{!$paper->code!}/add/question" method="post" enctype="multipart/form-data">
+        <div class="mb-4">
+          <label class="form-label">Question</label>
+          <textarea class="form-control p-7 {% echo !empty($errors->question) ? 'is-invalid' : ''; %}" name="question" id="froala" cols="20" name="question" rows="1" placeholder="Type the question here">{{$question->question}}</textarea>
+          <div class="invalid-feedback text-center">{{$errors->question}}</div>
+        </div>
+
+        <div class="mb-4 d-flex flex-column align-items-center justify-content-center col-12">
+          <label for="formFile" class="text-center">Add Picture if applicable</label>
+          <input class="form-control" type="file" id="formFile" name="image" style="max-width: 500px;">
+        </div>
+
+            <div class="col-md-12 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <div id="education_fields" class="my-4">
+                    <div class="row">
+                      <div class="col-sm-8 {% echo !empty($errors->corrects) || !empty($errors->options)  ? 'text-danger' : ''; %}">
+                          &nbsp; Make sure atleast one of the Options is selected as the correct answer  
+                        <div class="row ms-2"> {{$errors->corrects}}</div>
+                        <div class="row ms-2"> {{$errors->options}}</div>
+                      </div>
+                      <div class="col-sm-2 text-center">
+                        Check only correct answers
+                      </div>
+                    </div>
+                    <div class="row mb-1">
+                      <div class="col-sm-8">
+                          <div class="mb-3">
+                            <input type="text" class="form-control" id="option" name="options[]" placeholder="Add an option to select in the question">
+                          </div>
+                        </div>
+                        <div class="col-sm-2 d-flex align-items-center justify-content-center">
+                          <div class="form-check form-switch mb-3">
+                          <input type="hidden" name="corrects[]" id="correct" value="0">
+                            <input class="form-check-input success checkbox" type="checkbox" id="color-success">
+                          </div>
+                      </div>
+                    </div>
+                      <div class="row mb-1">
+                        <div class="col-sm-8">
+                          <div class="mb-3">
+                            <input type="text" class="form-control" id="option" name="options[]" placeholder="Add an option to select in the question">
+                          </div>
+                        </div>
+                        <div class="col-sm-2 d-flex align-items-center justify-content-center">
+                          <div class="form-check form-switch mb-3">
+                            <input type="hidden" name="corrects[]" id="correct" value="0">
+                            <input class="form-check-input success checkbox" type="checkbox" id="color-success">
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                    
+                  
+                  <div class="col-sm-2">
+                    <div class="mb-3">
+                      <button onclick="education_fields();" class="btn btn-success fw-medium" type="button">
+                        <i class="ti ti-circle-plus fs-5 d-flex"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+        {! $CSRF !}
+        <div class="d-flex mb-4 justify-content-end">
+          <button type="submit" class="btn btn-primary me-3">Add</button>
+          <a class="btn btn-secondary" href="{{URL_ROOT}}/instructor/paper/{!$paper->code!}/list">List</a>
+        </div>
+      </form> 
+
+    </div>
+  </div>
+</div>
+
+
+<script src="{{URL_ROOT}}/assets/libs/froala/js/froala_editor.pkgd.min.js"></script>
+<script>
+  new FroalaEditor("textarea#froala");
+</script>
+{% endblock %}

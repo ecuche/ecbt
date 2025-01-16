@@ -1,0 +1,211 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}   
+
+<div class=" bg-light-subtle min-vh-100 w-100 d-flex align-items-center justify-content-center mt-5">
+  <div class="row w-70 mt-5 min-vh-80">
+
+    <div class="col-xl-3 col-lg-6 col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex">
+            <h4 class="card-title">
+              <span class="lstick d-inline-block align-middle"></span>Exams
+            </h4>
+          </div>
+          <div class="mailbox h-455" data-simplebar>
+            <div class="message-center message-body position-relative">
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    critical infrastructure protection
+                  </h6>
+                </div>
+              </a>
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    Cryptography and Encryption
+                  </h6>
+                </div>
+              </a>
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    Ethical Hacking
+                  </h6>
+                </div>
+              </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex">
+            <h4 class="card-title">
+              <span class="lstick d-inline-block align-middle"></span>Exams
+            </h4>
+          </div>
+          <div class="mailbox h-455" data-simplebar>
+            <div class="message-center message-body position-relative">
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    critical infrastructure protection
+                  </h6>
+                </div>
+              </a>
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    Cryptography and Encryption
+                  </h6>
+                </div>
+              </a>
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    Ethical Hacking
+                  </h6>
+                </div>
+              </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex">
+            <h4 class="card-title">
+              <span class="lstick d-inline-block align-middle"></span>Exams
+            </h4>
+          </div>
+          <div class="mailbox h-455" data-simplebar>
+            <div class="message-center message-body position-relative">
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    critical infrastructure protection
+                  </h6>
+                </div>
+              </a>
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    Cryptography and Encryption
+                  </h6>
+                </div>
+              </a>
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    Ethical Hacking
+                  </h6>
+                </div>
+              </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xl-3 col-lg-6 col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex">
+            <h4 class="card-title">
+              <span class="lstick d-inline-block align-middle"></span>Exams
+            </h4>
+          </div>
+          <div class="mailbox h-455" data-simplebar>
+            <div class="message-center message-body position-relative">
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    critical infrastructure protection
+                  </h6>
+                </div>
+              </a>
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    Cryptography and Encryption
+                  </h6>
+                </div>
+              </a>
+
+              <a href="javascript:void(0)" class="message-item d-flex align-items-center border-bottom p-3">
+                <span class="user-img position-relative d-inline-block">
+                  <i class="bi bi-book" ></i>
+                </span>
+                <div class="w-75 d-inline-block v-middle ps-3">
+                  <h6 class="message-title mb-1 fw-semibold">
+                    Ethical Hacking
+                  </h6>
+                </div>
+              </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

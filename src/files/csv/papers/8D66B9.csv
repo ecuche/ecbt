@@ -1,0 +1,4 @@
+id,question,image,answers
+1,"<p>what is your name?</p>","image.jpg","[{""answer"":""uche"",""correct"":""0""},{""answer"":""emmanuel"",""correct"":""0""},{""answer"":""chukwudike"",""correct"":""1""}]"
+2,"<p>jesus walks is a song by who</p>","8D66B9_678146600458a5.14952177.jpg","[{""answer"":""God show me the way"",""correct"":""0""},{""answer"":""the devil is trying to break me down"",""correct"":""0""},{""answer"":""kanye west"",""correct"":""1""}]"
+3,"<p>what&#39;s the producer name</p>","image.jpg","[{""answer"":""john dazzy"",""correct"":""0""},{""answer"":""don jazzy"",""correct"":""1""}]"
