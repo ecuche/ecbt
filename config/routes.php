@@ -55,6 +55,8 @@ $router->add("instructor/dashboard", ["controller" => "instructors", "method" =>
 $router->add("instructor/new-test", ["controller" => "instructors", "method" => "new-test",  "auth"=>true]);
 $router->add("instructor/papers", ["controller" => "instructors", "method" => "papers-list",  "auth"=>true]);
 $router->add("instructor/new-test/submit", ["controller" => "instructors", "method" => "insert-new-test",  "auth"=>true, "form"=>"post"]);
+$router->add("search/mystudent/test-results/all", ["controller" => "instructors", "method" => "search-my-student",  "auth"=>true, "form"=>"post"]);
+
 
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/edit", ["controller" => "instructors", "method" => "edit-paper",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/update", ["controller" => "instructors", "method" => "update-paper",  "auth"=>true, "form"=>"post"]);
@@ -70,7 +72,7 @@ $router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/update/question", ["c
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/delete/question", ["controller" => "instructors", "method" => "delete-question",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/delete-question-image", ["controller" => "instructors", "method" => "delete-question-image",  "auth"=>true]);
 $router->add("instructor/my-students", ["controller" => "instructors", "method" => "my-students",  "auth"=>true]);
-
+$router->add("student/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/instructor/tests", ["controller" => "instructors", "method" => "student-tests",  "auth"=>true]);
 
 
 // Generic Controllers CRUD Routes

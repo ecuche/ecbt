@@ -327,7 +327,8 @@ class Instructors extends Controller
         $students = $this->instructorsModel->getAllMyStudents($this->user->id);
         return $this->view('instructors/my-students', [
             'user'=> $this->user,
-            'students' => $students
+            'students' => $students,
+            'CSRF' => CSRF::generate()
         ]);
     }
 
@@ -340,6 +341,39 @@ class Instructors extends Controller
             'students'=> $students,
             'paper'=> $paper,
         ]);
+    }
+
+    public function studentTests($email): Response
+    {
+        $student = $this->instructorsModel->findByField('email', $email, 'user');
+        if(empty($student)){
+            Session::set('warning', 'This user does not exist');
+            $this->redirect('');
+        }
+        $results = $this->instructorsModel->myStudentResult($student->id);
+        return $this->view('instructors/student-tests', [
+            'user'=> $this->user,
+            'student'=> $student,
+            'results'=> $results,
+        ]);
+    }
+
+    public function searchMyStudent(): Response
+    {
+        CSRF::check($this->request->post['csrf_token']);
+        $email =  $this->request->post['email'];
+        $student = $this->instructorsModel->findByField('email', $email, 'user');
+        $results = $this->instructorsModel->myStudentResult($student->id);
+        if(empty($results)){
+            $students = $this->instructorsModel->getAllMyStudents($this->user->id);
+            return $this->view('instructors/my-students', [
+                'user'=> $this->user,
+                'students' => $students,
+                'email_errors' => 'No result found',
+                'CSRF' => CSRF::generate()
+            ]);
+        }
+        return $this->studentTests($email);
     }
 
 }

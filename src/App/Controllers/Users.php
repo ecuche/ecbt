@@ -25,7 +25,7 @@ class Users extends Controller
         Auth::failRedirect("", "Kindly login to access your dashboard");
         return $this->view('users/dashboard', [
             'user' => $this->user,
-            'success' => Session::flash('success')
+            'alert' => Session::flash(['success', 'warning', 'danger'])
         ]);
     }
    

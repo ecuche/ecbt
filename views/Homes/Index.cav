@@ -17,15 +17,15 @@
             <form method="POST" action="{{URL_ROOT}}/log-in-user">
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email</label>
-                <input type="email" class="form-control {% echo !empty($errors->email) || !empty($errors->login) ? 'is-invalid' : ''; %}" name="email" value="{{$user->email}}" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="email" class="form-control {{ !empty($errors->email) || !empty($errors->login) ? 'is-invalid' : '' }}" name="email" value="{{$user->email}}" id="exampleInputEmail1" aria-describedby="emailHelp">
                 <div class="invalid-feedback">{{$errors->email}}</div>
               </div>
               <label for="exampleInputPassword1" class="form-label">Password</label>
               <div class="mb-4 input-group">
-                <input type="password" class="form-control  {% echo !empty($errors->password) || !empty($errors->login) ? 'is-invalid' : ''; %}" name="password" id="password" data-bs-theme="dark" minlength="8" aria-describedby="passwordHelpBlock">
+                <input type="password" class="form-control {{ !empty($errors->password) || !empty($errors->login) ? 'is-invalid' : '' }}" name="password" id="password" data-bs-theme="dark" minlength="8" aria-describedby="passwordHelpBlock">
                 <i class="input-group-text bi-eye-slash-fill hide-show-password"></i>
               </div>
-              {% echo  $CSRF %}
+              {{ $CSRF }}
               <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <div class="form-check">
                   <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked">

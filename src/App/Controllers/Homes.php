@@ -47,7 +47,7 @@ class Homes extends Controller
     {
         CSRF::check($this->request->post['csrf_token']);
         $data = [
-            'name' => $this->request->post['name'],	
+            'name' => ucwords($this->request->post['name']),	
             'email' => $this->request->post['email'],
             'password' => $this->request->post['password'],
         ];

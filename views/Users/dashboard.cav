@@ -1,27 +1,20 @@
 {% extends "base" %}
-
 {% block title %} Dashboard {% endblock %}
 {% block body %}
-<section class="py-5">
-        <div class="container py-5">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-6 col-xl-4">
-                    <div class="card">
-                        <div class="card-body text-center d-flex flex-column align-items-center">
-                        {% if(!empty($success)): %}
-                            <div class="alert alert-success" role="alert">
-                                {{$success}}
-                            </div>
-                        {% endif; %}
-                            
 
-{{$user->email}}
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
+<div class="row col-lg-6 col-md-8">
+
+{% if(!empty($alert)): %}
+  {% foreach($alert as $key => $value): %}
+    <div class="alert alert-{{$key}} alert-dismissible fade show" role="alert">
+      <strong>{{$value}}</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endforeach %}
+{% endif; %}
+</div>
+
    
 {% endblock %}
 

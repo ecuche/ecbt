@@ -12,8 +12,8 @@
               <img src="{{URL_ROOT}}/assets/images/icon/income.png" alt="Income">
             </div>
             <div class="align-self-center">
-              <h6 class="text-muted mt-2 mb-0">TEST NAME</h6>
-              <h4>{! $paper->name !}</h4>
+              <h6 class="text-muted mt-2 mb-2">STUDENT NAME</h6>
+              <h4>{= $student->name =}</h4>
             </div>
           </div>
         </div>
@@ -28,8 +28,8 @@
               <img src="{{URL_ROOT}}/assets/images/icon/expense.png" alt="Income">
             </div>
             <div class="align-self-center">
-              <h6 class="text-muted mt-2 mb-0">TEST CODE</h6>
-              <h4>{! $paper->code !}</h4>
+              <h6 class="text-muted mt-2 mb-2">STUDENT EMAIL</h6>
+              <h4>{! $student->email !}</h4>
             </div>
           </div>
         </div>
@@ -44,8 +44,8 @@
               <img src="{{URL_ROOT}}/assets/images/icon/assets.png" alt="Income">
             </div>
             <div class="align-self-center">
-              <h6 class="text-muted mt-2 mb-0">PASS MARK</h6>
-              <h4>{= $paper->pass_mark =}%</h4>
+              <h6 class="text-muted mt-2 mb-2">INSTITUTION ID</h6>
+              <h4>{{ $student->reg_no }}</h4>
             </div>
           </div>
         </div>
@@ -60,8 +60,8 @@
               <img src="{{URL_ROOT}}/assets/images/icon/staff.png" alt="Income">
             </div>
             <div class="align-self-center">
-              <h6 class="text-muted mt-2 mb-0">TIME</h6>
-              <h4>{! $paper->time !}</h4>
+              <h6 class="text-muted mt-2 mb-2">INSTRUCTOR</h6>
+              <h4>{= $user->name =}</h4>
             </div>
           </div>
         </div>
@@ -75,28 +75,34 @@
           <h6 class="fs-4 fw-semibold mb-0">#</h6>
         </th>
         <th>
-          <h6 class="fs-4 fw-semibold mb-0">Student Name</h6>
+          <h6 class="fs-4 fw-semibold mb-0">Test Name</h6>
         </th>
         <th>
-          <h6 class="fs-4 fw-semibold mb-0">email</h6>
+          <h6 class="fs-4 fw-semibold mb-0">code</h6>
         </th>
         <th>
-          <h6 class="fs-4 fw-semibold mb-0">Institution ID</h6>
+          <h6 class="fs-4 fw-semibold mb-0">Time (Mins)</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Pass Mark</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Total</h6>
         </th>
         <th>
           <h6 class="fs-4 fw-semibold mb-0">Score</h6>
         </th>
         <th>
-          <h6 class="fs-4 fw-semibold mb-0">Percentage</h6>
+          <h6 class="fs-4 fw-semibold mb-0">Grade</h6>
         </th>
         <th>
-          <h6 class="fs-4 fw-semibold mb-0">Grade</h6>
+          <h6 class="fs-4 fw-semibold mb-0">Date</h6>
         </th>
       </tr>
     </thead>
     <tbody>
       {% $i = 1; %}
-      {% foreach($students as $key => $student): %}
+      {% foreach($results as $key => $result): %}
       <tr>
         <td>
           <div class="d-flex align-items-center">
@@ -105,32 +111,43 @@
         </td>
         <td>
           <div class="d-flex align-items-center">
-            <h6 class="fw-semibold mb-1">{= $student->name =}</h6>
+            <h6 class="fw-semibold mb-1">{= $result->name =}</h6>
           </div>
         </td>
         <td>
           <div class="d-flex align-items-center">
-            <h6 class="fw-semibold mb-1">{{$student->email}}</h6>
+            <h6 class="fw-semibold mb-1">{{$result->code}}</h6>
           </div>
         </td>
         <td>
           <div class="d-flex align-items-center">
-            <h6 class="fw-semibold mb-1">{{$student->reg_no}}</h6>
+            <h6 class="fw-semibold mb-1">{{$result->time}}</h6>
           </div>
         </td>
         <td>
           <div class="d-flex align-items-center">
-            <h6 class="fw-semibold mb-1">{{$student->score}}</h6>
+            <h6 class="fw-semibold mb-1">{{$result->pass_mark}}</h6>
           </div>
         </td>
         <td>
           <div class="d-flex align-items-center">
-            <h6 class="fw-semibold mb-1">{{$student->percent}}</h6>
+            <h6 class="fw-semibold mb-1">{{$result->resultPoll}}</h6>
           </div>
         </td>
         <td>
           <div class="d-flex align-items-center">
-            <h6 class="fw-semibold mb-1">{{$student->grade}}</h6>
+            <h6 class="fw-semibold mb-1">{{$result->score}} | {{$result->percent}}%</h6>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex align-items-center">
+            <h6 class="fw-semibold mb-1">{{$result->grade}}</h6>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex align-items-center">
+            <h6 class="fw-semibold mb-1">{% echo date("jS M, y | g:i A", strtotime($result->start_time)); %}</h6>
+          
           </div>
         </td>
       </tr>

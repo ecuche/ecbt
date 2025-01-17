@@ -138,7 +138,7 @@ class Instructor extends Model
     {
         $sql = "SELECT * FROM `user` WHERE id IN (
                     SELECT user_id  FROM `result` WHERE paper_id IN (
-                        SELECT id FROM `paper` WHERE user_id = {$user_id}))";
+                        SELECT id FROM `paper` WHERE user_id = {$user_id})) ORDER BY user.name ASC";
     
         $result = $this->findQueryString($sql);
         return (object) $result;
@@ -147,7 +147,7 @@ class Instructor extends Model
     public function getAllTestStudents($paper_id): array | object
     {
         $sql = "SELECT DISTINCT *,
-        result.id as userId,
+        result.id as resultId,
         result.created_on as resultCreatedOn,
         result.updated_on as resultUpdatedOn,
         result.deleted_on as resultDeletedOn,
@@ -165,6 +165,34 @@ class Instructor extends Model
         $result = $this->findQueryString($sql);
         return (object) $result;
     }
+
+    public function myStudentResult($student_id): array | object
+    {
+        $teacher_id = Session::get('id');
+        $sql = "SELECT result.*, paper.*,
+        result.id as resultId,
+        result.user_id as resultUserId,
+        result.poll as resultPoll,
+        result.csv as resultCSV,
+        result.created_on as resultCreatedOn,
+        result.updated_on as resultUpdatedOn,
+        result.deleted_on as resultDeletedOn,
+        paper.id as paperId,
+        paper.user_id as paperUserId,
+        paper.poll as paperPoll,
+        paper.csv as paperCSV, 
+        paper.created_on as paperCreatedOn,
+        paper.updated_on as paperUpdatedOn,
+        paper.deleted_on as paperDeletedOn
+        FROM result 
+        INNER JOIN paper ON result.paper_id = paper.id
+        WHERE paper.user_id = {$teacher_id} 
+        AND result.user_id = {$student_id}
+        AND result.deleted_on IS NULL 
+        AND paper.deleted_on IS NULL
+        ORDER BY paper.name ASC";
+
+        $result = $this->findQueryString($sql);
+        return (object) $result;
+    }
 }
-
-
