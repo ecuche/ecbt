@@ -8,33 +8,21 @@
 
   <script src="{{URL_ROOT}}/assets/js/vendor.min.js"></script>
   <script src="{{URL_ROOT}}/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="{{URL_ROOT}}/assets/js/snippets.js"></script>
-
+  <!-- <script src="{{URL_ROOT}}/assets/js/snippets.js"></script> -->
   <script src="{{URL_ROOT}}/assets/libs/simplebar/dist/simplebar.min.js"></script>
   <script src="{{URL_ROOT}}/assets/js/theme/app.dark.init.js"></script>
   <script src="{{URL_ROOT}}/assets/js/theme/theme.js"></script>
   <script src="{{URL_ROOT}}/assets/js/theme/app.min.js"></script>
   <script src="{{URL_ROOT}}/assets/js/theme/feather.min.js"></script>
   <script src="{{URL_ROOT}}/assets/libs/iconify-icon/dist/iconify-icon.min.js"></script>
-  <!-- <script src="{{URL_ROOT}}/assets/libs/apexcharts/dist/apexcharts.min.js"></script> -->
-  <!-- <script src="{{URL_ROOT}}/assets/js/dashboards/dashboard2.js"></script> -->
-
-
-
-
   <!-- solar icons -->
-  <!-- <script src="{{URL_ROOT}}/assets/libs/quill/dist/quill.min.js"></script> -->
-  <!-- <script src="{{URL_ROOT}}/assets/js/forms/quill-init.js"></script> -->
-  <script src="{{URL_ROOT}}/assets/libs/dropzone/dist/min/dropzone.min.js"></script>
-  <script src="{{URL_ROOT}}/assets/libs/select2/dist/js/select2.full.min.js"></script>
+  <!-- <script src="{{URL_ROOT}}/assets/libs/dropzone/dist/min/dropzone.min.js"></script> -->
+  <!-- <script src="{{URL_ROOT}}/assets/libs/select2/dist/js/select2.full.min.js"></script> -->
   <script src="{{URL_ROOT}}/assets/libs/select2/dist/js/select2.min.js"></script>
-  <script src="{{URL_ROOT}}/assets/js/forms/select2.init.js"></script>
+  <!-- <script src="{{URL_ROOT}}/assets/js/forms/select2.init.js"></script> -->
   <script src="{{URL_ROOT}}/assets/libs/jquery.repeater/jquery.repeater.min.js"></script>
-  <script src="{{URL_ROOT}}/assets/libs/jquery-validation/dist/jquery.validate.min.js"></script>
+  <!-- <script src="{{URL_ROOT}}/assets/libs/jquery-validation/dist/jquery.validate.min.js"></script> -->
   <script src="{{URL_ROOT}}/assets/js/forms/repeater-init.js"></script>
-  <!-- <script src="{{URL_ROOT}}/assets/js/apps/edit-product.js"></script> -->
-
-
   <script src="{{URL_ROOT}}/assets/js/plugins/toastr-init.js"></script>
   <script src="{{URL_ROOT}}/assets/js/main.js"></script>
 

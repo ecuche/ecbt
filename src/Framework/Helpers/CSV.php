@@ -244,13 +244,18 @@ class CSV{
 	public function countAllRow(): int
 	{
 		$this->_all_row_count = 0;
-		if(is_bool(self::getRow())){
+		if(empty(self::getRow())){
 			return false;
 		}
         foreach(self::getRow() as $key => $value){
             $this->_all_row_count++;
         }
         return $this->_all_row_count;
+	}
+
+	public function end()
+	{
+		return $this->_csv->close();
 	}
 
 	

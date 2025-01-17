@@ -120,10 +120,16 @@ class Instructor extends Model
         Functions::createFolder("{$_ENV['CSV_PATH']}/papers");
         $csv = new CSV($paper->code,'papers');
         $answers = [];
+        $hashes = [];
         foreach ($post['options'] as $key => $option) {
+            do{
+                $hash = Functions::generateRandomCode();
+            }while(in_array($hash, $hashes));
+            array_push($hashes, $hash); 
             $ans				= [];
             $ans['answer']		= $option;
             $ans['correct']		= $post['corrects'][$key];
+            $ans['hash']		= $hash;
             array_push($answers, $ans);
         }
         $csv->updateRows([
@@ -173,14 +179,12 @@ class Instructor extends Model
         result.id as resultId,
         result.user_id as resultUserId,
         result.poll as resultPoll,
-        result.csv as resultCSV,
         result.created_on as resultCreatedOn,
         result.updated_on as resultUpdatedOn,
         result.deleted_on as resultDeletedOn,
         paper.id as paperId,
         paper.user_id as paperUserId,
         paper.poll as paperPoll,
-        paper.csv as paperCSV, 
         paper.created_on as paperCreatedOn,
         paper.updated_on as paperUpdatedOn,
         paper.deleted_on as paperDeletedOn

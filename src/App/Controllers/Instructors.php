@@ -54,7 +54,7 @@ class Instructors extends Controller
     {
         CSRF::check($this->request->post['csrf_token']);
         $paper = [
-            'name' => $this->request->post['name'],
+            'name' => ucwords($this->request->post['name']),
             'time' => $this->request->post['time'],
             'poll' => $this->request->post['poll'],
             'pass_mark' => $this->request->post['pass_mark'],
@@ -68,7 +68,6 @@ class Instructors extends Controller
         if(empty((array) $errors)) {
             $uid = $this->instructorsModel->paperCode();
             $paper->user_id = $this->user->id;
-            $paper->csv = preg_replace('/[^A-Za-z0-9]/', '', $paper->name)."_{$uid}";
             $paper->code = $uid;
             if($this->instructorsModel->insert($paper, 'paper')){
                 Session::set('success','paper created successful. Add questions to the paper');
@@ -137,6 +136,9 @@ class Instructors extends Controller
     {
         $paper = $this->instructorsModel->instructorAuth( $code);
         $csv = new CSV($code, 'papers');
+        if (empty($csv) || $csv->countAllRow() < $paper->poll) {
+            $this->instructorsModel->updateRow($paper->id, ["status"=> 0], "paper");
+        }
         return $this->view('instructors/questions-list', [
             'user'=> $this->user,
             'CSRF' => CSRF::generate(),
@@ -225,6 +227,7 @@ class Instructors extends Controller
         $paper = $this->instructorsModel->instructorAuth( $code);
         $csv = new CSV($code,'papers');
         $question = $csv->getRow((int)$id); 
+        $csv->end();
         $post = [
             'question' => $this->request->post['question'],
             'options' => $this->request->post['options'],
@@ -255,7 +258,7 @@ class Instructors extends Controller
                     goto else_part;
                 }	
             }
-            $post['image'] = $image;
+            $post['image'] = $_FILES['image']['name'] ? $image : $question->image;
             $post['id'] = $id;
             $this->instructorsModel->updateQuestion($post, $paper);
             Session::set('success', 'Question Updated successfully');
@@ -298,8 +301,9 @@ class Instructors extends Controller
     public function changePaperStatus($code, $status): Response
     {
         $paper = $this->instructorsModel->instructorAuth( $code);
-        $csv = new CSV($paper->csv,"papers");
+        $csv = new CSV($paper->code,"papers");
         if (empty($csv) || $csv->countAllRow() < $paper->poll) {
+            $this->instructorsModel->updateRow($paper->id, ["status"=> 0], "paper");
             Session::set('warning', 'Total questions added is not upto the total questions specified');
             return $this->redirect("instructor/paper/{$code}/edit");
         }

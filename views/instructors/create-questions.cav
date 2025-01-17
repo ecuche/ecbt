@@ -3,7 +3,7 @@
 {% block body %}   
 <link href="{{URL_ROOT}}/assets/libs/froala/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
 
-<div class="col-lg-10 mx-auto">
+<div class="col-lg-8 mx-auto">
   <div class="card">
     <div class="px-4 py-3 border-bottom">
       <h4 class="card-title mb-0">{= $paper->name =} : {= $paper->code =}</h4>

@@ -1,0 +1,4 @@
+id,chosen,correct,hash,question_id,question,image,options
+1,"ok","0","FH2ZPY","3","<p>whats up?</p>","image.jpg","[{""answer"":""ok"",""correct"":""0"",""hash"":""FH2ZPY""},{""answer"":""am fine"",""correct"":""1"",""hash"":""FH2ZPU""}]"
+2,"hallelujah","1","FH2ZPE","4","<p>yor are good and your mercy is forever</p>","image.jpg","[{""answer"":""hossana"",""correct"":""0"",""hash"":""W68IB8""},{""answer"":""hallelujah"",""correct"":""1"",""hash"":""FH2ZPE""}]"
+3,"yes ","1","FH2ZPR","2","<p>second sam question</p>","image.jpg","[{""answer"":""yes "",""correct"":""1"",""hash"":""FH2ZPR""},{""answer"":""no"",""correct"":""0"",""hash"":""FH2ZPT""},{""answer"":""none"",""correct"":""0"",""hash"":""FH2ZPE""}]"

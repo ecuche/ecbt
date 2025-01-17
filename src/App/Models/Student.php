@@ -47,46 +47,42 @@ class Student extends Model
         }
     }
 
-    public function grade($score, $total): object | array
+    public function grade($score, $total): object|array
     {
-        $percent = round(($score/$total) *  100, 2);
-
+        $percent = round(($score / $total) * 100, 2);
         
-        
-        switch ($percent) {
-            case $percent < 39.50:
-                $grade = 'F';
-                $remark = 'Failed ';
-                $color = 'danger';
-                break;
-            case $percent < 49.50:
-                $grade = 'D';
-                $remark = 'Pass';
-                $color = 'warning';
-                break;
-            case $percent < 59.50 :
-                $grade = 'C';
-                $remark = 'Good';
-                $color = 'info';
-                break;
-            case $percent < 69.50 :
-                $grade = 'B';
-                $remark = 'Very Good';
-                $color = 'primary';
-                break;
-            case $percent >= 69.50 :
-                $grade = 'A';
-                $remark = 'Excellent';
-                $color = 'success';
-                break;	
-            default:
-                $grade = '';
-                $remark = '';
-                $color = '';
-                break;
+        if ($percent < 39.50) {
+            $grade = 'F';
+            $remark = 'Failed';
+            $color = 'danger';
+        } elseif ($percent < 49.50) {
+            $grade = 'D';
+            $remark = 'Pass';
+            $color = 'warning';
+        } elseif ($percent < 59.50) {
+            $grade = 'C';
+            $remark = 'Good';
+            $color = 'info';
+        } elseif ($percent < 69.50) {
+            $grade = 'B';
+            $remark = 'Very Good';
+            $color = 'primary';
+        } else {
+            $grade = 'A';
+            $remark = 'Excellent';
+            $color = 'success';
         }
-        return (object)['score'=>$score,'grade'=> $grade,'remark'=> $remark,'color'=> $color, 'total' => $total, 'percent'=> $percent];
+        
+        return (object)[
+            'score' => $score,
+            'grade' => $grade,
+            'remark' => $remark,
+            'color' => $color,
+            'total' => $total,
+            'percent' => $percent
+        ];
     }
+    
 
     public function remTime(): int | bool
     {

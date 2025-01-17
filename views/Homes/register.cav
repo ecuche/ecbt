@@ -9,20 +9,20 @@
                 <form method="post" action="{{URL_ROOT}}/register-new-user">
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Name</label>
-                    <input type="text" name="name" class="form-control {{ !empty($errors->name) ? 'is-invalid' : '' }}" value="{{$user->name}}" id="exampleInputtext1" aria-describedby="textHelp">
+                    <input type="text" name="name" class="form-control {% echo !empty($errors->name) ? 'is-invalid' : '' %}" value="{{$user->name}}" id="exampleInputtext1" aria-describedby="textHelp" required>
                     <div class="invalid-feedback">{{$errors->name}}</div>
                   </div>
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Email address</label>
-                    <input type="email" name="email" class="form-control {{ !empty($errors->email) ? 'is-invalid' : '' }}" value="{{$user->email}}" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input type="email" name="email" class="form-control {% echo !empty($errors->email) ? 'is-invalid' : '' %}" value="{{$user->email}}" id="exampleInputEmail1" aria-describedby="emailHelp" required>
                     <div class="invalid-feedback">{{$errors->email}}</div>
                   </div>
                   <label for="exampleInputPassword1" class="form-label">Password</label>
                   <div class="mb-3 input-group">
-                    <input type="password" name="password" class="form-control {{ !empty($errors->password) ? 'is-invalid' : '' }}" id="password" data-bs-theme="dark" minlength="8" aria-describedby="passwordHelpBlock">
+                    <input type="password" name="password" class="form-control {% echo !empty($errors->password) ? 'is-invalid' : '' %}" id="password" data-bs-theme="dark" minlength="8" aria-describedby="passwordHelpBlock" required>
                     <i class="input-group-text bi-eye-slash-fill hide-show-password"></i>
                   </div>
-                  <div class="form-text text-center mb-3 {{ !empty($errors->password) ? 'text-danger' : '' }}" id="passwordHelpBlock">
+                  <div class="form-text text-center mb-3 {% echo !empty($errors->password) ? 'text-danger' : '' %}" id="passwordHelpBlock">
                       Your password must be atleast 6 characters long, contain UPPER and lower case letters and numbers.
                   </div>
                   {! $CSRF !}

@@ -1,0 +1,4 @@
+id,chosen,correct,hash,question_id,question,image,options
+1,"am fine","1","FH2ZPU","3","<p>whats up?</p>","image.jpg","[{""answer"":""am fine"",""correct"":""1"",""hash"":""FH2ZPU""},{""answer"":""ok"",""correct"":""0"",""hash"":""FH2ZPY""}]"
+2,,,,"4","<p>yor are good and your mercy is forever</p>","image.jpg","[{""answer"":""hossana"",""correct"":""0"",""hash"":""W68IB8""},{""answer"":""hallelujah"",""correct"":""1"",""hash"":""FH2ZPE""}]"
+3,,,,"5","<p>what is the capital of enugu?</p>","image.jpg","[{""answer"":""9th mile"",""correct"":""0"",""hash"":""B6S062""},{""answer"":""enugu"",""correct"":""1"",""hash"":""NCUEBU""},{""answer"":""agbani"",""correct"":""0"",""hash"":""HK0GQE""},{""answer"":""nsukka"",""correct"":""0"",""hash"":""DTAJ66""}]"

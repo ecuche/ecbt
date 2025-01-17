@@ -108,9 +108,10 @@ class Homes extends Controller
         }else{
             unset($data->password);
             $errors = (object) $this->usersModel->getErrors();
+            Session::set("danger", $errors->login ?? null);
             return $this->view('homes/index', [
                 'errors'=> $errors,
-                'danger'=> $errors->login ?? null,
+                'alert'=> Session::flash(['danger', 'warning', 'success']),
                 'user' => $data,
                 'CSRF'=> CSRF::generate()
             ]);

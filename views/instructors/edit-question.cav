@@ -2,7 +2,7 @@
 {% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
 {% block body %}
 <link href="{{URL_ROOT}}/assets/libs/froala/css/froala_editor.pkgd.min.css" rel="stylesheet"/>
-<div class="col-lg-8 mx-auto">
+<div class="col-lg-6 mx-auto pt-5">
   <div class="card">
     <div class="px-4 py-3 border-bottom">
       <h4 class="card-title mb-0">{= $paper->name =} : {= $paper->code =}</h4>
@@ -19,10 +19,10 @@
       {% endif; %}
       {% if(!empty($question->image)): %}
         <div class="col-lg-6 col-md-6 mx-auto justify-content-center">
-          <div class="card overflow-hidden">
-            <div class="el-card-item pb-3">
-              <div class="el-card-avatar mb-3 el-overlay-1 w-100 overflow-hidden position-relative text-center">
-                <img src="{!$image!}" class="d-block position-relative w-100" alt="user">
+          <div class="overflow-hidden">
+            <div class="el-card-item pb-3 justify-content-end">
+              <div class="el-card-avatar mb-3 el-overlay-1 overflow-hidden position-relative text-center">
+                <img src="{!$image!}" class=" w-50 zoomable-image" alt="user">
                 <div class="el-overlay w-100 overflow-hidden"></div>
               </div>
               <div class="el-card-content text-center">
@@ -113,7 +113,7 @@
         </div>
         {! $CSRF !}
         <div class="d-flex mb-4 justify-content-end">
-          <button type="submit" class="btn btn-primary me-3">Add</button>
+          <button type="submit" class="btn btn-primary me-3">Update</button>
           <a class="btn btn-secondary" href="{{URL_ROOT}}/instructor/paper/{!$paper->code!}/list">List</a>
         </div>
       </form>
@@ -139,6 +139,17 @@
           Delete
         </a>
       </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal for image enlarge -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+      <img src="" alt="Zoomed Image" id="modalImage" class="w-100">
     </div>
   </div>
 </div>

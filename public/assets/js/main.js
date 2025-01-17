@@ -68,9 +68,15 @@ $(document).ready(function () {
         $(this).closest('.optionField').remove();
     });
 
-    $(document).on('click', '.modalSubmit, .submitAnchor', function (e) { 
+    $(document).on('click', '.submitAnchor', function (e) { 
         e.preventDefault();
         $(this).closest('.formSubmit').submit();
+    });
+
+
+    $(document).on('click', '.modalSubmit', function (e) { 
+        e.preventDefault();
+        $('.formSubmit').submit();
     });
 
     $(document).on('click', '#next, #previous', function (e) { 
