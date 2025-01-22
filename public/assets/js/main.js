@@ -127,6 +127,19 @@ $(document).ready(function () {
             $('.view_result').prop('checked', true);
         }
     });
+
+    $(document).on('click', '#print-btn', function () {
+      
+        var printContents = $('#printable-area').clone(); // Clone the div
+        var printWindow = window.open('', '');
+        var styles = $('head').html(); // Capture all <style> and <link> tags from the current document
+
+        // Write content to the new print window
+        printWindow.document.write('<html><head>' + styles + '</head><body>' + printContents.prop('outerHTML') + '</body></html>');
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+   
+    });
 });
-
-

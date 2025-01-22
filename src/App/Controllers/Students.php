@@ -54,8 +54,7 @@ class Students extends Controller
         $end_time = strtotime($result->end_time);
        
         if($end_time > time()) {
-            $csrf = CSRF::generate();
-            Session::set('method_csrf_token', Session::get('csrf_token'));
+            CSRF::generateMethod();
             return $this->redirect("paper/{$code}/test/start");
         }
         $this->studentModel->testSettingsAuth($paper);
@@ -73,8 +72,7 @@ class Students extends Controller
 
     public function startTest($code): Response
     {
-        
-        $this->csrf_token ??= Session::get('method_csrf_token') ?? null;
+        CSRF::checkMethod(Session::get('method_csrf_token'));
         $this->csrf_token ??= $this->request->post['csrf_token'] ?? null;
         CSRF::check($this->csrf_token);
         $paper = $this->studentModel->paperAuth($code);
@@ -196,9 +194,6 @@ class Students extends Controller
     {
         
         $this->csrf_token ??= $this->request->post['csrf_token'] ?? null;
-
-        // echo $this->request->post['csrf_token'] .'<br>'. Session::get('csrf_token');
-        // exit;
         CSRF::check($this->csrf_token);
         $paper = $this->studentModel->findByField('code', $code, 'paper');
         $result = $this->studentModel->findByFields(['paper_id' => $paper->id, 'user_id'=>$this->user->id], 'result');

@@ -23,4 +23,24 @@ class CSRF{
 		Redirect::to('/500');
 		return false;
 	}
+
+	public static function generateMethod(): string
+	{
+		self::generate();
+		Session::set('method_csrf_token', Session::get('csrf_token'));
+		return Session::get('method_csrf_token');
+	}
+
+	public static function checkMethod($method_csrf): bool
+	{
+		$tokenName = 'csrf_token';
+		if($method_csrf === Session::get('method_csrf_token')){
+			Session::delete($tokenName);
+			Session::delete('method_csrf_token');
+			return true;
+		}
+		Redirect::to('/500');
+		return false;
+	}
 }
+
