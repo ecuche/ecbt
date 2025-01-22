@@ -120,7 +120,7 @@
         </td>
         <td>
           <div class="d-flex align-items-center">
-            <h6 class="fw-semibold mb-1">{{$student->score}}</h6>
+            <h6 class="fw-semibold mb-1">{{$student->score}} / {{$student->poll}}</h6>
           </div>
         </td>
         <td>

@@ -6,7 +6,7 @@ namespace App\Controllers;
 use Framework\Controller;
 use Framework\Response;
 use Framework\Helpers\Session;
-use Framework\Helpers\Redirect;
+use Framework\Helpers\Auth;
 use Framework\Helpers\CSRF;
 use Framework\Helpers\CSV;
 use Framework\Helpers\Media;
@@ -19,7 +19,15 @@ class Students extends Controller
 
     public function __construct(private Student $studentModel)
     {
+        Auth::failRedirect('','You need to be logged in to access this page');
         $this->user = $this->studentModel->findById($_SESSION['id'], 'user');
+        $code = Session::get('code');
+        $rem_time = Session::get('rem_time');
+        if(!empty($code) && !empty($rem_time)) {
+            if($rem_time > 0){
+                $this->redirect("paper/{$code}/test/sheet");
+            }
+        }
     }
 
     public function dashboard(): Response
@@ -38,60 +46,20 @@ class Students extends Controller
         ]);
     }
 
-    public function findTest(): Response
-    {
-        return $this->view('students/find-test', [
-            'CSRF' => CSRF::generate(),
-            'user' => $this->user,
-        ]);
-    }
-
-    public function searchTest(): Response
-    {
-        CSRF::check($this->request->post['csrf_token']);
-        $post = [
-            'code' => $this->request->post['code']
-        ];
-        $post = (object) $post;
-        $post->code = strtoupper($post->code);
-        $errors = $this->studentModel->validateCode($post);
-        $paper = $this->studentModel->findByField('code', $post->code, 'paper');
-        if (empty((array) $errors)) {
-            return $this->redirect("test/{$paper->code}/search/result");
-        } else {
-            return $this->view('students/find-test', [
-                'user' => $this->user,
-                'CSRF' => CSRF::generate(),
-                'paper' => $post->code,
-                'errors' => $errors
-            ]);
-        }
-    }
-
-    public function searchResult($code): Response
-    {
-        if(!empty(Session::get('test_name'))) {
-            $this->redirect("paper/{$code}/test/sheet");
-        }
-        $paper = $this->studentModel->findByField('code', $code, 'paper');
-        $result = $this->studentModel->findByFields(['user_id' => $this->user->id, 'paper_id' => $paper->id], 'result');
-        $instructor = $this->studentModel->findById($paper->user_id, 'user');
-        return $this->view('students/search-result', [
-            'user' => $this->user,
-            'paper' => $paper,
-            'instructor' => $instructor,
-            'result' => $result,
-            'CSRF' => CSRF::generate()
-        ]);
-    }
-
+   
     public function showTestResult($code): Response
     {
-        if(!empty(Session::get('test_name'))) {
-            $this->redirect("paper/{$code}/test/sheet");
-        }
         $paper = $this->studentModel->findByField('code', $code, 'paper');
-        $result = $this->studentModel->resultAuth($this->user->id, $paper->id);
+        $result = $this->studentModel->findByFields(['paper_id' => $paper->id, 'user_id'=>$this->user->id], 'result');
+        $end_time = strtotime($result->end_time);
+       
+        if($end_time > time()) {
+            $csrf = CSRF::generate();
+            Session::set('method_csrf_token', Session::get('csrf_token'));
+            return $this->redirect("paper/{$code}/test/start");
+        }
+        $this->studentModel->testSettingsAuth($paper);
+        $result = $this->studentModel->resultAuth($paper->id);
         $instructor = $this->studentModel->findById($paper->user_id, 'user');
         return $this->view('students/show-test-result', [
             'user' => $this->user,
@@ -105,18 +73,23 @@ class Students extends Controller
 
     public function startTest($code): Response
     {
-        if(!empty(Session::get('test_name'))) {
-            $this->redirect("paper/{$code}/test/sheet");
-        }
-        CSRF::check($this->request->post['csrf_token']);
+        
+        $this->csrf_token ??= Session::get('method_csrf_token') ?? null;
+        $this->csrf_token ??= $this->request->post['csrf_token'] ?? null;
+        CSRF::check($this->csrf_token);
         $paper = $this->studentModel->paperAuth($code);
+        Session::set('paper', $paper);
+        $result = $this->studentModel->findByFields(['paper_id'=> $paper->id, 'user_id'=> $this->user->id], 'result');
+        Session::set('result', $result);
         $csv = new CSV($paper->code, 'papers');
         $questions = $csv->randRows($paper->poll);
-        $this->studentModel->createTestSheet($questions, $paper->code);
-        Session::set([
-            'paper' => $paper,
-            'end_time' => $paper->time * 60 + time(),
-        ]);
+        $this->studentModel->createTestSheet($questions);
+        $check = $this->studentModel->checkResult($paper);
+        if($check === false) {
+            $csrf = CSRF::generate();
+            $this->csrf_token = Session::get('csrf_token');
+            return $this->redirect("paper/{$paper->code}/test/submit");
+        }
         return $this->redirect("paper/{$code}/test/sheet");
     }
 
@@ -124,7 +97,7 @@ class Students extends Controller
     {
         $question_id = $this->request->post['q_id'] ?? 1;
         $rem_time = $this->studentModel->remTime();
-        if (!$rem_time) {
+        if (empty($rem_time)) {
             $this->csrf_token = Session::get('csrf_token');
             return $this->submitTest($code);
         }
@@ -135,7 +108,6 @@ class Students extends Controller
         $questions = $csv->getRow();
         $question_count = count((array)$questions);
         $count_answered = round(100 - ($csv->countNullFields('chosen') / $question_count) *100, 2);
-       
         return $this->view('students/test-sheet', [
             'paper' => $paper,
             'instructor' => $instructor,
@@ -222,32 +194,67 @@ class Students extends Controller
 
     public function submitTest($code): Response
     {
-        // $this->csrf_token ??= $this->request->post['csrf_token'];
-        // CSRF::check($this->csrf_token);
-        $paper = $this->studentModel->paperAuth($code);
+        
+        $this->csrf_token ??= $this->request->post['csrf_token'] ?? null;
 
-        $result = $this->studentModel->findByFields(['user_id'=>$this->user->id, 'paper_id'=> $paper->id], 'result');
-        if(empty($result)){
-            $test_name = Session::get('test_name');
-            $csv = new CSV($test_name, 'results');
-            $poll = $csv->countAllRow();
-            $score = $csv->countNotNullFields('correct');
-            $grade = $this->studentModel->grade($score, $poll);
-            $this->studentModel->insert([
-                'user_id'=> $this->user->id,
-                'paper_id'=> $paper->id,
-                'poll'=> $grade->total,
-                'score'=> $grade->score,
-                'percent'=> $grade->percent,
-                'start_time'=> Session::get('start_time'),
-                'grade'=> $grade->grade,
-                'remark'=> $grade->remark,
-                'csv'=> Session::get('test_name'),
-            ], 'result');
-
-            Session::delete(['test_name','start_time','paper','end_time']);
-        }
-        $result = $this->studentModel->resultAuth($this->user->id, $paper->id);
+        // echo $this->request->post['csrf_token'] .'<br>'. Session::get('csrf_token');
+        // exit;
+        CSRF::check($this->csrf_token);
+        $paper = $this->studentModel->findByField('code', $code, 'paper');
+        $result = $this->studentModel->findByFields(['paper_id' => $paper->id, 'user_id'=>$this->user->id], 'result');
+        $test_name = $result->csv; 
+        $csv = new CSV($test_name, 'results');
+        $poll = $csv->countAllRow();
+        $score = $csv->countNotNullFields('correct');
+        $grade = $this->studentModel->grade($score, $poll);
+        $this->studentModel->updateRow($result->id, [
+            'poll'=> $grade->total,
+            'score'=> $grade->score,
+            'percent'=> $grade->percent,
+            'end_time'=> date('Y-m-d H:i:s'),
+            'grade'=> $grade->grade,
+            'remark'=> $grade->remark,
+        ], 'result');
+        Session::delete(['test_name', 'paper', 'end_time', 'result', 'code']);
         return $this->redirect("paper/{$code}/result/show");
+    }
+
+    public function reviewTestResult($code): Response
+    {
+        $paper = $this->studentModel->findByField('code', $code, 'paper');
+        $this->studentModel->testSettingsAuth($paper, 'answers');
+        $result = $this->studentModel->findByFields(['paper_id'=> $paper->id, 'user_id'=> $this->user->id], 'result');
+        $test_name = $result->csv;
+        $csv = new CSV($test_name, 'results');
+        $questions = $csv->getRow();
+        return $this->view('students/test-review', [
+            'paper' => $paper,
+            'questions' =>  (object) $questions,
+            'result' =>  (object) $result,
+        ]);
+    }
+
+    public function viewQuestionResult($code, $id): Response
+    {
+        $paper = $this->studentModel->findByField('code', $code, 'paper');
+        $this->studentModel->testSettingsAuth($paper, 'answers');
+        $result = $this->studentModel->findByFields(['paper_id'=> $paper->id, 'user_id'=> $this->user->id], 'result');
+        $test_name = $result->csv;
+        $csv = new CSV($test_name, 'results');
+        $question = $csv->getRow($id);
+        if(empty($question)){
+
+        }
+        $questions = $csv->getRow();
+        $instructor = $this->studentModel->findById($paper->user_id, 'user');
+        return $this->view('students/view-question', [
+            'paper' => $paper,
+            'instructor' => $instructor,
+            'question' => $question,
+            'result' =>  (object) $result,
+            'questions' => $questions,
+            'image' => $question->image ? Media::questionImage( $question->image ) : null,
+        ]);
+
     }
 }

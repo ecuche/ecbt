@@ -4,7 +4,6 @@
 
 
 <div class="row col-lg-6 col-md-8">
-
 {% if(!empty($alert)): %}
   {% foreach($alert as $key => $value): %}
     <div class="alert alert-{{$key}} alert-dismissible fade show" role="alert">

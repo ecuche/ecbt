@@ -1,4 +1,0 @@
-id,chosen,correct,hash,question_id,question,image,options
-1,,,,"5","<p>what is the capital of enugu?</p>",,"[{""answer"":""agbani"",""correct"":""0"",""hash"":""HK0GQE""},{""answer"":""nsukka"",""correct"":""0"",""hash"":""DTAJ66""},{""answer"":""9th mile"",""correct"":""0"",""hash"":""B6S062""},{""answer"":""enugu"",""correct"":""1"",""hash"":""NCUEBU""}]"
-2,,,,"2","<p>second sam question</p>","image.jpg","[{""answer"":""no"",""correct"":""0"",""hash"":""FH2ZPT""},{""answer"":""yes "",""correct"":""1"",""hash"":""FH2ZPR""},{""answer"":""none"",""correct"":""0"",""hash"":""FH2ZPE""}]"
-3,"am fine","1","FH2ZPU","3","<p>whats up?</p>",,"[{""answer"":""am fine"",""correct"":""1"",""hash"":""FH2ZPU""},{""answer"":""ok"",""correct"":""0"",""hash"":""FH2ZPY""}]"

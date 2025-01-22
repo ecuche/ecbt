@@ -2,16 +2,12 @@
       <button class="btn btn-primary p-3 rounded-circle d-flex align-items-center justify-content-center customizer-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
         <i class="icon ti ti-settings fs-7"></i>
       </button>
-
     <header class="topbar card rounded-0 border-0">
         <div class="with-vertical">
-        
           <nav class="navbar navbar-expand-lg px-lg-0 px-3 py-0">
             <div class="d-none d-lg-block">
               <div class="brand-logo d-flex align-items-center justify-content-between ps-lg-3">
                 <a href="{{URL_ROOT}}" class="text-nowrap logo-img d-flex align-items-center gap-1" id="home_url">
-                  
-                  <!--End Logo icon -->
                   <!-- Logo text -->
                   <span class="logo-text">
                   {% echo strtoupper(SITE_NAME) %}
@@ -32,7 +28,6 @@
               <div class="brand-logo d-flex align-items-center justify-content-between ps-lg-3">
                 <a href="{{URL_ROOT}}" class="text-nowrap logo-img d-flex align-items-center gap-1">
                   <!--End Logo icon -->
-                  <!-- Logo text -->
                   <span class="logo-text">
                   {% echo strtoupper(SITE_NAME) %}
                   </span>
@@ -55,15 +50,17 @@
                       <iconify-icon icon="solar:sun-2-line-duotone" class="sun"></iconify-icon>
                     </a>
                   </li>
-
+                  {% if(!isset($_SESSION['id'])): %}
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{URL_ROOT}}/find/test">Find Test</a>
+                  </li>
+                  {% endif; %}
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{URL_ROOT}}/contact">Contact Us</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{URL_ROOT}}/about-us">About</a>
                   </li>
-                 
-
                  {% if(isset($_SESSION['id'])): %}
                     <li class="nav-item dropdown">
                     <a class="nav-link" href="javascript:void(0)" id="drop2" aria-expanded="false">
@@ -102,18 +99,11 @@
                     </div>
                   </li>
                   {% endif; %}
-                  <!-- ------------------------------- -->
-                  <!-- end profile Dropdown -->
-                  <!-- ------------------------------- -->
                 </ul>
               </div>
             </div>
           </nav>
-          <!-- ---------------------------------- -->
-          <!-- End Vertical Layout Header -->
-          <!-- ---------------------------------- -->
         </div>
-        
     </header>
     </div>
 <div class="position-relative overflow-hidden bg-light-subtle min-vh-100 w-100 d-flex align-items-center justify-content-center py-5">

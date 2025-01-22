@@ -22,7 +22,7 @@ class Auth
     {
         $message ??= $message;
         if(self::isLoggedIn()){
-            self::intendedPage();
+            self::setIntendedPage();
             !empty($message) ? Session::set('warning', $message): false;
             Redirect::to($url);
         }
@@ -33,7 +33,7 @@ class Auth
     {
         $message ??= $message;
         if(!self::isLoggedIn()){
-            self::intendedPage();
+            self::setIntendedPage();
             !empty($message) ? Session::set('warning', $message): false;
             Redirect::to($url);
         }
@@ -69,22 +69,22 @@ class Auth
     public static function permissionRedirect(string $value): bool|null
     {
         if(Session::get('permission') !=$value){
-            self::intendedPage();
+            self::setIntendedPage();
             Redirect::to('');
         }
         return false;
     }
 
-    public static function intendedPage(): string
+    public static function setIntendedPage(): string
     {
-        $_SESSION['intended_url'] = $_SERVER['REQUEST_URI'];
+        $_SESSION['intended_url'] = substr($_SERVER['REQUEST_URI'], strlen($_ENV["SITE_DIR"]));
         return  $_SESSION['intended_url'];
     }
 
     public static function returnPage(): string|bool
     {
-        if(isset($_SESSION['intended_url'])){
-            $page = substr($_SESSION['intended_url'], strlen($_ENV["SITE_DIR"]));
+        if(!empty($_SESSION['intended_url'])){
+            $page = $_SESSION['intended_url'];
             Session::delete('intended_url');
             return $page;
         }

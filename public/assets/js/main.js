@@ -120,4 +120,13 @@ $(document).ready(function () {
             }
         });
     });
+
+
+    $(document).on('click', '.view_answers', function (e) {
+        if($('.view_answers').is(':checked')){
+            $('.view_result').prop('checked', true);
+        }
+    });
 });
+
+

@@ -22,7 +22,6 @@
   <!-- <script src="{{URL_ROOT}}/assets/js/forms/select2.init.js"></script> -->
   <script src="{{URL_ROOT}}/assets/libs/jquery.repeater/jquery.repeater.min.js"></script>
   <!-- <script src="{{URL_ROOT}}/assets/libs/jquery-validation/dist/jquery.validate.min.js"></script> -->
-  <script src="{{URL_ROOT}}/assets/js/forms/repeater-init.js"></script>
   <script src="{{URL_ROOT}}/assets/js/plugins/toastr-init.js"></script>
   <script src="{{URL_ROOT}}/assets/js/main.js"></script>
 
@@ -34,14 +33,14 @@
 
     var time = $('#defaultCountdown').text();
     $(function () {
-      $('#defaultCountdown').countdown({until: time, format: 'hmS', padZeroes: false, compact: true,  onExpiry: submit,  onTick: Last10mins});
+      $('#defaultCountdown').countdown({until: time, format: 'hmS', padZeroes: false, compact: true,  onExpiry: submit,  onTick: Last5mins});
 
       function submit() { 
         $('.formSubmit').submit();
       } 
 
-      function Last10mins(periods) { 
-      if ($.countdown.periodsToSeconds(periods) === 240) { 
+      function Last5mins(periods) { 
+      if ($.countdown.periodsToSeconds(periods) === 600) { 
           $(this).removeClass();
           $(this).addClass('text-danger'); 
         } 

@@ -4,66 +4,30 @@ namespace Framework\Helpers;
 use Framework\Helpers\Session;
 
 class Redirect{
-	public static function to($location = 'index', $params = []): never
+	public static function to($location = ''): never
         {
                 if(($location == 'index') || ($location == 'home') || ($location == '')){
                         $location = '';
                 }elseif($location == '404'){
-                        $location = 'home/error404';
+                        $location = '404';
                 }
-                $url = '';
-                $params = (array)$params;
-                if(count($params) > 0){
-                        foreach($params as $param){
-                                if(!empty($param)){
-                                        $url .='/'.str_replace(' ','-', $param);
-                                }else{
-                                        $url = '';
-                                }
-                        }
-                }
-                header('location: '.$_ENV['URL_ROOT'].$location.$url);
+                header('location: '.$_ENV['URL_ROOT'].$location);
                 exit();
 	}
 
-        public static function link($location = '/index', $params = []){
-
+        public static function link($location = ''){
                 if(($location == 'index') || ($location == 'home') || ($location == '') ){
                         $location = '';
                 }elseif($location == '404'){
-                        $location = 'home/error404';
+                        $location = '404';
                 }	
-
-                $url = '';
-                $params = (array)$params;
-                if(count($params) > 0){
-                        foreach($params as $param){
-                                if(!empty($param)){
-                                        $url .='/'.str_replace(' ','-', $param);
-                                }else{
-                                        $url = '';
-                                }
-                        }
-                }
-                return $_ENV['URL_ROOT'].$location.$url;
+                return $_ENV['URL_ROOT'].$location;
         }
 
-        public static function param($param = null): void
-        {
-                if(empty($param)){
-                        self::to('error404');
-                }
-        }
-
-        public static function post($url = ''): void  
+        public static function notPost($url = '')  
         {
                 if(empty($_POST)){
                         self::to($url);
                 }
-        }
-
-        public static function with($key, $value): void
-        {
-                Session::set($key, $value);
         }
 }

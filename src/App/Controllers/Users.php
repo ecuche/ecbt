@@ -45,15 +45,15 @@ class Users extends Controller
         $data = [
             'id' => $user->id,
             'name' => $this->request->post['name'],
+            'reg_no' => $this->request->post['reg_no'],
             'email' => $this->request->post['email']
         ];
-
         $data = (object)$data;
         $this->usersModel->validateProfileUpdate($data);
         if(empty($this->usersModel->getErrors())){
             if(!empty($user)){
 
-                $this->usersModel->updateRow($user->id, ['name' => $data->name]);
+                $this->usersModel->updateRow($user->id, ['name' => $data->name, 'reg_no'=> $data->reg_no]);
                 if($user->email !== $data->email){
                     $this->usersModel->updateRow($user->id, ['email' => $data->email, 'active'=>0]);
                     $this->usersModel->destroyByfield('user_id', $user->id, 'remembered_logins');
@@ -62,8 +62,8 @@ class Users extends Controller
                     Auth::logout('Email reset successful. Kindly check your email to activate your account');
                     return $this->redirect('');
                 }
-                Session::set('success','Your name has been updated');
-                return $this->redirect('dashboard');
+                Session::set('success','Your Profile has been updated');
+                return $this->redirect('profile/view');
             }else{
                 throw new PageNotFoundException("Password Reset was not Successfull");
             }
@@ -83,6 +83,7 @@ class Users extends Controller
         $user = $this->user;
         return $this->view('users/view-profile', [
             'user' => (object) $user,
+            'alert' => Session::flash(['success', 'warning', 'danger']),
             'time_ago' => Data::timeAgo($user->created_on)
         ]);
     }

@@ -1,4 +1,0 @@
-id,chosen,correct,question_id,question,image,options
-1,"none","0","2","<p>second sam question</p>","image.jpg","[{""answer"":""none"",""correct"":""0"",""hash"":""FH2ZPE""},{""answer"":""yes "",""correct"":""1"",""hash"":""FH2ZPR""},{""answer"":""no"",""correct"":""0"",""hash"":""FH2ZPT""}]"
-2,,,"4","<p>yor are good and your mercy is forever</p>","image.jpg","[{""answer"":""hallelujah"",""correct"":""1"",""hash"":""FH2ZPE""},{""answer"":""hossana"",""correct"":""0"",""hash"":""W68IB8""}]"
-3,,,"3","<p>whats up?</p>","image.jpg","[{""answer"":""am fine"",""correct"":""1"",""hash"":""FH2ZPU""},{""answer"":""ok"",""correct"":""0"",""hash"":""FH2ZPY""}]"

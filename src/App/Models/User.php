@@ -23,7 +23,18 @@ class User extends Model
         }
         return false;
     }
-    
+
+    public function ValidateCode(array|object $data) : object
+    {
+        $data = (object)$data;
+        $paper = $this->findByField("code", $data->code, 'paper');
+        if(empty($paper)){
+            $this->addError('code', 'Paper does not exist');
+        }
+        return (Object) $this->getErrors();
+    }
+
+
     public function loginUser($data): bool|object
     {
         $user = $this->findByField('email', $data->email);

@@ -8,7 +8,7 @@
                 <span class="d-flex">
                   <img src="{{URL_ROOT}}/assets/images/profile/user-1.jpg" class="rounded-3" width="30" alt="user" />
                 </span>
-                <span class="hide-menu">{= $user->name =}</span>
+                <span class="hide-menu">{= $_SESSION['name'] =}</span>
               </a>
               <ul aria-expanded="false" class="collapse first-level">
                 <li class="sidebar-item">

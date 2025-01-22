@@ -22,6 +22,13 @@ class Instructors extends Controller
             Session::set(['warning' =>  'You are not authorized to view that page']);
             Redirect::to('');
         }
+        $code = Session::get('code');
+        $rem_time = Session::get('rem_time');
+        if(!empty($code) && !empty($rem_time)) {
+            if($rem_time > 0){
+                $this->redirect("paper/{$code}/test/sheet");
+            }
+        }
     }
 
     public function dashboard(): Response
@@ -57,11 +64,15 @@ class Instructors extends Controller
             'name' => ucwords($this->request->post['name']),
             'time' => $this->request->post['time'],
             'poll' => $this->request->post['poll'],
-            'pass_mark' => $this->request->post['pass_mark'],
             'description'=> $this->request->post['description'],
             'instruction'=> $this->request->post['instruction'],
         ];
+        $paper['pass_mark'] =  !empty($this->request->post['pass_mark']) ? $this->request->post['pass_mark'] :  50;
+        $settings['view_result'] =  isset($this->request->post['view_result']) ? 1 : 0;
+        $settings['view_answers'] =  isset($this->request->post['view_answers']) ? 1 : 0;
+        $settings['view_result'] = !empty($settings['view_answers']) ? $settings['view_answers'] : 1;
         $paper = (object)$paper;
+        $paper->settings = json_encode($settings);
         $this->instructorsModel->validateNewTest($paper);
         $errors = (object) $this->instructorsModel->getErrors();
 
@@ -71,7 +82,7 @@ class Instructors extends Controller
             $paper->code = $uid;
             if($this->instructorsModel->insert($paper, 'paper')){
                 Session::set('success','paper created successful. Add questions to the paper');
-                return $this->redirect("instructor/paper/{$paper->code}/add-questions");
+                return $this->redirect("instructor/paper/{$paper->code}/create/questions");
             }else{
                 throw new PageNotFoundException("Paper creation failed");
             }
@@ -80,6 +91,7 @@ class Instructors extends Controller
                 'user'=> $this->user,
                 'CSRF' => CSRF::generate(),
                 'paper'=> $paper,
+                'settings' => json_decode($paper->settings),
                 'errors' => $errors
             ]);
         }
@@ -93,6 +105,7 @@ class Instructors extends Controller
             'alert' => Session::flash(['warning', 'danger', 'success']),
             'CSRF' => CSRF::generate(),
             'paper'=> $paper,
+            'settings' => json_decode($paper->settings),
         ]);
     }
 
@@ -104,11 +117,15 @@ class Instructors extends Controller
             'name' => $this->request->post['name'] ?? '',
             'time' => $this->request->post['time'],
             'poll' => $this->request->post['poll'],
-            'pass_mark' => $this->request->post['pass_mark'],
             'description'=> $this->request->post['description'],
             'instruction'=> $this->request->post['instruction'],
         ];
+        $paper['pass_mark'] =  !empty($this->request->post['pass_mark']) ? $this->request->post['pass_mark'] :  50;
+        $settings['view_result'] =  isset($this->request->post['view_result']) ? 1 : 0;
+        $settings['view_answers'] =  isset($this->request->post['view_answers']) ? 1 : 0;
+        $settings['view_result'] = !empty($settings['view_answers']) ? $settings['view_answers'] : 1;
         $paper = (object)$paper;
+        $paper->settings = json_encode($settings);
         $errors = $this->instructorsModel->validateUpdateTest($paper);;
 
         if(empty((array) $errors)) {
@@ -127,6 +144,7 @@ class Instructors extends Controller
                 'user'=> $this->user,
                 'CSRF' => CSRF::generate(),
                 'paper'=> $paper,
+                'settings' => json_decode($paper->settings),
                 'errors' => $errors
             ]);
         }
@@ -332,6 +350,7 @@ class Instructors extends Controller
         return $this->view('instructors/my-students', [
             'user'=> $this->user,
             'students' => $students,
+            'alert' => Session::flash(['warning', 'danger', 'success']),
             'CSRF' => CSRF::generate()
         ]);
     }
@@ -351,8 +370,8 @@ class Instructors extends Controller
     {
         $student = $this->instructorsModel->findByField('email', $email, 'user');
         if(empty($student)){
-            Session::set('warning', 'This user does not exist');
-            $this->redirect('');
+            Session::set('warning','student does not exist');
+            return $this->redirect('instructor/my-students');
         }
         $results = $this->instructorsModel->myStudentResult($student->id);
         return $this->view('instructors/student-tests', [
@@ -367,6 +386,10 @@ class Instructors extends Controller
         CSRF::check($this->request->post['csrf_token']);
         $email =  $this->request->post['email'];
         $student = $this->instructorsModel->findByField('email', $email, 'user');
+        if(empty($student)){
+            Session::set('warning','student does not exist');
+            return $this->redirect('instructor/my-students');
+        }
         $results = $this->instructorsModel->myStudentResult($student->id);
         if(empty($results)){
             $students = $this->instructorsModel->getAllMyStudents($this->user->id);

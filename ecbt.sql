@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2025 at 08:45 PM
+-- Generation Time: Jan 22, 2025 at 10:58 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,6 +24,24 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `contact_us`
+--
+
+CREATE TABLE `contact_us` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(255) NOT NULL,
+  `subject` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `created_on` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_on` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `deleted` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `paper`
 --
 
@@ -38,7 +56,7 @@ CREATE TABLE `paper` (
   `poll` int(11) NOT NULL,
   `pass_mark` int(11) NOT NULL DEFAULT 50,
   `instruction` text NOT NULL,
-  `csv` varchar(255) NOT NULL,
+  `settings` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '\'{"view_result":1,"view_answers":1}\'',
   `created_on` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_on` datetime DEFAULT NULL ON UPDATE current_timestamp(),
   `deleted_on` datetime DEFAULT NULL
@@ -48,10 +66,11 @@ CREATE TABLE `paper` (
 -- Dumping data for table `paper`
 --
 
-INSERT INTO `paper` (`id`, `user_id`, `name`, `code`, `status`, `description`, `time`, `poll`, `pass_mark`, `instruction`, `csv`, `created_on`, `updated_on`, `deleted_on`) VALUES
-(1, 1, 'English language', '8D66B9', 0, 'this paper is a test simulation', 60, 50, 50, 'please read very carefully before you answer', 'emekafelix_8D66B9', '2025-01-06 22:05:52', '2025-01-16 11:15:19', NULL),
-(2, 1, 'physics', 'F7OB62', 1, 'MCS 888: critical infrastructure', 2147483647, 3, 50, 'answer all questions', 'msam_F7OB62', '2025-01-07 12:31:19', '2025-01-14 15:12:43', NULL),
-(3, 2, 'maths 101', '437DGV', 1, 'maths 101 for NDA tama 1 22/25 session', 90, 60, 50, 'answer all questions', 'maths101_437DGV', '2025-01-07 14:30:02', '2025-01-16 15:55:23', NULL);
+INSERT INTO `paper` (`id`, `user_id`, `name`, `code`, `status`, `description`, `time`, `poll`, `pass_mark`, `instruction`, `settings`, `created_on`, `updated_on`, `deleted_on`) VALUES
+(1, 1, 'English Language', '8D66B9', 1, 'this paper is a test simulation', 999, 10, 50, 'please read very carefully before you answer', '{\"view_result\":1,\"view_answers\":0}', '2025-01-06 22:05:52', '2025-01-19 20:40:27', NULL),
+(2, 1, 'Physics', 'F7OB62', 1, 'MCS 888: critical infrastructure', 5, 3, 50, 'answer all questions', '{\"view_result\":1,\"view_answers\":1}', '2025-01-07 12:31:19', '2025-01-19 15:45:02', NULL),
+(3, 14, 'Maths 101', '437DGV', 0, 'maths 101 for NDA tama 1 22/25 session', 5, 5, 50, 'answer all questions', '{\"view_result\":1,\"view_answers\":1}', '2025-01-07 14:30:02', '2025-01-19 00:02:11', NULL),
+(4, 14, 'Chemistry 101 By Uche Emmanuel', 'E3UCVU', 0, 'chemistry question for ss2 class in cac 2009 set', 10, 10, 50, 'answer all questions', '{\"view_result\":1,\"view_answers\":0}', '2025-01-18 23:14:05', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -105,6 +124,7 @@ CREATE TABLE `result` (
   `score` int(11) NOT NULL,
   `percent` decimal(5,2) NOT NULL,
   `start_time` datetime DEFAULT NULL,
+  `end_time` timestamp NULL DEFAULT NULL,
   `grade` varchar(1) NOT NULL,
   `remark` varchar(255) NOT NULL,
   `csv` varchar(255) NOT NULL,
@@ -117,11 +137,8 @@ CREATE TABLE `result` (
 -- Dumping data for table `result`
 --
 
-INSERT INTO `result` (`id`, `user_id`, `paper_id`, `poll`, `score`, `percent`, `start_time`, `grade`, `remark`, `csv`, `created_on`, `updated_on`, `deleted_on`) VALUES
-(1, 18, 1, 20, 11, 55.00, '2025-01-23 10:33:02', 'A', 'very good', 'wegy53uwhr', '2025-01-12 10:33:55', '2025-01-16 13:54:20', NULL),
-(6, 18, 2, 3, 2, 66.67, '2025-01-16 13:48:24', 'B', 'Very Good', 'F7OB62_18_2PV7AR', '2025-01-16 13:50:32', NULL, NULL),
-(7, 15, 2, 3, 2, 66.67, '2025-01-16 13:48:24', 'B', 'Very Good', 'F7OB62_18_2PV7AR', '2025-01-16 13:50:32', NULL, NULL),
-(8, 22, 3, 20, 11, 55.00, '2025-01-23 10:33:02', 'A', 'very good', 'wegy53uwhr', '2025-01-12 10:33:55', '2025-01-16 16:01:39', NULL);
+INSERT INTO `result` (`id`, `user_id`, `paper_id`, `poll`, `score`, `percent`, `start_time`, `end_time`, `grade`, `remark`, `csv`, `created_on`, `updated_on`, `deleted_on`) VALUES
+(37, 1, 1, 10, 4, 40.00, '2025-01-21 13:20:43', '2025-01-22 10:10:28', 'D', 'Pass', '8D66B9_1_13PVG9', '2025-01-21 13:20:43', '2025-01-22 10:12:31', NULL);
 
 -- --------------------------------------------------------
 
@@ -147,8 +164,8 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `name`, `email`, `password`, `active`, `role`, `reg_no`, `created_on`, `updated_on`, `deleted_on`) VALUES
-(1, 'uche emmanuel', 'ecuche@efcc.gov.ng', '$2y$10$3dyjtogXBZmyl4IUQ2K1tO42kxVWLiO6zAFlZK9XlRF2IkSYPFFhu', 1, 'instructor', '', '2024-12-10 14:48:04', '2025-01-13 11:48:52', NULL),
-(14, 'nnamdi felix', 'nfelix@efcc.gov.ng', '$2y$10$wUbNFCS8EXZQ6R9mYITyGe8CCREh.L31RVzG4nqhcVcYQoTJ0eZ/2', 0, 'student', '', '2024-12-20 11:06:28', NULL, NULL),
+(1, 'uche emmanuel', 'ecuche@efcc.gov.ng', '$2y$10$3dyjtogXBZmyl4IUQ2K1tO42kxVWLiO6zAFlZK9XlRF2IkSYPFFhu', 1, 'instructor', '102651', '2024-12-10 14:48:04', '2025-01-19 00:06:34', NULL),
+(14, 'nnamdi felix', 'nfelix@efcc.gov.ng', '$2y$10$3dyjtogXBZmyl4IUQ2K1tO42kxVWLiO6zAFlZK9XlRF2IkSYPFFhu', 1, 'instructor', '102650', '2024-12-20 11:06:28', '2025-01-18 23:49:53', NULL),
 (15, 'uche emmanuel', 'cousinavi30@gmail.com', '$2y$10$YX2j0i/OJoLidYQer/u.dOUyx2NC0DjFUiSAsn3St1vvPwk4H1uHG', 1, 'instructor', '', '2024-12-20 15:25:28', '2025-01-13 12:20:08', NULL),
 (16, 'femeka felix', 'femeka@gmail.com', '$2y$10$j13tcv6fNSmy.Nq02q1eDejj35zE4G6LhF5XVeC714chJ4incUdau', 1, 'student', '', '2024-12-20 16:02:46', '2024-12-31 12:45:36', NULL),
 (17, 'mac donald', 'macd@gmail.com', '$2y$10$3DpDKnDtCV4EdXzFqW7JIOr.yfPDBPKUbh2c2SSfcgM6AOCyoVJ5W', 0, 'student', '', '2024-12-20 16:16:05', NULL, NULL),
@@ -159,6 +176,12 @@ INSERT INTO `user` (`id`, `name`, `email`, `password`, `active`, `role`, `reg_no
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `contact_us`
+--
+ALTER TABLE `contact_us`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `paper`
@@ -200,10 +223,16 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT for table `contact_us`
+--
+ALTER TABLE `contact_us`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `paper`
 --
 ALTER TABLE `paper`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `password_reset`
@@ -215,7 +244,7 @@ ALTER TABLE `password_reset`
 -- AUTO_INCREMENT for table `result`
 --
 ALTER TABLE `result`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `user`

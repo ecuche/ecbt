@@ -1,7 +1,7 @@
 {% extends "base" %}
 {% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
 {% block body %}   
-<div class="d-flex align-items-center justify-content-center w-100">
+<div class="d-flex align-items-center justify-content-center w-100  mt-5 mb-5">
     <div class="row justify-content-center w-100">
       <div class="col-md-8 col-lg-6 col-xxl-3 auth-card">
         <div class="card mb-0 auth-card">
@@ -14,17 +14,17 @@
             <form method="POST" action="{{URL_ROOT}}/instructor/new-test/submit">
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Paper Name</label>
-                <input type="text" class="form-control {% echo !empty($errors->name) ? 'is-invalid' : ''; %}" name="name" value="{{$paper->name}}" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="text" class="form-control {% echo !empty($errors->name) ? 'is-invalid' : ''; %}" name="name" value="{{$paper->name}}" id="exampleInputEmail1" aria-describedby="emailHelp" required>
                 <div class="invalid-feedback">{{$errors->name}}</div>
               </div>
                 <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Test Time (in mins)</label>
-                    <input type="number" class="form-control {% echo !empty($errors->time) ? 'is-invalid' : ''; %}" name="time" value="{{$paper->time}}" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input type="number" class="form-control {% echo !empty($errors->time) ? 'is-invalid' : ''; %}" name="time" value="{{$paper->time}}" id="exampleInputEmail1" aria-describedby="emailHelp" required>
                     <div class="invalid-feedback">{{$errors->time}}</div>
                 </div>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Number of questions to be answered</label>
-                <input type="number" class="form-control {% echo !empty($errors->poll) ? 'is-invalid' : ''; %}" name="poll" value="{{$paper->poll}}" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="number" class="form-control {% echo !empty($errors->poll) ? 'is-invalid' : ''; %}" name="poll" value="{{$paper->poll}}" id="exampleInputEmail1" aria-describedby="emailHelp" required>
                 <div class="invalid-feedback">{{$errors->poll}}</div>
               </div>
               <div class="mb-3">
@@ -39,8 +39,28 @@
               </div>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Instructions</label>
-                <textarea name="instruction" class="form-control {% echo !empty($errors->instruction) ? 'is-invalid' : ''; %}">{{$paper->description}}</textarea>
+                <textarea name="instruction" class="form-control {% echo !empty($errors->instruction) ? 'is-invalid' : ''; %}">{{$paper->instruction}}</textarea>
                 <div class="invalid-feedback">{{$errors->instruction}}</div>
+              </div>
+              <div class="mb-3 d-flex">
+                <div class="form-check form-switch">
+                  <input class="form-check-input success view_result" name="view_result" type="checkbox" role="switch" id="flexSwitchCheckChecked" 
+                  {% if(empty($_POST)): %} checked 
+                  {% else: %} 
+                  {% echo  !empty($settings->view_result) ? 'checked' : ''; %} 
+                  {% endif; %}>
+                  <label class="form-check-label" for="flexSwitchCheckChecked">Show result after Test</label>
+                </div>
+              </div>
+              <div class="mb-3 d-flex">
+                <div class="form-check form-switch">
+                  <input class="form-check-input success view_answers" name="view_answers" type="checkbox" role="switch" id="flexSwitchCheckChecked"
+                  {% if(empty($_POST)): %} checked 
+                  {% else: %} 
+                  {% echo  !empty($settings->view_answers) ? 'checked' : ''; %}
+                  {% endif; %}>
+                  <label class="form-check-label" for="flexSwitchCheckChecked">Show correct answers after Test</label>
+                </div>
               </div>
               {! $CSRF !}
               <div class="mb-3">

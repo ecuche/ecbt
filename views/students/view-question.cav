@@ -1,0 +1,200 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}
+
+<div class="container-fluid mt-4 col-lg-8">
+  <!-- Start Row -->
+  <div class="row mb-1">
+    <div class="row">
+      <div class="col-lg-3 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex no-block">
+              <div class="me-3 align-self-center">
+                <span class="lstick d-inline-block align-middle"></span>
+                <img src="{{URL_ROOT}}/assets/images/icon/income.png" alt="Income">
+              </div>
+              <div class="align-self-center">
+                <h6 class="text-muted mt-2 mb-0">Test Name</h6>
+                <h2>{= $paper->name =}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex no-block">
+              <div class="me-3 align-self-center">
+                <span class="lstick d-inline-block align-middle"></span>
+                <img src="{{URL_ROOT}}/assets/images/icon/expense.png" alt="Income">
+              </div>
+              <div class="align-self-center">
+                <h6 class="text-muted mt-2 mb-0">Test Code</h6>
+                <h2>{! $paper->code !}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex no-block">
+              <div class="me-3 align-self-center">
+                <span class="lstick d-inline-block align-middle"></span>
+                <img src="{{URL_ROOT}}/assets/images/icon/assets.png" alt="Income">
+              </div>
+              <div class="align-self-center">
+                <h6 class="text-muted mt-2 mb-0">SCORE</h6>
+                <h2>{{ $result->score }}/{{ $result->poll }}</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex no-block">
+              <div class="me-3 align-self-center">
+                <span class="lstick d-inline-block align-middle"></span>
+                <img src="{{URL_ROOT}}/assets/images/icon/assets.png" alt="Income">
+              </div>
+              <div class="align-self-center">
+                <h6 class="text-muted mt-2 mb-0">Final Score</h6>
+                <h2>{{ $result->percent }}%</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     
+    </div>
+    <div class="row ajaxContainer">
+      {% if(!empty($question->image)): %}
+        <div class="col-lg-4 d-flex align-items-stretch">
+          <div class="card w-100">
+            <div class="card-body">
+              <h4 class="card-title">
+                <span class="lstick d-inline-block align-middle"></span>IMAGE
+              </h4>
+              <img src="{! $image !}" class="w-40 rounded mx-auto d-block zoomable-image" alt="Image">
+            </div>
+          </div>
+        </div>
+      {% endif; %}
+      <div class="col-lg-{% echo empty($question->image) ? '12' : '8' %} d-flex align-items-stretch">
+        <div class="card w-100">
+          <div class="card-body">
+            <div class="row mb-5">
+              <div class="col align-items-stretch">
+                <h4 class="card-title">
+                  <span class="text-start"></span>QUESTION {{ $question->id }}
+                  {% if(!empty($question->correct)): %}
+                  <span class="text-bg-success text-end">CORRECT</span>
+                  {% else: %}
+                  <span class="text-bg-danger text-end">WRONG</span>
+                  {% endif; %}
+                </h4>
+                {! $question->question !}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 d-flex align-items-stretch">
+        <div class="card w-100">
+          <div class="card-body">
+            <table class="table vm fs-3">
+              <tbody>
+                <tr>
+                  <td class="b-0">Instructor</td>
+                  <td class="text-end fw-medium b-0">{=$instructor->name=}</td>
+                </tr>
+                <tr>
+                  <td class="b-0">Test Time </td>
+                  <td class="text-end fw-medium b-0">{{$paper->time}} Mins</td>
+                </tr>
+                <tr>
+                  <td>Total Questions</td>
+                  <td class="text-end fw-medium">{{$paper->poll}}</td>
+                </tr>
+               
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8 d-flex flex-column align-items-stretch">
+        <div class="card w-100 h-100 d-flex flex-column">
+          <div class="card-body align-items-top">
+            <div class="row">
+              <div class="col align-items-stretch">
+                <h4 class="card-title">
+                  <span class="lstick d-inline-block align-middle"></span>ANSWERS
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div class="card-body align-items-stretch">
+            <div class="answer-radio h4 mx-3">
+              {% $i = range("A", "Z"); %}
+              {% foreach (json_decode($question->options) as $key => $option): %}
+                <div class="mb-1">
+                  <input type="radio" name="answer"  {% echo $question->hash == $option->hash ? 'checked' : ''%}>
+                  <label class="{% echo !empty($option->correct) ? 'bg-success text-black' : ''; %}">
+                    <span class="text-uppercase fw-bold">{{ $i[$key] }}.</span>&nbsp;&nbsp; {{ $option->answer }}
+                  </label>
+                </div>
+              {% endforeach; %}
+            </div>
+          </div>
+          <div class="row mb-3 mx-2 my-3">
+            <div class="d-flex col flex-column justify-content-end">
+             
+            </div>
+            {% $prev = $question->id - 1 ; $next = $question->id + 1; %}
+            <div class="col mt-auto d-flex justify-content-end align-items-bottom">
+              <a class="btn btn-secondary me-2 {% echo  $question->id <= 1 ? 'disabled' : ''; %}" href="{{URL_ROOT}}/paper/{{ $paper->code}}/result/view/{{ $prev }}">Previous</a>
+              <a class="btn btn-secondary me-2 {% echo  $question->id >= count((array)$questions) ? 'disabled' : ''; %}" href="{{URL_ROOT}}/paper/{{ $paper->code}}/result/view/{{ $next }}">Next</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 d-flex flex-column align-items-stretch">
+        <div class="card w-100">
+          <div class="mx-auto mt-5">
+            <nav aria-label="Page navigation">
+              <ul class="pagination pagination-md flex-wrap">
+                {% $i = 1 %}
+                {% foreach($questions as $key => $value): %}
+                  <li class="page-item{% echo $question->id == $i ? ' disabled' : ''; %}" aria-current="page">
+                    {% if(!empty($value['correct'])){$color = 'success';}else{$color = 'danger';} %}
+                    <a class="page-link text-bg-{{$color}}" href="{{URL_ROOT}}/paper/{{ $paper->code}}/result/view/{{ $value['id'] }}" value="{{ $value['id'] }}">{{ $i }}</a>
+                  </li>
+                  {% $i++ %}
+                {% endforeach; %}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal for image enlarge -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-transparent border-0">
+      <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+      <img src="" alt="Zoomed Image" id="modalImage" class="w-100">
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+

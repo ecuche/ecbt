@@ -12,7 +12,6 @@ class Student extends Model
 {
     // protected $table = "student";
 
-
     public function paperAuth($code): object | bool       
     {
         $paper = $this->findByField("code", $code, 'paper');
@@ -36,9 +35,67 @@ class Student extends Model
         }
     }
 
-    public function resultAuth($user_id, $paper_id): object | bool
+    public function checkResult($paper): bool | array |object 
     {
-        $result = $this->findByFields( ['user_id'=>$user_id, 'paper_id'=>$paper_id],'result');
+        $result = $this->findByFields(['paper_id'=>$paper->id, 'user_id'=>$_SESSION['id']], 'result');
+        if(empty($result)){
+            $end_time =  (int) $paper->time * 60 + time();
+            $this->insert([
+                'user_id'=> $_SESSION['id'],
+                'paper_id'=> $paper->id,
+                'poll'=> $paper->poll,
+                'score'=> 0,
+                'percent'=> 0,
+                'start_time'=> date('Y-m-d H:i:s'),
+                'end_time'=> date('Y-m-d H:i:s', $end_time),
+                'grade'=> "F",
+                'remark'=> "Failed",
+                'csv'=> Session::get('test_name'),
+            ], 'result');
+            $result = $this->findByFields(['paper_id'=>$paper->id, 'user_id'=>$_SESSION['id']], 'result');
+            Session::set(['end_time' => $end_time]);
+            Session::set('result', $result);
+            return $result;
+        }else{
+            $end_time = strtotime($result->end_time);
+            if($end_time > time() ){
+                Session::set(['end_time' => $end_time]);
+                return true;
+            }else{
+                return false;
+            }
+        }
+    }
+
+    public function checkResultTime($paper): bool | float | int | string
+    {
+        $result = $this->findByFields(['paper_id'=> $paper->id, 'user_id'=> $_SESSION['id']], 'result');
+        if(!empty($result)){
+            $end_time = strtotime($result->end_time);
+            $rem_time = $end_time - time();
+            if($end_time > time()){
+                Session::set(['end_time'=> $end_time]);
+                return $rem_time;
+            }
+        }
+        return 0;
+    }
+
+    public function testSettingsAuth($test, string $page = 'result')
+    {
+        $settings = json_decode($test->settings);
+        if($settings->view_result == 0 && $page == 'result'){
+            Session::set('success','You have finished your Test, Contact your Instructor for your score. Good luck !!!');
+            return Redirect::to('/dashboard');
+        }elseif($settings->view_answers == 0 && $page == 'answers'){
+            Session::set('success','Contact your Instructor for Test Corrections');
+            return Redirect::to('/dashboard');
+        }
+    }
+
+    public function resultAuth($paper_id): object | bool
+    {
+        $result = $this->findByFields( ['user_id'=>$_SESSION['id'], 'paper_id'=>$paper_id],'result');
         if(empty($result)) {
             Session::set('warning','Result Not Found');
             Redirect::to('/dashboard');
@@ -87,35 +144,45 @@ class Student extends Model
     public function remTime(): int | bool
     {
         $end_time = Session::get('end_time');
-        $rem_time = $end_time - time();    
+        $rem_time = $end_time - time();
         if (empty($end_time) || $rem_time <= 0) {
-           return false;
+           return 0;
         }
         return $rem_time;
     }
 
-    public function createTestSheet($questions, $paper_code): array | object
+    public function createTestSheet($questions): array | object
     {
-        $rand = Functions::generateRandomCode();
-        $test_name = "{$paper_code}_{$_SESSION['id']}_{$rand}";
-        Session::set("test_name", $test_name);
-        Session::set("start_time", date('Y-m-d H:i:s'));
+        $paper = Session::get('paper');
+        $paper_code = $paper->code;
+        Session::set("code", $paper_code);
         $location = "{$_ENV['CSV_PATH']}/results";
         Functions::createFolder($location);
-        $csv  = new CSV($test_name, 'results');
-        foreach ($questions as $question) {
-            $value = [];
-            $value['chosen'] = '';
-            $value['correct'] = '';
-            $value['hash'] = '';
-            $value['question_id'] = $question['id'];
-            $value['question'] = $question['question'];
-            $value['image'] = $question['image'];
-            $answers = json_decode($question['answers'], true);
-            shuffle($answers);
-            $value['options'] = json_encode($answers);
-            $csv->insertRows($value);
+        $result = Session::get("result");
+
+        if(!empty($result) && file_exists("{$location}/{$result->csv}.csv")) {
+            $csv = new CSV($result->csv, 'results');
+            $test_name = $result->csv;
+        }else{
+            $rand = Functions::generateRandomCode();
+            $test_name = "{$paper_code}_{$_SESSION['id']}_{$rand}";
+
+            $csv  = new CSV($test_name, 'results');
+            foreach ($questions as $question) {
+                $value = [];
+                $value['chosen'] = '';
+                $value['correct'] = '';
+                $value['hash'] = '';
+                $value['question_id'] = $question['id'];
+                $value['question'] = $question['question'];
+                $value['image'] = $question['image'];
+                $answers = json_decode($question['answers'], true);
+                shuffle($answers);
+                $value['options'] = json_encode($answers);
+                $csv->insertRows($value);
+            }
         }
+        Session::set("test_name", $test_name);
         return $csv->getRow(1);
     }
 

@@ -11,12 +11,13 @@ use Framework\Helpers\Auth;
 use Framework\Helpers\CSRF;
 use Framework\Helpers\Mail;
 use Framework\Helpers\Token;
+use App\Models\Student;
 
 
 
 class Homes extends Controller
 {
-    public function __construct(private User $usersModel)
+    public function __construct(private User $usersModel, private Student $studentModel)
     {
         if(!Auth::isLoggedIn()){
             if($usersModel->loginFromRemeberCookie()){
@@ -94,7 +95,8 @@ class Homes extends Controller
                     Auth::login($user);
                     $user->remember_me = $data->remember_me;
                     $this->usersModel->rememberLogin($user);
-                    $page = Auth::returnPage();
+                    $page = !empty($_SESSION['current_url']) ? $_SESSION['current_url'] : Auth::returnPage();
+                    Session::delete('current_url');
                     if(!empty($page)){
                         return $this->redirect($page);
                     }else{
@@ -233,6 +235,55 @@ class Homes extends Controller
         }
     }
 
+    public function findTest(): Response
+    {
+        return $this->view('homes/find-test', [
+            'CSRF' => CSRF::generate(),
+        ]);
+    }
+
+    public function searchResult($code): Response
+    {
+        
+        $paper = $this->usersModel->findByField('code', $code, 'paper');
+        if(Auth::isLoggedIn()){
+            if(!empty(Session::get('test_name'))) {
+                $this->redirect("paper/{$code}/test/sheet");
+            }
+            $result = $this->usersModel->findByFields(['user_id' => $_SESSION['id'], 'paper_id' => $paper->id], 'result');
+            $rem_time  = $this->studentModel->checkResultTime($paper);
+        }
+        $instructor = $this->usersModel->findById($paper->user_id, 'user');
+        $current_url = substr($_SERVER['REQUEST_URI'], strlen($_ENV["SITE_DIR"]));
+        if(!Auth::isLoggedIn()){ Session::set('current_url', $current_url);}
+        return $this->view('homes/search-result', [
+            'paper' => $paper,
+            'instructor' => $instructor,
+            'result' => $result ?? null,
+            'rem_time' => $rem_time ?? false,
+            'CSRF' => CSRF::generate()
+        ]);
+    }
+
+    public function searchTest(): Response
+    {
+        CSRF::check($this->request->post['csrf_token']);
+        $post = (object) ['code' => $this->request->post['code']];
+        $post->code = strtoupper($post->code);
+        $errors = $this->usersModel->validateCode($post);
+        $paper = $this->usersModel->findByField('code', $post->code, 'paper');
+        if (empty((array) $errors)) {
+            return $this->redirect("test/{$paper->code}/search/result");
+        } else {
+            return $this->view('homes/find-test', [
+                'CSRF' => CSRF::generate(),
+                'paper' => $post->code,
+                'errors' => $errors
+            ]);
+        }
+    }
+
+
     public function aboutUs(): Response
     {
         return $this->view('homes/about-us', []);
@@ -251,6 +302,7 @@ class Homes extends Controller
         $data = [
             'email' => $this->request->post['email'],
             'name' => $this->request->post['name'],
+            'phone' => $this->request->post['phone'],
             'message' => $this->request->post['message'],
             'subject' => $this->request->post['subject'],
         ];
@@ -258,8 +310,9 @@ class Homes extends Controller
         
         $this->usersModel->validateContactUs($data);
         if(empty($this->usersModel->getErrors())){
+            $this->usersModel->insert($data, 'contact_us');
             $mail = new Mail;
-            $mail->to('contact@LogReg.com');
+            $mail->to($_ENV['CONTACTUS_EMAIL']);
             $mail->from($data->email, $data->name);
             $mail->replyto($data->email, $data->name);
             $mail->subject($data->subject);

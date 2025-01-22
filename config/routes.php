@@ -12,6 +12,11 @@ $router->add("/reset/password/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)
 $router->add("/password/reset/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/{hash:[a-zA-Z0-9]{64}}", ["controller" => "homes", "method" => "password-reset", "form"=> "post"]);
 $router->add("/activate/account/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/{hash:[a-zA-Z0-9]{64}}", ["controller" => "homes", "method" => "activate-account"]);
 $router->add('/logout', ["controller" => "homes", "method" => "log-out-user"]);
+$router->add("find/test", ["controller" => "homes", "method" => "find-test"]);
+$router->add("test/{code:[A-Z0-9]{6}}/search/result", ["controller" => "homes", "method" => "search-result"]);
+$router->add("search/test", ["controller" => "homes", "method" => "search-test", "form"=>"post"]);
+
+
 $router->add('/contact-us', ["controller" => "homes", "method" => "contact-us", "form"=> "post"]);
 $router->add('/contact', ["controller" => "homes", "method" => "contact"]);
 $router->add('/about-us', ["controller" => "homes", "method" => "about-us"]);
@@ -37,17 +42,16 @@ $router->add('/users/show', ["controller" => "users", "method" => "show"]);
 
 //students Routes
 $router->add("student/dashboard", ["controller" => "students", "method" => "dashboard",  "auth"=>true]);
-$router->add("find/test", ["controller" => "students", "method" => "find-test",  "auth"=>true]);
-$router->add("search/test", ["controller" => "students", "method" => "search-test",  "auth"=>true, 'form'=>'post']);
-$router->add("test/{code:[A-Z0-9]{6}}/search/result", ["controller" => "students", "method" => "search-result",  "auth"=>true]);
 $router->add("results/show/all", ["controller" => "students", "method" => "show-all-results",  "auth"=>true]);
 $router->add("paper/{code:[A-Z0-9]{6}}/result/show", ["controller" => "students", "method" => "show-test-result",  "auth"=>true]);
+$router->add("paper/{code:[A-Z0-9]{6}}/result/review", ["controller" => "students", "method" => "review-test-result",  "auth"=>true]);
+$router->add("paper/{code:[A-Z0-9]{6}}/result/view/{id:\d+}", ["controller" => "students", "method" => "view-question-result",  "auth"=>true]);
 $router->add("paper/{code:[A-Z0-9]{6}}/test/sheet", ["controller" => "students", "method" => "test-sheet",  "auth"=>true]);
 $router->add("paper/{code:[A-Z0-9]{6}}/test/preview", ["controller" => "students", "method" => "test-preview",  "auth"=>true]);
-$router->add("paper/{code:[A-Z0-9]{6}}/test/start", ["controller" => "students", "method" => "start-test",  "auth"=>true, 'form' => 'post']);
+$router->add("paper/{code:[A-Z0-9]{6}}/test/start", ["controller" => "students", "method" => "start-test"]);
 $router->add("paper/{code:[A-Z0-9]{6}}/test/submit", ["controller" => "students", "method" => "submit-test",  "auth"=>true]);
-$router->add("paper/test/prev-next", ["controller" => "students", "method" => "prev-next",  "auth"=>true, 'form' => 'post']);
-$router->add("paper/test/submit-option-selected", ["controller" => "students", "method" => "submit-option-selected",  "auth"=>true, 'form' => 'post']);
+$router->add("paper/test/prev-next", ["controller" => "students", "method" => "prev-next",  "auth"=>true, "form" => "post"]);
+$router->add("paper/test/submit-option-selected", ["controller" => "students", "method" => "submit-option-selected",  "auth"=>true, "form" => "post"]);
 
 
 //Instructor Routes
@@ -66,9 +70,9 @@ $router->add("instructor/paper/{code:[A-Z0-9]{6}}/delete", ["controller" => "ins
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/participants/show", ["controller" => "instructors", "method" => "show-participants",  "auth"=>true]);
 
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/create/questions", ["controller" => "instructors", "method" => "create-questions",  "auth"=>true]);
-$router->add("instructor/paper/{code:[A-Z0-9]{6}}/add/question", ["controller" => "instructors", "method" => "add-question",  "auth"=>true, 'form'=>'post']);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/add/question", ["controller" => "instructors", "method" => "add-question",  "auth"=>true, "form"=>"post"]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/edit/question", ["controller" => "instructors", "method" => "edit-question",  "auth"=>true]);
-$router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/update/question", ["controller" => "instructors", "method" => "update-question",  "auth"=>true, 'form'=>'post']);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/update/question", ["controller" => "instructors", "method" => "update-question",  "auth"=>true, "form"=>"post"]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/delete/question", ["controller" => "instructors", "method" => "delete-question",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/delete-question-image", ["controller" => "instructors", "method" => "delete-question-image",  "auth"=>true]);
 $router->add("instructor/my-students", ["controller" => "instructors", "method" => "my-students",  "auth"=>true]);
