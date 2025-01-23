@@ -34,11 +34,15 @@
                       </td>
                       <td>
                         <div class="d-flex align-items-center">
-                            <h6 class="fw-semibold mb-1">{{$paper->name}}</h6>
+                            <a href="{{URL_ROOT}}/instructor/paper/{{ $paper->code}}/edit" hovertext="click to edit Test">
+                              <h6 class="fw-semibold mb-1">{{$paper->name}}</h6>
+                            </a>
                         </div>
                       </td>
                       <td>
                         <div class="d-flex align-items-center gap-2">
+                          <a href="{{URL_ROOT}}/instructor/paper/{{ $paper->code }}/status/{% echo $paper->status ? 'deactivate' : 'activate'; %}"
+                           hovertext="Click to {% echo $paper->status ? 'deactivate' : 'activate'; %}">
                           {% if($paper->status === 1): %}
                           <span class="badge bg-success-subtle text-success">Active</span>
                           {% elseif($paper->status === 0): %}
@@ -46,6 +50,7 @@
                           {%elseif($paper->status === null):%}
                           <span class="badge bg-warning-subtle text-warning">Barred</span>
                           {% endif; %}
+                          </a>
                         </div>
                       </td>
                       <td>

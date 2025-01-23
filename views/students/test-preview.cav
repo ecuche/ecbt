@@ -141,7 +141,7 @@
                     <td>
                       <form action="{{URL_ROOT}}/paper/{{ $paper->code }}/test/sheet" method="post" class="formSubmit">
                         <input type="hidden" name="q_id" value="{{ $question['id']}}">
-                        <a class="fs-4 fw-semibold mb-0 text-muted submitAnchor" href="javascript:void(0)">Change</a>
+                        <a class="fs-4 fw-semibold mb-0 text-muted submitAnchor">Change</a>
                       </form>
                     </td>
                   </tr>
