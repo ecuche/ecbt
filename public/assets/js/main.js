@@ -129,7 +129,6 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '#print-btn', function () {
-      
         var printContents = $('#printable-area').clone(); // Clone the div
         var printWindow = window.open('', '');
         var styles = $('head').html(); // Capture all <style> and <link> tags from the current document

@@ -33,9 +33,7 @@ class CSRF{
 
 	public static function checkMethod($method_csrf): bool
 	{
-		$tokenName = 'csrf_token';
 		if($method_csrf === Session::get('method_csrf_token')){
-			Session::delete($tokenName);
 			Session::delete('method_csrf_token');
 			return true;
 		}

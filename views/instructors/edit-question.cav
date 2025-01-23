@@ -5,8 +5,8 @@
 <div class="col-lg-6 mx-auto pt-5">
   <div class="card">
     <div class="px-4 py-3 border-bottom">
-      <h4 class="card-title mb-0">{= $paper->name =} : {= $paper->code =}</h4>
-      <h6 class="card-title mb-0">Add Question Layout</h6>
+      <h4 class="card-title mb-0"></h4>
+      <h6 class="card-title mb-0">Add {= $paper->name =} | {= $paper->code =} question</h6>
     </div>
     <div class="card-body p-4 justify-content-center">
       {% if(!empty($alert)): %}
@@ -49,12 +49,10 @@
         <div class="col-md-12 mb-4">
           <div class="card">
             <div class="card-body">
-              <div id="education_fields" class="my-4 answerOptions">
+              <div class="my-4 answerOptions">
                 <div class="row">
                   <div class="col-sm-8 {% echo !empty($errors->corrects) || !empty($errors->options)  ? 'text-danger' : ''; %}">
                     &nbsp; Make sure atleast one of the Options is selected as the correct answer  
-                    <div class="row ms-2"> {{$errors->corrects}}</div>
-                    <div class="row ms-2"> {{$errors->options}}</div>
                   </div>
                   <div class="col-sm-2 text-center">
                     Check only correct answers
@@ -71,7 +69,7 @@
                       </div>
                       <div class="col-sm-2 d-flex align-items-center justify-content-center">
                         <div class="form-check form-switch mb-3">
-                          <input type="hidden" name="corrects[]" id="correct" value="{! $answer->correct !}">
+                          <input type="hidden" name="corrects[]" id="correct" value="{% echo $answer->correct ?? '0'; %}">
                           <input class="form-check-input success checkbox" type="checkbox" id="color-success" {% echo $answer->correct ? 'checked' : '' %} >
                         </div>
                       </div>
@@ -85,7 +83,7 @@
                       </div>
                       <div class="col-sm-2 d-flex align-items-center justify-content-center">
                         <div class="form-check form-switch mb-3">
-                          <input type="hidden" name="corrects[]" id="correct" value="{! $answer->correct !}">
+                          <input type="hidden" name="corrects[]" id="correct" value="{% echo $answer->correct ?? '0'; %}">
                           <input class="form-check-input success checkbox" type="checkbox" id="color-success" {% echo $answer->correct ? 'checked' : '' %}>
                         </div>
                       </div>

@@ -29,7 +29,7 @@ class Instructor extends Model
     public function validateQuestion(array | object $data): object
     {
         $data = (object)$data;
-        if(empty($data->question)){
+        if(empty($data->question) || $data->question === '<p></p>') {
             $this->addError('question', "Question field is required");
         }
       
@@ -101,7 +101,7 @@ class Instructor extends Model
                 $hash = Functions::generateRandomCode();
             }while(in_array($hash, $hashes));
             array_push($hashes, $hash); 
-            $ans				= [];
+            $ans			    = [];
             $ans['answer']		= $option;
             $ans['correct']		= $post['corrects'][$key];
             $ans['hash']		= $hash;

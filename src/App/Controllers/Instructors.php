@@ -186,6 +186,13 @@ class Instructors extends Controller
             'options' => $this->request->post['options'],
             'corrects' => $this->request->post['corrects'],
         ];
+        $answers = [];
+        foreach ($post['options'] as $key => $option) {
+            $ans				= [];
+            $ans['answer']		= $option;
+            $ans['correct']		= $post['corrects'][$key];
+            array_push( $answers,  (object)$ans);
+        }
 
         $errors = $this->instructorsModel->validateQuestion($post);
         $csv_path = "{$_ENV['CSV_PATH']}/papers";
@@ -216,7 +223,8 @@ class Instructors extends Controller
                 'CSRF' => CSRF::generate(),
                 'paper'=> $paper,
                 'errors' => $errors,
-                'question' => $post
+                'question' => (object)$post,
+                'answers' => (object)$answers
             ]);
         }
     }
@@ -250,7 +258,15 @@ class Instructors extends Controller
             'question' => $this->request->post['question'],
             'options' => $this->request->post['options'],
             'corrects' => $this->request->post['corrects'],
+            'id' => $id,
         ];
+        $answers = [];
+        foreach ($post['options'] as $key => $option) {
+            $ans				= [];
+            $ans['answer']		= $option;
+            $ans['correct']		= $post['corrects'][$key];
+            array_push( $answers,  (object)$ans);
+        }
 
         $errors = $this->instructorsModel->validateQuestion($post);
         $csv_path = "{$_ENV['CSV_PATH']}/papers";
@@ -283,10 +299,12 @@ class Instructors extends Controller
             return $this->redirect("instructor/paper/{$code}/{$id}/edit/question");
         }else{
             else_part:
-            return $this->view('instructors/create-questions', [
+            $errors->image ??= "Image was not added";
+            return $this->view('instructors/edit-question', [
                 'user'=> $this->user,
                 'CSRF' => CSRF::generate(),
                 'paper'=> $paper,
+                'answers' => (object) $answers,
                 'errors' => $errors,
                 'question' => (object) $post
             ]);

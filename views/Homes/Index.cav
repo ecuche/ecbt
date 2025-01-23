@@ -27,8 +27,8 @@
               </div>
               {! $CSRF !}
               <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <div class="form-check">
-                  <input class="form-check-input primary" type="checkbox" value="" id="flexCheckChecked">
+                <div class="form-check form-switch">
+                  <input class="form-check-input primary" name="remember_me" type="checkbox" role="switch" value="" id="flexCheckChecked">
                   <label class="form-check-label text-dark" for="flexCheckChecked"> Remember me </label>
                 </div>
                 <a class="text-primary fw-medium" href="{{URL_ROOT}}/forgot-password">Forgot Password ?</a>

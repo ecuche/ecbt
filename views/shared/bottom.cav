@@ -16,6 +16,8 @@
   <script src="{{URL_ROOT}}/assets/js/theme/feather.min.js"></script>
   <script src="{{URL_ROOT}}/assets/libs/iconify-icon/dist/iconify-icon.min.js"></script>
   <!-- solar icons -->
+  <!-- <script src="{{URL_ROOT}}/assets/libs/jquery.repeater/jquery.repeater.min.js"></script>
+  <script src="{{URL_ROOT}}/assets/js/forms/repeater-init.js"></script> -->
   <!-- <script src="{{URL_ROOT}}/assets/libs/dropzone/dist/min/dropzone.min.js"></script> -->
   <!-- <script src="{{URL_ROOT}}/assets/libs/select2/dist/js/select2.full.min.js"></script> -->
   <script src="{{URL_ROOT}}/assets/libs/select2/dist/js/select2.min.js"></script>
