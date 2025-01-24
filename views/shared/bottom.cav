@@ -1,29 +1,26 @@
 </div>
   <div class="dark-transparent sidebartoggler"></div>
 
-  {% if(isset($_SESSION['id']) && !isset($_SESSION['test_name'])): %}
-  <script src="{{URL_ROOT}}/assets/js/theme/sidebarmenu.js"></script>
-  {% endif; %}
-
-
   <script src="{{URL_ROOT}}/assets/js/vendor.min.js"></script>
   <script src="{{URL_ROOT}}/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- <script src="{{URL_ROOT}}/assets/js/snippets.js"></script> -->
   <script src="{{URL_ROOT}}/assets/libs/simplebar/dist/simplebar.min.js"></script>
   <script src="{{URL_ROOT}}/assets/js/theme/app.dark.init.js"></script>
   <script src="{{URL_ROOT}}/assets/js/theme/theme.js"></script>
   <script src="{{URL_ROOT}}/assets/js/theme/app.min.js"></script>
+  {% if(isset($_SESSION['id']) && !isset($_SESSION['test_name'])): %}
+  <script src="{{URL_ROOT}}/assets/js/theme/sidebarmenu.js"></script>
+  {% endif; %}
   <script src="{{URL_ROOT}}/assets/js/theme/feather.min.js"></script>
   <script src="{{URL_ROOT}}/assets/libs/iconify-icon/dist/iconify-icon.min.js"></script>
-  <!-- solar icons -->
-  <!-- <script src="{{URL_ROOT}}/assets/libs/jquery.repeater/jquery.repeater.min.js"></script>
-  <script src="{{URL_ROOT}}/assets/js/forms/repeater-init.js"></script> -->
-  <!-- <script src="{{URL_ROOT}}/assets/libs/dropzone/dist/min/dropzone.min.js"></script> -->
-  <!-- <script src="{{URL_ROOT}}/assets/libs/select2/dist/js/select2.full.min.js"></script> -->
+  
+  {% if(isset($page) && $page === 'date_format'): %}
+  <script src="{{URL_ROOT}}/assets/js/extra-libs/moment/moment.min.js"></script>
+  <script src="{{URL_ROOT}}/assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+  <script src="{{URL_ROOT}}/assets/js/forms/datepicker-init.js"></script>
+  {% endif; %}
+
   <script src="{{URL_ROOT}}/assets/libs/select2/dist/js/select2.min.js"></script>
-  <!-- <script src="{{URL_ROOT}}/assets/js/forms/select2.init.js"></script> -->
   <script src="{{URL_ROOT}}/assets/libs/jquery.repeater/jquery.repeater.min.js"></script>
-  <!-- <script src="{{URL_ROOT}}/assets/libs/jquery-validation/dist/jquery.validate.min.js"></script> -->
   <script src="{{URL_ROOT}}/assets/js/plugins/toastr-init.js"></script>
   <script src="{{URL_ROOT}}/assets/js/main.js"></script>
 
@@ -32,15 +29,12 @@
   <script src="{{URL_ROOT}}/assets/libs/jquery-countdown/js/jquery.plugin.min.js"></script>
   <script src="{{URL_ROOT}}/assets/libs/jquery-countdown/js/jquery.countdown.min.js"></script>
   <script>
-
     var time = $('#defaultCountdown').text();
     $(function () {
       $('#defaultCountdown').countdown({until: time, format: 'hmS', padZeroes: false, compact: true,  onExpiry: submit,  onTick: Last5mins});
-
       function submit() { 
         $('.formSubmit').submit();
       } 
-
       function Last5mins(periods) { 
       if ($.countdown.periodsToSeconds(periods) === 600) { 
           $(this).removeClass();

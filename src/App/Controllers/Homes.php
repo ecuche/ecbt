@@ -13,8 +13,6 @@ use Framework\Helpers\Mail;
 use Framework\Helpers\Token;
 use App\Models\Student;
 
-
-
 class Homes extends Controller
 {
     public function __construct(private User $usersModel, private Student $studentModel)
@@ -345,10 +343,22 @@ class Homes extends Controller
 
     public function test()  
     {
-
+        if(!empty($_POST)){
+            $date = $_POST['date'];
+            $dateTime = strtotime($date);
+            echo $dateTime;
+            echo "<br>";
+            echo date("Y-m-d", $dateTime);
+            echo "<br>";
+            echo $date;
+            exit;
+        }
+        return $this->view('homes/test', [
+            'page'=>'date_format'
+        ]);
 
         //always leave this exit line if you will not use template
-        exit;
+        // exit;
     }
 
 

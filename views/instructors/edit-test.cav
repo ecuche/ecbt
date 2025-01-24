@@ -8,11 +8,11 @@
           <div class="py-4 px-5">
           <div class=" mb-4 border-bottom">
             <h4 class="card-title mb-3">
-              <span class="lstick d-inline-block align-middle"></span>Edit Paper
+              <span class="lstick d-inline-block align-middle"></span>Edit Paper | {{ $paper->code }}
               {% if($paper->status == 0): %}
-              <a class="btn btn-success float-end" href="{{URL_ROOT}}/instructor/paper/{! $paper->code !}/status/activate">Activate</a>
+              <a class="btn btn-success float-end" href="{{URL_ROOT}}/instructor/paper/{! $paper->code !}/status/activate" hovertext="Click to Deactivate">Activate</a>
               {% elseif($paper->status == 1): %}
-              <a class="btn btn-danger float-end" href="{{URL_ROOT}}/instructor/paper/{! $paper->code !}/status/deactivate">Deactivate</a>
+              <a class="btn btn-danger float-end" href="{{URL_ROOT}}/instructor/paper/{! $paper->code !}/status/deactivate" hovertext="Click to Activate">Deactivate</a>
               {% endif; %}
             </h4>
           </div>

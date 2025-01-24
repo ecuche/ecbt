@@ -376,11 +376,15 @@ class Instructors extends Controller
     public function showParticipants($code): Response 
     {
         $paper = $this->instructorsModel->instructorAuth( $code);
-        $students = $this->instructorsModel->getAllTestStudents($paper->id);
+
+        $students = !empty($_POST['date']) ? $this->instructorsModel->getAllTestStudentByDate($paper->id, date: $_POST['date']) : $this->instructorsModel->getAllTestStudentByDate($paper->id);
+       
         return $this->view('instructors/show-participants', [
             'user'=> $this->user,
             'students'=> $students,
+            'page'=>'date_format',
             'paper'=> $paper,
+            'date' => $_POST['date'] ?? null,   
         ]);
     }
 

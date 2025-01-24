@@ -7,6 +7,7 @@ use Framework\Helpers\Session;
 use Framework\Helpers\Redirect;
 use Framework\Helpers\Functions;
 use Framework\Helpers\CSV;
+use DateTime;
 
 class Instructor extends Model
 {
@@ -165,6 +166,35 @@ class Instructor extends Model
         INNER JOIN result ON user.id = result.user_id
         WHERE result.paper_id = {$paper_id}
         AND result.deleted_on IS NULL 
+        AND user.deleted_on IS NULL
+        ORDER BY user.name ASC";
+
+        $result = $this->findQueryString($sql);
+        return (object) $result;
+    }
+
+    public function getAllTestStudentByDate(int $paper_id, string $date = ""): array | object
+    {
+        $add = "";
+        if(!empty($date)){
+            $date = strtotime($date);
+            $date = date("Y-m-d", $date);
+            $add = " AND DATE(result.start_time) = '{$date}' ";
+        }
+        $sql = "SELECT DISTINCT *,
+        result.id as resultId,
+        result.created_on as resultCreatedOn,
+        result.updated_on as resultUpdatedOn,
+        result.deleted_on as resultDeletedOn,
+        user.id as userId,
+        user.created_on as userCreatedOn,
+        user.updated_on as userUpdatedOn,
+        user.deleted_on as userDeletedOn
+        FROM user 
+        INNER JOIN result ON user.id = result.user_id
+        WHERE result.paper_id = {$paper_id}
+        AND result.deleted_on IS NULL
+        {$add}
         AND user.deleted_on IS NULL
         ORDER BY user.name ASC";
 
