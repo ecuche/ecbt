@@ -16,7 +16,6 @@ $router->add("find/test", ["controller" => "homes", "method" => "find-test"]);
 $router->add("test/{code:[A-Z0-9]{6}}/search/result", ["controller" => "homes", "method" => "search-result"]);
 $router->add("search/test", ["controller" => "homes", "method" => "search-test", "form"=>"post"]);
 
-
 $router->add('/contact-us', ["controller" => "homes", "method" => "contact-us", "form"=> "post"]);
 $router->add('/contact', ["controller" => "homes", "method" => "contact"]);
 $router->add('/about-us', ["controller" => "homes", "method" => "about-us"]);
@@ -24,8 +23,24 @@ $router->add('/404', ["controller" => "homes", "method" => "e404"]);
 $router->add('/500', ["controller" => "homes", "method" => "e500"]);
 $router->add('/test', ["controller" => "homes", "method" => "test"]);
 
-// Admin/Users Routes
-$router->add('/admin/{controller}/{method}', ["namespace" => "Admin"]);
+// Admin Routes
+$router->add('/admin', ["namespace" => "Admin", "controller" => "admins", "method" => "dashboard", "auth"=>true]);
+$router->add('/admin/dashboard', ["namespace" => "Admin", "controller" => "admins", "method" => "dashboard", "auth"=>true]);
+$router->add('/admin/all-users', ["namespace" => "Admin", "controller" => "admins", "method" => "all-users", "auth"=>true]);
+$router->add('/admin/instructors/all', ["namespace" => "Admin", "controller" => "admins", "method" => "all-instructors", "auth"=>true]);
+$router->add('/admin/students/all', ["namespace" => "Admin", "controller" => "admins", "method" => "all-students", "auth"=>true]);
+$router->add('/admin/admins/all', ["namespace" => "Admin", "controller" => "admins", "method" => "all-admins", "auth"=>true]);
+$router->add('/admin/find-user', ["namespace" => "Admin", "controller" => "admins", "method" => "find-user", "auth"=>true]);
+$router->add('/admin/get-user', ["namespace" => "Admin", "controller" => "admins", "method" => "get-user", "auth"=>true, 'form'=>'post']);
+$router->add('/admin/all-papers', ["namespace" => "Admin", "controller" => "admins", "method" => "all-papers", "auth"=>true]);
+$router->add('/admin/edit/paper/{code:[A-Z0-9]{6}}', ["namespace" => "Admin", "controller" => "admins", "method" => "edit-paper", "auth"=>true]);
+$router->add('/admin/update/paper/{code:[A-Z0-9]{6}}', ["namespace" => "Admin", "controller" => "admins", "method" => "update-paper", "auth"=>true, 'form'=>'post']);
+$router->add('/admin/paper/{code:[A-Z0-9]{6}}/questions-list', ["namespace" => "Admin", "controller" => "admins", "method" => "questions-List", "auth"=>true]);
+$router->add('/admin/find-paper', ["namespace" => "Admin", "controller" => "admins", "method" => "find-paper", "auth"=>true]);
+$router->add('/admin/get-paper', ["namespace" => "Admin", "controller" => "admins", "method" => "get-paper", "auth"=>true, 'form'=>'post']);
+$router->add("/admin/edit/user/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}", ["namespace" => "Admin", "controller" => "admins", "method" => "edit-user", "auth"=>true]);
+$router->add("/admin/update/user/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}", ["namespace" => "Admin", "controller" => "admins", "method" => "update-user", "auth"=>true, 'form'=>'post']);
+$router->add("/admin/instructor/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/papers", ["namespace" => "Admin", "controller" => "admins", "method" => "instructor-papers", "auth"=>true]);
 
 // Users Routes
 $router->add("/dashboard", ["controller" => "users", "method" => "dashboard"]);
@@ -41,6 +56,7 @@ $router->add('/users', ["controller" => "users", "method" => "index", "middlewar
 $router->add('/users/show', ["controller" => "users", "method" => "show"]);
 
 //students Routes
+$router->add("student", ["controller" => "students", "method" => "dashboard",  "auth"=>true]);
 $router->add("student/dashboard", ["controller" => "students", "method" => "dashboard",  "auth"=>true]);
 $router->add("results/show/all", ["controller" => "students", "method" => "show-all-results",  "auth"=>true]);
 $router->add("paper/{code:[A-Z0-9]{6}}/result/show", ["controller" => "students", "method" => "show-test-result",  "auth"=>true]);
@@ -55,6 +71,7 @@ $router->add("paper/test/submit-option-selected", ["controller" => "students", "
 
 
 //Instructor Routes
+$router->add("instructor", ["controller" => "instructors", "method" => "dashboard",  "auth"=>true]);
 $router->add("instructor/dashboard", ["controller" => "instructors", "method" => "dashboard",  "auth"=>true]);
 $router->add("instructor/new-test", ["controller" => "instructors", "method" => "new-test",  "auth"=>true]);
 $router->add("instructor/papers", ["controller" => "instructors", "method" => "papers-list",  "auth"=>true]);

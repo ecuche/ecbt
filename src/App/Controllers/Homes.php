@@ -187,7 +187,7 @@ class Homes extends Controller
         if(empty($this->usersModel->getErrors())){
             if(!empty($user)){
                 $new_password = password_hash($data->password, PASSWORD_DEFAULT); 
-                $this->usersModel->updateRow($user->id, ['password' => $new_password]);
+                $this->usersModel->updateRowById($user->id, ['password' => $new_password]);
                 $this->usersModel->destroyRow($hash_row->id, 'password_reset');
                 $mail = new Mail;
                 $mail->to($user->email, $user->name);
@@ -219,7 +219,7 @@ class Homes extends Controller
                 $token = new Token($sign);
                 $token = $token->getHash();
                 if($token === $hash){
-                    if($this->usersModel->updateRow($user->id, ['active'=>1])){
+                    if($this->usersModel->updateRowById($user->id, ['active'=>1])){
                         Session::set('success','Account activated successfully. Kindly login');
                         return $this->redirect('');
                     }

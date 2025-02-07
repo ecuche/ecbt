@@ -7,7 +7,6 @@ use Framework\Helpers\Session;
 use Framework\Helpers\Redirect;
 use Framework\Helpers\Functions;
 use Framework\Helpers\CSV;
-use DateTime;
 
 class Instructor extends Model
 {
@@ -147,7 +146,7 @@ class Instructor extends Model
                     SELECT user_id  FROM `result` WHERE paper_id IN (
                         SELECT id FROM `paper` WHERE user_id = {$user_id})) ORDER BY user.name ASC";
     
-        $result = $this->findQueryString($sql);
+        $result = $this->findByQueryString($sql);
         return (object) $result;
     }
 
@@ -169,7 +168,7 @@ class Instructor extends Model
         AND user.deleted_on IS NULL
         ORDER BY user.name ASC";
 
-        $result = $this->findQueryString($sql);
+        $result = $this->findByQueryString($sql);
         return (object) $result;
     }
 
@@ -198,7 +197,7 @@ class Instructor extends Model
         AND user.deleted_on IS NULL
         ORDER BY user.name ASC";
 
-        $result = $this->findQueryString($sql);
+        $result = $this->findByQueryString($sql);
         return (object) $result;
     }
 
@@ -226,7 +225,7 @@ class Instructor extends Model
         AND paper.deleted_on IS NULL
         ORDER BY paper.name ASC";
 
-        $result = $this->findQueryString($sql);
+        $result = $this->findByQueryString($sql);
         return (object) $result;
     }
 }

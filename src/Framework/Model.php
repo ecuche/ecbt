@@ -48,11 +48,42 @@ abstract class Model
         return  $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public function findQueryString($sql): object |array
+    public function getAll(string $table = null): array|object
+    {
+        return $this->findAll($table);
+    }
+
+    public function readAll(string $table = null): array|object
+    {
+        return $this->findAll($table);
+    }
+
+    public function pullAllByLimit(int $limit = 10, int $offset = 0, string $table = null): array|object
+    {
+        $table ??= $this->getTable();
+        $conn = $this->database->getConnection();
+        $sql = "SELECT * FROM {$table}  ORDER BY id ASC LIMIT {$limit} OFFSET {$offset}";
+        $stmt = $conn->query($sql);
+        return  $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function findByQueryString($sql): object |array
     {
         $conn = $this->database->getConnection();
         $stmt = $conn->query($sql);
         return  $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function getByQueryString(string $sql): object | array
+    {
+        return $this->findByQueryString($sql);
+    }
+
+    public function executeQueryString(string $sql): mixed
+    {
+        $conn = $this->database->getConnection();
+        $stmt = $conn->query($sql);
+        return $stmt->execute();
     }
 
     public function first(string $table = null): array|object
@@ -90,6 +121,11 @@ abstract class Model
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
+    public function getById(int $id, string $table = null): object|bool
+    {
+        return $this->findById($id, $table);
+    }
+
     public function pullById(int $id, string $table = null): object|bool
     {
         $table ??= $this->getTable();
@@ -116,6 +152,11 @@ abstract class Model
         $stmt->bindValue(":field", $value, $type);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function getByField(string $field, mixed $value, string $table = null): object|bool
+    {
+        return $this->findByField($field, $value, $table);
     }
 
     public function findByFields(array $fields, string $table = null): object|bool
@@ -150,10 +191,124 @@ abstract class Model
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
+    public function getByFields(array $fields, string $table = null): object|bool
+    {
+        return $this->findByFields($fields, $table);
+    }
+
+    public function pullByFields(array $fields, string $table = null): object|bool
+    {
+        $table ??= $this->getTable();
+        $sql = "SELECT * FROM {$table} WHERE ";
+        $count = count($fields);
+        $i = 1;
+        foreach($fields as $key => $value){
+            $sql .= " {$key} = :{$key}";
+            if($i < $count){
+                $sql .= " AND ";
+            }
+            $i++;
+        }
+        $conn = $this->database->getConnection();
+        $stmt = $conn->prepare($sql);
+        foreach($fields as $key => $value){
+            $type = match(gettype($value)){
+                "boolean" => PDO::PARAM_BOOL,
+                "integer" => PDO::PARAM_INT,
+                "NULL" => PDO::PARAM_NULL,
+                default => PDO::PARAM_STR
+            };
+            $stmt->bindValue(":{$key}", $value, $type);
+        }
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ);
+    }
+
+    public function findAllByFields(array $fields, string $table = null): mixed
+    {
+        $table ??= $this->getTable();
+        $sql = "SELECT * FROM {$table} WHERE ";
+
+        $count = count($fields);
+        $i = 1;
+        foreach($fields as $key => $value){
+            $sql .= " {$key} = :{$key}";
+            if($i < $count){
+                $sql .= " AND ";
+            }else{
+                $sql .= " AND deleted_on IS NULL";
+            }
+            $i++;
+        }
+        $conn = $this->database->getConnection();
+        $stmt = $conn->prepare($sql);
+        foreach($fields as $key => $value){
+            $type = match(gettype($value)){
+                "boolean" => PDO::PARAM_BOOL,
+                "integer" => PDO::PARAM_INT,
+                "NULL" => PDO::PARAM_NULL,
+                default => PDO::PARAM_STR
+            };
+            $stmt->bindValue(":{$key}", $value, $type);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function getAllByFields(array $fields, string $table = null): mixed
+    {
+        return $this->findAllByFields($fields, $table);
+    }
+
+    public function pullAllByFields(array $fields, string $table = null): mixed
+    {
+        $table ??= $this->getTable();
+        $sql = "SELECT * FROM {$table} WHERE ";
+        $count = count($fields);
+        $i = 1;
+        foreach($fields as $key => $value){
+            $sql .= " {$key} = :{$key}";
+            if($i < $count){
+                $sql .= " AND ";
+            }
+            $i++;
+        }
+        $conn = $this->database->getConnection();
+        $stmt = $conn->prepare($sql);
+        foreach($fields as $key => $value){
+            $type = match(gettype($value)){
+                "boolean" => PDO::PARAM_BOOL,
+                "integer" => PDO::PARAM_INT,
+                "NULL" => PDO::PARAM_NULL,
+                default => PDO::PARAM_STR
+            };
+            $stmt->bindValue(":{$key}", $value, $type);
+        }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function findAllByField(string $field, mixed $value, string $table = null): mixed
     {
         $table ??= $this->getTable();
         $sql = "SELECT * FROM {$table} WHERE {$field} = :field AND deleted_on IS NULL";
+        $type = match(gettype($value)){
+            "boolean" => PDO::PARAM_BOOL,
+            "integer" => PDO::PARAM_INT,
+            "NULL" => PDO::PARAM_NULL,
+            default => PDO::PARAM_STR
+        };
+        $conn = $this->database->getConnection();
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(":field", $value, $type);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function pullAllByField(string $field, mixed $value, string $table = null): mixed
+    {
+        $table ??= $this->getTable();
+        $sql = "SELECT * FROM {$table} WHERE {$field} = :field ";
         $type = match(gettype($value)){
             "boolean" => PDO::PARAM_BOOL,
             "integer" => PDO::PARAM_INT,
@@ -206,10 +361,15 @@ abstract class Model
             };
             $stmt->bindValue($i++, $value, $type);
         }
-       
         return $stmt->execute();
     }
-    public function updateRow(int $id, array|object $data, string $table = null): bool
+
+    public function create(array|object $data, string $table = null): bool
+    {
+        return $this->insert($data, $table);
+    }
+
+    public function updateRowById(int $id, array|object $data, string $table = null): bool
     {
         if(!empty($this->errors)){
             return false;
@@ -239,7 +399,8 @@ abstract class Model
         $stmt->bindValue($i, $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
-    public function editRow(int $id, array|object $data, string $table = null): bool
+
+    public function amendRowById(int $id, array|object $data, string $table = null): bool
     {
         if(!empty($this->errors)){
             return false;
@@ -267,6 +428,11 @@ abstract class Model
         }
         $stmt->bindValue($i, $id, PDO::PARAM_INT);
         return $stmt->execute();
+    }
+    
+    public function editRowById(int $id, array|object $data, string $table = null): bool
+    {
+        return $this->amendRowById($id,  $data, $table);
     }
 
     public function deleteRow(int $id, string $table = null): bool

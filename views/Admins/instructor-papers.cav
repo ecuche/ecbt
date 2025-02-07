@@ -1,0 +1,79 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}   
+<div class="table-responsive border rounded-4 col-lg-8 col-md-11 col-sm-12 mt-5 mb-5">
+  <table class="table text-nowrap mb-0 align-middle">
+    <thead class="text-dark fs-4">
+      <tr>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">#</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Name</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Code</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">status</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Instructor</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Date Created</h6>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% $i = 1; %}
+      {% foreach($papers as $key => $paper): %}
+      <tr>
+            <td>
+                <div class="d-flex align-items-center">
+                    <h6 class="fw-semibold">{{$i}}</h6>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <a href="{{URL_ROOT}}/admin/edit/paper/{{ $paper->code }}" hovertext="click to edit {{$paper->code}}">
+                        <h6 class="fw-semibold">{{ $paper->name }}</h6>
+                    </a>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <h6 class="fw-semibold">{{ $paper->code }}</h6>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <h6 class="fw-semibold">
+                        {% if($paper->status === 0): %}
+                        <span class="badge bg-warning rounded-pill">Not Active</span>
+                        {% elseif($paper->status === 1): %}
+                        <span class="badge bg-success rounded-pill">Active</span>
+                        {% endif; %}
+                    </h6>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <a href="{{URL_ROOT}}/admin/edit/user/{{ $user->email }}" hovertext="click to edit {{$paper->name}}">
+                        <h6 class="fw-semibold">{= $user->name =}</h6>
+                    </a>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <h6 class="fw-semibold">{% echo date('jS-M-Y', strtotime($paper->created_on)) %}</h6>
+                </div>
+            </td>
+        </tr>
+
+        {% $i++ %}
+      {% endforeach; %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

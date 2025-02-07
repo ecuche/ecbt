@@ -53,9 +53,9 @@ class Users extends Controller
         if(empty($this->usersModel->getErrors())){
             if(!empty($user)){
 
-                $this->usersModel->updateRow($user->id, ['name' => $data->name, 'reg_no'=> $data->reg_no]);
+                $this->usersModel->updateRowById($user->id, ['name' => $data->name, 'reg_no'=> $data->reg_no]);
                 if($user->email !== $data->email){
-                    $this->usersModel->updateRow($user->id, ['email' => $data->email, 'active'=>0]);
+                    $this->usersModel->updateRowById($user->id, ['email' => $data->email, 'active'=>0]);
                     $this->usersModel->destroyByfield('user_id', $user->id, 'remembered_logins');
                     $user = $this->usersModel->findById($user->id);
                     $this->usersModel->sendActivation($user);
@@ -111,7 +111,7 @@ class Users extends Controller
         if(empty($this->usersModel->getErrors())){
             if(!empty($user)){
                 $new_password = password_hash($data->new_password, PASSWORD_DEFAULT); 
-                $this->usersModel->updateRow($user->id, ['password' => $new_password]);
+                $this->usersModel->updateRowById($user->id, ['password' => $new_password]);
                 $mail = new Mail;
                 $mail->to($user->email, $user->name);
                 $mail->subject('Password Reset Successful');
@@ -150,7 +150,7 @@ class Users extends Controller
         $update = $this->request->post;
         
 
-        if($this->usersModel->updateRow($id, $update)){
+        if($this->usersModel->updateRowById($id, $update)){
             header("Location: {$_ENV['URL_ROOT']}/users/show/{$id}");
             exit;
         }else{

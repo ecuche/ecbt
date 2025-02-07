@@ -224,7 +224,7 @@ class Student extends Model
         AND user.deleted_on IS NULL
         ORDER BY result.created_on DESC";
     
-        $result = $this->findQueryString($sql);
+        $result = $this->findByQueryString($sql);
         return (object) $result;
     }
 

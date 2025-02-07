@@ -170,7 +170,7 @@ class User extends Model
             $hash = $token->getHash();
             $expiry = date('Y-m-d H:i:s', strtotime('+30 minutes'));
             if($reset = $this->findByField("user_id", $user->id, 'password_reset')){
-                $this->updateRow($reset->id, ['hash' => $hash, 'expiry' => $expiry], 'password_reset');
+                $this->updateRowById($reset->id, ['hash' => $hash, 'expiry' => $expiry], 'password_reset');
             }else{
                 $this->insert(['user_id' => $user->id, 'hash' => $hash, 'expiry' => $expiry], 'password_reset');
             }

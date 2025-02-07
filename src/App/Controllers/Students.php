@@ -202,7 +202,7 @@ class Students extends Controller
         $poll = $csv->countAllRow();
         $score = $csv->countNotNullFields('correct');
         $grade = $this->studentModel->grade($score, $poll);
-        $this->studentModel->updateRow($result->id, [
+        $this->studentModel->updateRowById($result->id, [
             'poll'=> $grade->total,
             'score'=> $grade->score,
             'percent'=> $grade->percent,

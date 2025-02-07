@@ -1,0 +1,91 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}   
+<div class="table-responsive border rounded-4 col-lg-8 col-md-11 col-sm-12 mt-5 mb-5">
+  <table class="table text-nowrap mb-0 align-middle">
+    <thead class="text-dark fs-4">
+      <tr>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">#</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">email</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Name</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Role</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">status</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Institution ID</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Date joined</h6>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    {% $i = $offset; %}
+      {% foreach($users as $key => $user): %}
+      <tr>
+            <td>
+                <div class="d-flex align-items-center">
+                    <h6 class="fw-semibold">{{$i}}</h6>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <a href="{{URL_ROOT}}/admin/edit/user/{{ $user->email }}" hovertext="click to edit {{$user->name}}">
+                        <h6 class="fw-semibold">{{ $user->email }}</h6>
+                    </a>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                  <a href="{{URL_ROOT}}/admin/edit/user/{{ $user->email }}" hovertext="click to edit {{$user->name}}">
+                    <h6 class="fw-semibold">{= $user->name =}</h6>
+                  </a>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <a href="{{URL_ROOT}}/admin/{{ $user->role }}s/all" hovertext="click to view all {= $user->role =}">
+                      <h6 class="fw-semibold">{= $user->role =}</h6>
+                    </a>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <h6 class="fw-semibold">
+                        {% if(!empty($user->deleted_on)): %}
+                        <span class="badge bg-danger rounded-pill">Deleted</span>
+                        {% elseif(empty($user->active)): %}
+                        <span class="badge bg-warning rounded-pill">Not Active</span>
+                        {% elseif(!empty($user->active)): %}
+                        <span class="badge bg-success rounded-pill">Active</span>
+                        {% endif; %}
+                    </h6>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <h6 class="fw-semibold">{{$user->reg_no}}</h6>
+                </div>
+            </td>
+            <td>
+                <div class="d-flex align-items-center">
+                    <h6 class="fw-semibold">{% echo date('jS-M-Y', strtotime($user->created_on)) %}</h6>
+                </div>
+            </td>
+        </tr>
+
+        {% $i++ %}
+      {% endforeach; %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -131,7 +131,7 @@ class Instructors extends Controller
         if(empty((array) $errors)) {
             unset($paper->name);
             $paper->user_id = $this->user->id;
-            if($this->instructorsModel->updateRow($db_paper->id, $paper, 'paper')) {
+            if($this->instructorsModel->updateRowById($db_paper->id, $paper, 'paper')) {
                 Session::set('success','Test Updated successful.');
                 return $this->redirect("instructor/paper/{$db_paper->code}/edit");
             }else{
@@ -155,7 +155,7 @@ class Instructors extends Controller
         $paper = $this->instructorsModel->instructorAuth( $code);
         $csv = new CSV($code, 'papers');
         if (empty($csv) || $csv->countAllRow() < $paper->poll) {
-            $this->instructorsModel->updateRow($paper->id, ["status"=> 0], "paper");
+            $this->instructorsModel->updateRowById($paper->id, ["status"=> 0], "paper");
         }
         return $this->view('instructors/questions-list', [
             'user'=> $this->user,
@@ -339,7 +339,7 @@ class Instructors extends Controller
         $paper = $this->instructorsModel->instructorAuth( $code);
         $csv = new CSV($paper->code,"papers");
         if (empty($csv) || $csv->countAllRow() < $paper->poll) {
-            $this->instructorsModel->updateRow($paper->id, ["status"=> 0], "paper");
+            $this->instructorsModel->updateRowById($paper->id, ["status"=> 0], "paper");
             Session::set('warning', 'Total questions added is not upto the total questions specified');
             return $this->redirect("instructor/paper/{$code}/edit");
         }
@@ -350,7 +350,7 @@ class Instructors extends Controller
                 break;
             default: $val = 0;
         }
-        $this->instructorsModel->updateRow($paper->id, ["status"=> $val], "paper");
+        $this->instructorsModel->updateRowById($paper->id, ["status"=> $val], "paper");
         Session::set('success', 'Status change Successfully');
         return $this->redirect("instructor/paper/{$code}/edit");
     }
@@ -376,9 +376,7 @@ class Instructors extends Controller
     public function showParticipants($code): Response 
     {
         $paper = $this->instructorsModel->instructorAuth( $code);
-
         $students = !empty($_POST['date']) ? $this->instructorsModel->getAllTestStudentByDate($paper->id, date: $_POST['date']) : $this->instructorsModel->getAllTestStudentByDate($paper->id);
-       
         return $this->view('instructors/show-participants', [
             'user'=> $this->user,
             'students'=> $students,

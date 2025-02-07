@@ -33,6 +33,45 @@
               <iconify-icon icon="solar:menu-dots-bold" class="nav-small-cap-icon fs-4"></iconify-icon>
               <span class="hide-menu" id="get-url">DASHBOARD</span>
             </li>
+
+            {% if($_SESSION['role'] === "admin"): %}
+            <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/all-users" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+                <span class="hide-menu">All Users</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/admins/all" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+                <span class="hide-menu">All Admins</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/instructors/all" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+                <span class="hide-menu">All Instructors</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/students/all" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+                <span class="hide-menu">All Students</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/find-user" aria-expanded="false"><iconify-icon icon="solar:box-minimalistic-line-duotone"></iconify-icon>
+                <span class="hide-menu">Find User</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/all-papers" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+                <span class="hide-menu">All Tests</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/find-paper" aria-expanded="false"><iconify-icon icon="solar:box-minimalistic-line-duotone"></iconify-icon>
+                <span class="hide-menu">Find Test</span>
+              </a>
+            </li>
+            {% endif; %}
+
             {% if($_SESSION['role'] === "instructor"): %}
             <li class="sidebar-item">
               <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/instructor/new-test" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
@@ -50,6 +89,7 @@
               </a>
             </li>
             {% endif; %}
+            {% if($_SESSION['role'] === "instructor" || $_SESSION['role'] === "student" ): %}
 
             <li class="sidebar-item">
               <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/find/test" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
@@ -61,6 +101,8 @@
                 <span class="hide-menu">My Results</span>
               </a>
             </li>
+            {% endif; %}
+
             
           </ul>
         </nav>

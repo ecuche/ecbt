@@ -1,0 +1,142 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}   
+<div class="table-responsive mb-4 col-lg-8 col-md-10 col-sm-12 pt-5">
+<div>
+    <a href="{{URL_ROOT}}/admin/edit/paper/{{ $paper->code }}" class="btn btn-secondary mb-4 rounded-2 me-2">Edit paper</a>
+    <button class="btn btn-dark mb-4 rounded-2 me-2" style="cursor: default">Paper Name: {= $paper->name =} | Code: {{ $paper->code }}</b>
+</div>
+  <table class="table text-nowrap mb-0 align-middle">
+    <thead class="text-dark fs-4">
+      <tr>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">#</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Question</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Image (If applicable)</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Correct Options(s)</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Wrong Option(s)</h6>
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% if(array_filter((array)$csv)): %}
+
+      {% $i = 1; %}
+      {% foreach($csv as $key => $value): %}
+      {% $value = (object) $value %}
+      <tr>
+        <td>
+          <div class="d-flex align-items-center">
+            <div class="ms-3">
+              <h6 class="fs-4 fw-semibold mb-0">{{$i}}.</h6>
+            </div>
+          </div>
+        </td>
+        <td>
+            <a href="{{URL_ROOT}}/admin/paper/{{ $paper->code }}/{{ $value->id }}/edit/question">
+                <p class="mb-0 fw-normal text-secondary">{! $value->question !}</p>
+            </a>
+        </td>
+        <td>
+          <p class="mb-0 fw-normal">
+            {% if (!empty($value->image)): %}
+              Image exist
+            {% endif; %}
+          </p>
+        </td>
+        <td>
+          <div class=" align-items-center gap-2 text-success">
+            {% $j = 1; %}
+            {% if(!empty($value->answers)): %}
+            {% foreach(json_decode($value->answers) as $ans) :%}
+              {% if($ans->correct): %}
+              <div class="row">
+                  {{$j}}. {! $ans->answer !}
+                  </div>
+                  {% $j++; %}
+              {% endif %}
+            {% endforeach %}
+            {% endif %}
+
+          </div>
+        </td>
+        <td>
+          <div class=" align-items-center gap-2 text-danger">
+          {% $k = 1; %}
+          {% if(!empty($value->answers)): %}
+              {% foreach(json_decode($value->answers) as $ans) :%}
+                {% if(!$ans->correct): %}
+                <div class="row">
+                    {{$k}}. {! $ans->answer !}
+                    </div>
+                    {% $k++; %}
+                {% endif %}
+            {% endforeach %}
+            {% endif %}
+          </div>
+        </td>
+        <td>
+          <div class="dropdown dropstart">
+            <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="ti ti-dots fs-5"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+              <li>
+                <a class="dropdown-item d-flex align-items-center gap-3" href="{{URL_ROOT}}/admin/paper/{{ $paper->code }}/{{ $value->id }}/edit/question">
+                  <i class="fs-4 ti ti-edit"></i>Edit
+                </a>
+              </li>
+              <li>
+                <!-- <a class="dropdown-item d-flex align-items-center gap-3 mymodal" href="{{URL_ROOT}}/admin/paper/{!$paper->code!}/delete"  data-bs-toggle="modal" data-bs-target="#pop-tool-modal"> -->
+
+                <a class="dropdown-item d-flex align-items-center gap-3 mymodal" href="{{URL_ROOT}}/admin/paper/{{ $paper->code }}/{{ $value->id }}/delete/question" data-bs-toggle="modal" data-bs-target="#pop-tool-modal">
+                  <i class="fs-4 ti ti-trash"></i>Delete
+                </a>
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+      {% $i++ %}
+      {% endforeach; %}
+      {% endif %}
+
+    </tbody>
+  </table>
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="pop-tool-modal" tabindex="-1" aria-labelledby="vertical-center-modal" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header d-flex align-items-center">
+        <h4 class="modal-title" id="myLargeModalLabel">
+         Are you sure you want to delete this Test?
+        </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+     
+      <div class="modal-footer">
+        <a href="" class="btn bg-danger-subtle text-danger  waves-effect text-start mymodalpop">
+          Delete
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
