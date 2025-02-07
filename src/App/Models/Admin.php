@@ -46,6 +46,19 @@ class Admin extends Model
         }
     }
 
+    public function updatePaperById($id, $data)
+    {
+        if($data['delete'] === 'delete'){
+            $this->amendRowById($id, ['deleted_on'=> date('Y-m-d H:i:s')], 'paper');
+        }elseif($data['delete'] === 'recover'){
+            $this->amendRowById($id, ['deleted_on'=> NULL], 'paper');
+        }
+       
+        if($data['status'] !== ''){
+            $this->amendRowById($id, ['status'=> $data['status']], 'paper');
+        }
+    }
+
     public function allPapersByLimit(int $limit = 10, int $offset = 0): array|object
     {
         $sql = "SELECT *,

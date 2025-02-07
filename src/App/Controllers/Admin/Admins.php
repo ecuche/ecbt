@@ -125,14 +125,28 @@ class Admins extends Controller
 
     public function updatePaper($code): Response
     {
-
-        var_dump($_POST);
-        exit;
+        CSRF::check($this->request->post['csrf_token']);
         $paper = $this->adminModel->authPaper($code);
-        $user = $this->adminModel->findById($paper->user_id, 'user');
+        $user = $this->adminModel->getById($paper->user_id, 'user');
+        $post = [
+            'status' => $this->request->post['status'],
+            'delete' => $this->request->post['delete'],
+        ];
+        $this->adminModel->updatePaperById($paper->id, $post);
+        $settings['view_result'] =  isset($this->request->post['view_result']) ? 1 : 0;
+        $settings['view_answers'] =  isset($this->request->post['view_answers']) ? 1 : 0;
+        $settings['view_result'] = !empty($settings['view_answers']) ? 1 : $settings['view_result'];
+        $data = [
+            'name' => $this->request->post['name'],
+            'settings' => json_encode($settings),
+        ];
+        $this->adminModel->updateRowById($paper->id, $data, 'paper' );
+        $paper = $this->adminModel->authPaper($code);
+        Session::set('success', 'Paper settings has been updated');
         return $this->view('admins/edit-paper', [
             'paper' => $paper,
             'user' => $user,
+            'alert' => Session::flash(['success', 'danger', 'warning']),
             'CSRF' => CSRF::generate(),
             'settings' => json_decode($paper->settings)
         ]);

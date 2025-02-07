@@ -123,7 +123,7 @@ class Instructors extends Controller
         $paper['pass_mark'] =  !empty($this->request->post['pass_mark']) ? $this->request->post['pass_mark'] :  50;
         $settings['view_result'] =  isset($this->request->post['view_result']) ? 1 : 0;
         $settings['view_answers'] =  isset($this->request->post['view_answers']) ? 1 : 0;
-        $settings['view_result'] = !empty($settings['view_answers']) ? $settings['view_answers'] : 1;
+        $settings['view_result'] = empty($settings['view_answers']) ? $settings['view_result'] : 1;
         $paper = (object)$paper;
         $paper->settings = json_encode($settings);
         $errors = $this->instructorsModel->validateUpdateTest($paper);;

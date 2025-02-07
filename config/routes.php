@@ -69,7 +69,6 @@ $router->add("paper/{code:[A-Z0-9]{6}}/test/submit", ["controller" => "students"
 $router->add("paper/test/prev-next", ["controller" => "students", "method" => "prev-next",  "auth"=>true, "form" => "post"]);
 $router->add("paper/test/submit-option-selected", ["controller" => "students", "method" => "submit-option-selected",  "auth"=>true, "form" => "post"]);
 
-
 //Instructor Routes
 $router->add("instructor", ["controller" => "instructors", "method" => "dashboard",  "auth"=>true]);
 $router->add("instructor/dashboard", ["controller" => "instructors", "method" => "dashboard",  "auth"=>true]);
@@ -77,7 +76,6 @@ $router->add("instructor/new-test", ["controller" => "instructors", "method" => 
 $router->add("instructor/papers", ["controller" => "instructors", "method" => "papers-list",  "auth"=>true]);
 $router->add("instructor/new-test/submit", ["controller" => "instructors", "method" => "insert-new-test",  "auth"=>true, "form"=>"post"]);
 $router->add("search/mystudent/test-results/all", ["controller" => "instructors", "method" => "search-my-student",  "auth"=>true, "form"=>"post"]);
-
 
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/edit", ["controller" => "instructors", "method" => "edit-paper",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/update", ["controller" => "instructors", "method" => "update-paper",  "auth"=>true, "form"=>"post"]);
@@ -95,7 +93,6 @@ $router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/delete-question-image
 $router->add("instructor/my-students", ["controller" => "instructors", "method" => "my-students",  "auth"=>true]);
 $router->add("student/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/instructor/tests", ["controller" => "instructors", "method" => "student-tests",  "auth"=>true]);
 
-
 // Generic Controllers CRUD Routes
 $router->add('/{controller}/show/{id:\d+}', ["method" => "show", "middleware"=>"deny"]);
 $router->add('/{controller}/edit/{id:\d+}', ["method" => "edit"]);
@@ -104,7 +101,7 @@ $router->add('/{controller}/delete/{id:\d+}', ["method" => "delete"]);
 $router->add('/{controller}/destroy/{id:\d+}', ["method" => "destroy", "form" => "post"]);
 
 // Generic Routes
-$router->add("/{controller}/{method}");
+// $router->add("/{controller}/{method}");
 // $router->add("{username:\w+([-+.+@']\w+)*}", ["controller" => "users", "method" => "profile"]);
 // $router->add("/{controller}/{method}/{id:\d+}");
 // $router->add('/{title}/{id:\d+}/{page:\d+}', ["controller" => "users", "method" => "showPage"]);
