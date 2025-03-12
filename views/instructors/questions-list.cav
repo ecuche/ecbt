@@ -28,6 +28,9 @@
         <th>
           <h6 class="fs-4 fw-semibold mb-0">Wrong Option(s)</h6>
         </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Banned</h6>
+        </th>
         <th></th>
       </tr>
     </thead>
@@ -83,6 +86,15 @@
                     {% $k++; %}
                 {% endif %}
             {% endforeach %}
+            {% endif %}
+          </div>
+        </td>
+        <td>
+          <div class=" align-items-center gap-2 text-danger">
+            {% if(!empty($value->ban)): %}
+            <span class="badge text-bg-danger fs-2 fw-semibold">Banned</span>
+            {% else: %}
+            <span class="badge text-bg-success fs-2 fw-semibold">Ok</span>
             {% endif %}
           </div>
         </td>

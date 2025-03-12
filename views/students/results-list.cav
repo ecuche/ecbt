@@ -65,8 +65,6 @@
                   </tr>
                   {% $i++; %}
                   {% endforeach; %}  
-
-
                 </tbody>
               </table>
             </div>

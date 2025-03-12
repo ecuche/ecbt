@@ -108,9 +108,10 @@ class Instructor extends Model
             array_push( $answers,  $ans);
         }
         $csv->insertRows([
-            'question'		=> $post['question'],	
-            'image'			=> $post['image'],	
-            'answers' 		=> json_encode($answers),
+            'question'	=> $post['question'],	
+            'image'		=> $post['image'],	
+            'answers' 	=> json_encode($answers),
+            'ban' 	    => 0,
         ]);
     }
 

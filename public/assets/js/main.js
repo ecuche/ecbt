@@ -1,5 +1,26 @@
 $(document).ready(function () {
 
+    if($('alert').length){
+        var alerts = $('alert').toArray();
+        alerts.forEach(function(alert) {
+            var value = alert.innerHTML;
+            var color = alert.getAttribute('color');
+            if(color === 'danger'){
+                color = 'error';
+            }
+            toastr[color](
+               value,
+                "Alert",
+                {   positionClass: "toastr toast-top-left",
+                    containerId: "toast-top-left",
+                    showMethod: "fadeIn",
+                    hideMethod: "fadeOut",
+                    timeOut: 3000
+                });
+            
+        });
+    }
+    
     $('body').append('<div id="hoverdiv"></div>');
     $('#hoverdiv').css({'display':'none', 'position':'absolute', 'font-size': '14px', 'background-color': '#fff', 'color': '#404040', 'border': '1px solid #999', 'padding': '7px' });
     $(document).on('mousemove', '[hovertext]', function(e){
@@ -10,8 +31,6 @@ $(document).ready(function () {
     $(document).on('mouseout', '[hovertext]', function(e){
         $('#hoverdiv').hide();
     });
-    
-
     
     home_url = $('#home_url').attr('href')
 
@@ -146,9 +165,10 @@ $(document).ready(function () {
         var printContents = $('#printable-area').clone(); // Clone the div
         var printWindow = window.open('', '');
         var styles = $('head').html(); // Capture all <style> and <link> tags from the current document
+        var foot = $('footer').html();
 
         // Write content to the new print window
-        printWindow.document.write('<html><head>' + styles + '</head><body>' + printContents.prop('outerHTML') + '</body></html>');
+        printWindow.document.write('<html><head>' + styles + '</head><body>' + printContents.prop('outerHTML') + foot +'</body></html>');
         printWindow.document.close();
         printWindow.focus();
         printWindow.print();

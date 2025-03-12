@@ -158,6 +158,9 @@
     </tbody>
   </table>
 
+
+
+  </div>
   <div class="col-lg-12 d-flex align-items-stretch">
   <!--  start Right Alignment Pagination -->
   <div class="card w-100">
@@ -185,8 +188,6 @@
   </div>
   <!--  end Right Alignment Pagination -->
 </div>
-
-  </div>
 
 </div>
 <!-- Modal -->

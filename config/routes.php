@@ -41,6 +41,15 @@ $router->add('/admin/get-paper', ["namespace" => "Admin", "controller" => "admin
 $router->add("/admin/edit/user/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}", ["namespace" => "Admin", "controller" => "admins", "method" => "edit-user", "auth"=>true]);
 $router->add("/admin/update/user/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}", ["namespace" => "Admin", "controller" => "admins", "method" => "update-user", "auth"=>true, 'form'=>'post']);
 $router->add("/admin/instructor/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/papers", ["namespace" => "Admin", "controller" => "admins", "method" => "instructor-papers", "auth"=>true]);
+$router->add("/admin/paper/{code:[A-Z0-9]{6}}/{id:\d+}/unban/question", ["namespace" => "Admin", "controller" => "admins", "method" => "unban-question", "auth"=>true, 'form'=>'post']);
+$router->add("/admin/paper/{code:[A-Z0-9]{6}}/{id:\d+}/ban/question", ["namespace" => "Admin", "controller" => "admins", "method" => "ban-question", "auth"=>true, 'form'=>'post']);
+$router->add("/admin/paper/{code:[A-Z0-9]{6}}/view/question/{id:\d+}", ["namespace" => "Admin", "controller" => "admins", "method" => "view-question", "auth"=>true]);
+
+
+
+http://localhost/ecbt/
+
+
 
 // Users Routes
 $router->add("/dashboard", ["controller" => "users", "method" => "dashboard"]);

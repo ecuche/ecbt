@@ -1,0 +1,6 @@
+id,chosen,correct,hash,question_id,question,image,options
+1,"only whatsapp","0","3TAMS8","4","<p>dp</p>",,"[{""answer"":""every where"",""correct"":""1"",""hash"":""0UQFV9""},{""answer"":""only whatsapp"",""correct"":""0"",""hash"":""3TAMS8""}]"
+2,"abdullahi","0","T60J0L","5","<p>what is bukar&#39;s surname</p>",,"[{""answer"":""abdullahi"",""correct"":""0"",""hash"":""T60J0L""},{""answer"":""abdulkadir"",""correct"":""1"",""hash"":""WBWSX5""}]"
+3,"emmanuel","1","R9TU37","3","<p>uche</p>",,"[{""answer"":""emmanuel"",""correct"":""1"",""hash"":""R9TU37""},{""answer"":""emma"",""correct"":""0"",""hash"":""9HZT2I""}]"
+4,"f=Gm1m2/r2","0","GXC9Q5","2","<p>what is the formular for force</p>",,"[{""answer"":""f=Gm1m2\/r2"",""correct"":""0"",""hash"":""GXC9Q5""},{""answer"":""f=ma"",""correct"":""1"",""hash"":""9EDYRK""}]"
+5,"π","1","J2X0FG","1","<p>what is the correct constant in calculation of a circle&nbsp;</p>",,"[{""answer"":""\u03c0"",""correct"":""1"",""hash"":""J2X0FG""},{""answer"":""\u03a3"",""correct"":""0"",""hash"":""P2EFD6""}]"

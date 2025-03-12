@@ -320,7 +320,7 @@ class Homes extends Controller
                 Session::set('success','Message sent. Thanks for contacting us');
                 return $this->redirect("");
             }else{
-                return $this->redirect("505");
+                return $this->redirect("500");
             }
         }else{
             return $this->view('homes/contact-us', [

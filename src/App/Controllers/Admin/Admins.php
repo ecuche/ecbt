@@ -7,6 +7,7 @@ use Framework\Helpers\CSRF;
 use Framework\Helpers\CSV;
 use Framework\Helpers\Session;
 use Framework\Helpers\Auth;
+use Framework\Helpers\Media;
 use Framework\Response;
 use App\Models\Admin;
 use App\Models\User;
@@ -204,7 +205,50 @@ class Admins extends Controller
         return $this->view('admins/questions-list', [
             'paper' => $paper,
             'user' => $user,
+            'CSRF' => CSRF::generate(),
+            'alert' => Session::flash(['success', 'danger', 'warning']),
             'csv' => $csv,
+        ]);
+    }
+
+    public function banQuestion($code, $id): Response
+    {
+        CSRF::check($this->request->post['csrf_token']);
+        if(file_exists("{$_ENV['CSV_PATH']}/papers/{$code}.csv")){
+            $csv = new CSV($code, 'papers');
+            $csv->updateRows(['ban'=>1], $id);
+            Session::set('warning', 'question Banned');
+        }else{
+            Session::set('warning', 'Paper does not exist');
+        }
+        return $this->redirect("admin/paper/{$code}/questions-list");
+    }
+
+    public function unbanQuestion($code, $id): Response
+    {
+        CSRF::check($this->request->post['csrf_token']);
+        if(file_exists("{$_ENV['CSV_PATH']}/papers/{$code}.csv")){
+            $csv = new CSV($code, 'papers');
+            $csv->updateRows(['ban'=>0], $id);
+            Session::set('success', 'question Unbanned');
+        }else{
+            Session::set('warning', 'Paper does not exist');
+        }
+        return $this->redirect("admin/paper/{$code}/questions-list");
+    }
+
+    public function viewQuestion($code, $id): Response
+    {
+        $paper = $this->adminModel->pullByField('code', $code, 'paper');
+        $csv = new CSV($code, 'papers');
+        $question = $csv->getRow($id);
+        $instructor = $this->adminModel->pullById($paper->user_id, 'user');
+        return $this->view('admins/view-question', [
+            'paper' => $paper,
+            'instructor' => $instructor,
+            'question' => $question,
+            'answers' => json_decode($question->answers),
+            'image' => $question->image ? Media::questionImage( $question->image ) : null,
         ]);
     }
 }

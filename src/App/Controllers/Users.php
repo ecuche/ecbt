@@ -46,14 +46,14 @@ class Users extends Controller
             'id' => $user->id,
             'name' => $this->request->post['name'],
             'reg_no' => $this->request->post['reg_no'],
-            'email' => $this->request->post['email']
+            'email' => $this->request->post['email'],
+            'phone' => $this->request->post['phone']
         ];
         $data = (object)$data;
         $this->usersModel->validateProfileUpdate($data);
         if(empty($this->usersModel->getErrors())){
             if(!empty($user)){
-
-                $this->usersModel->updateRowById($user->id, ['name' => $data->name, 'reg_no'=> $data->reg_no]);
+                $this->usersModel->updateRowById($user->id, ['name' => $data->name, 'reg_no'=> $data->reg_no, 'phone'=> $data->phone]);
                 if($user->email !== $data->email){
                     $this->usersModel->updateRowById($user->id, ['email' => $data->email, 'active'=>0]);
                     $this->usersModel->destroyByfield('user_id', $user->id, 'remembered_logins');

@@ -17,16 +17,11 @@
             </h4>
           </div>
             <form method="POST" action="{{URL_ROOT}}/instructor/paper/{! $paper->code !}/update">
-                {% if(!empty($alert)): %}
-                {% foreach($alert as $key => $value): %}
-                <div class="mb-3">
-                  <div class="alert alert-{{$key}} alert-dismissible fade show" role="alert">
-                    <strong>{{$value}}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-                  </div>
-                {% endforeach %}
-              {% endif; %}
+            {% if(!empty($alert)): %}
+              {% foreach($alert as $key => $value): %}
+                <alert color="{{ $key }}">{{ $value }}</alert>
+              {% endforeach %}
+            {% endif; %}
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Paper Name</label>
                 <input type="text" class="form-control {% echo !empty($errors->name) ? 'is-invalid' : ''; %}" value="{{$paper->name}}" id="exampleInputEmail1" aria-describedby="emailHelp" disabled required>

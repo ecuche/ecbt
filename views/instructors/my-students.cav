@@ -6,13 +6,9 @@
   
 {% if(!empty($alert)): %}
   {% foreach($alert as $key => $value): %}
-    <div class="alert alert-{{$key}} alert-dismissible fade show" role="alert">
-      <strong>{{$value}}</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+    <alert color="{{ $key }}">{{ $value }}</alert>
   {% endforeach %}
 {% endif; %}
-
 
 <div class="row col-lg-6 col-md-8">
 <div class="card w-100">

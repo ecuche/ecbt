@@ -75,7 +75,7 @@
     display: none;
   }
   
-  .answer-radio input[type='radio']:checked + label {
+.answer-radio input[type='radio']:checked + label {
     position: relative;
     background-color: #1a1a1a; /* Assuming $themeDark is #1a1a1a */
     padding-left: 40px;
@@ -126,5 +126,9 @@
 }
 
 .hidden {
+    display: none;
+}
+
+alert {
     display: none;
 }

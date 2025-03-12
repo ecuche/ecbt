@@ -1,4 +1,4 @@
-<div class="page-wrapper">
+<div class="page-wrapper mt-3">
       <button class="btn btn-primary p-3 rounded-circle d-flex align-items-center justify-content-center customizer-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
         <i class="icon ti ti-settings fs-7"></i>
       </button>
@@ -105,6 +105,6 @@
           </nav>
         </div>
     </header>
-    </div>
-<div class="position-relative overflow-hidden bg-light-subtle min-vh-100 w-100 d-flex align-items-center justify-content-center py-5">
+  </div>
+<div class="position-relative overflow-hidden bg-light-subtle min-vh-100 w-100 d-flex align-items-center justify-content-center py-2">
      

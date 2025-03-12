@@ -2,21 +2,25 @@
 {% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
 {% block body %}
 <link href="{{URL_ROOT}}/assets/libs/froala/css/froala_editor.pkgd.min.css" rel="stylesheet"/>
-<div class="col-lg-6 mx-auto pt-5">
+<div class="col-lg-6 mx-auto pt-5 {% echo !empty($question->ban) ? 'bg-danger-subtle' : '' %}">
   <div class="card">
     <div class="px-4 py-3 border-bottom">
       <h4 class="card-title mb-0"></h4>
       <h6 class="card-title mb-0">Add {= $paper->name =} | {= $paper->code =} question</h6>
     </div>
     <div class="card-body p-4 justify-content-center">
-      {% if(!empty($alert)): %}
-        {% foreach($alert as $key => $value): %}
-          <div class="alert alert-{{$key}} alert-dismissible fade show" role="alert">
-            <strong>{{$value}}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        {% endforeach %}
+    {% if(!empty($alert)): %}
+      {% foreach($alert as $key => $value): %}
+        <alert color="{{ $key }}">{{ $value }}</alert>
+      {% endforeach %}
+    {% endif; %}
+
+      {% if(!empty($question->ban)): %}
+      <div class="alert alert-danger" role="alert">
+        Banned Question
+      </div>
       {% endif; %}
+
       {% if(!empty($question->image)): %}
         <div class="col-lg-6 col-md-6 mx-auto justify-content-center">
           <div class="overflow-hidden">

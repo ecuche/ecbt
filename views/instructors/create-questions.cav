@@ -11,14 +11,11 @@
     </div>
     <div class="card-body p-4 justify-content-center">
 
-          {% if(!empty($alert)): %}
-            {% foreach($alert as $key => $value): %}
-              <div class="alert alert-{{$key}} alert-dismissible fade show" role="alert">
-                <strong>{{$value}}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-              </div>
-            {% endforeach %}
-          {% endif; %}
+    {% if(!empty($alert)): %}
+      {% foreach($alert as $key => $value): %}
+        <alert color="{{ $key }}">{{ $value }}</alert>
+      {% endforeach %}
+    {% endif; %}
     
       <form  action="{{URL_ROOT}}/instructor/paper/{!$paper->code!}/add/question" method="post" enctype="multipart/form-data">
         <div class="mb-4">

@@ -499,6 +499,8 @@
         { showMethod: "fadeIn", hideMethod: "fadeOut", timeOut: 2000 }
       );
     });
+
+    
   })(
     "function" == typeof define && define.amd
       ? define
