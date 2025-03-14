@@ -70,7 +70,8 @@ class Instructors extends Controller
             'CSRF' => CSRF::generate(),
             'papers'=> $papers,
             'count' => $count,
-            'page' => $this->page,
+            'page_url' => $_ENV['URL_ROOT'] ."/instructor/papers",
+            'current_page' => $this->page,
             'total_pages' => $total_pages,
             'i' => $i
         ]);
@@ -387,13 +388,31 @@ class Instructors extends Controller
 
     public function myStudents(): Response
     {
-        $students = $this->instructorsModel->getAllMyStudents($this->user->id);
+        $offset = $this->offset();
+        $students = $this->instructorsModel->getAllMyStudents($this->user->id,$this->limit, $offset);
+        $i = $offset + 1;
+        $count = $this->instructorsModel->countAllMyStudents();
+        $total_pages = ceil($count / $this->limit);
+        if($this->page > $total_pages){
+            return $this->redirect("/instructor/my-students/{$total_pages}"); 
+        }
         return $this->view('instructors/my-students', [
             'user'=> $this->user,
             'students' => $students,
             'alert' => Session::flash(['warning', 'danger', 'success']),
-            'CSRF' => CSRF::generate()
-        ]);
+            'CSRF' => CSRF::generate(),
+            'count' => $count,
+            'page_url' => $_ENV['URL_ROOT'] ."/instructor/my-students",
+            'current_page' => $this->page,
+            'total_pages' => $total_pages,
+            'i' => $i
+        ]);       
+    }
+
+    public function myStudentsPage($page = 1): Response
+    {
+        $this->page = (int) $page;
+        return $this->myStudents();
     }
 
     public function showParticipants($code): Response 
@@ -424,7 +443,7 @@ class Instructors extends Controller
         ]);
     }
 
-    public function showParticipantsPage($code, $page): Response
+    public function showParticipantsPage($code, $page = 1): Response
     {
         $this->page = (int) $page;
         return $this->showParticipants($code);
@@ -432,17 +451,35 @@ class Instructors extends Controller
 
     public function studentTests($email): Response
     {
+        $offset = $this->offset();
         $student = $this->instructorsModel->findByField('email', $email, 'user');
         if(empty($student)){
             Session::set('warning','student does not exist');
-            return $this->redirect('instructor/my-students');
+            return $this->redirect('/instructor/my-students');
         }
-        $results = $this->instructorsModel->myStudentResult($student->id);
+        $results = $this->instructorsModel->myStudentResult($student->id, $this->limit, $offset);
+        $i = $offset + 1;
+        $count = $this->instructorsModel->countMyStudentResult();
+        $total_pages = ceil($count / $this->limit);
+        if($this->page > $total_pages){
+            return $this->redirect("/instructor/my-student/{$email}/results/page/{$total_pages}"); 
+        }
         return $this->view('instructors/student-tests', [
             'user'=> $this->user,
             'student'=> $student,
             'results'=> $results,
+            'count' => $count,
+            'page_url' => $_ENV['URL_ROOT'] ."/instructor/my-student/{$email}/results",
+            'current_page' => $this->page,
+            'total_pages' => $total_pages,
+            'i' => $i
         ]);
+    }
+
+    public function studentTestsPage($email, $page = 1): Response
+    {
+        $this->page = (int) $page;
+        return $this->studentTests($email);
     }
 
     public function searchMyStudent(): Response

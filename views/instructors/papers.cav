@@ -1,7 +1,8 @@
 {% extends "base" %}
 {% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
 {% block body %}   
-<div class="table-responsive border rounded-4 col-lg-8 col-md-11 col-sm-12 mt-5 mb-5">
+<div class="table-responsive rounded-4 col-lg-8 col-md-11 col-sm-12 mt-5 mb-5">
+  <h3>Page {{ $current_page }} of {{ $total_pages}}</h3>
   <table class="table text-nowrap mb-0 align-middle">
     <thead class="text-dark fs-4">
       <tr>
@@ -83,6 +84,9 @@
       {% endforeach; %}
     </tbody>
   </table>
+
+  {% include "shared/pagination" %}
+
 </div>
 
 

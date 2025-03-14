@@ -16,6 +16,8 @@ class Students extends Controller
 {
     private $user;
     private $csrf_token = null;
+    protected int $page = 1;
+    protected int $limit = 1;
 
     public function __construct(private Student $studentModel)
     {
@@ -38,15 +40,40 @@ class Students extends Controller
         ]);
     }
 
-    public function showAllResults(): Response
+    protected function offset(): int
     {
+        return $this->page * $this->limit - $this->limit;
+    }
+
+    public function showResults(): Response
+    {
+        $offset = $this->offset();
+        $user = $this->user;
+        $results = $this->studentModel->getUserResults($user->id, $this->limit, $offset, );
+        $offset = $this->offset();
+        $i = $offset + 1;
+        $count = $this->studentModel->rowCountByField('user_id', $user->id, 'result');
+        $total_pages = ceil($count / $this->limit);
+        if($this->page > $total_pages){
+            return $this->redirect("/results/show/page/{$total_pages}"); 
+        }
         return $this->view('students/results-list', [
-            'user' => $this->user,
-            'results' => $this->studentModel->getUserResults($this->user->id)
+            'user' => $user,
+            'results' => $results,
+            'count' => $count,
+            'page_url' => $_ENV['URL_ROOT'] ."/results/show",
+            'current_page' => $this->page,
+            'total_pages' => $total_pages,
+            'i' => $i,
         ]);
     }
 
-   
+    public function showResultsPage($page = 1): Response
+    {
+        $this->page = (int) $page;
+        return $this->showResults();
+    }
+
     public function showTestResult($code): Response
     {
         $paper = $this->studentModel->findByField('code', $code, 'paper');

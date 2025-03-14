@@ -7,9 +7,9 @@
       <div class="row mb-1">
           <div class="card-body">
             <div class="d-flex mb-1 align-items-center">
-              <h4 class="card-title mb-0">Test Review</h4>
+              <h4 class="card-title mb-0">Test Review  | Page {{ $page }} of {{ $total_pages }}</h4>
             </div>
-            <div class="table-responsive border rounded-4" data-bs-theme="dark">
+            <div class="table-responsive rounded-4" data-bs-theme="dark">
               <table class="table text-nowrap table-dark  mb-0 align-middle">
                 <thead class="text-dark fs-4">
                   <tr>
@@ -31,7 +31,6 @@
                   </tr>
                 </thead>
                 <tbody>
-                {% $i = 1; %}
                 {% foreach ($results as $key => $result): %}
                   <tr>
                     <td>
@@ -67,6 +66,7 @@
                   {% endforeach; %}  
                 </tbody>
               </table>
+              {% include "shared/pagination" %}
             </div>
           </div>
       </div>

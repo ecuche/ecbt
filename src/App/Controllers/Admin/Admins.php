@@ -53,7 +53,8 @@ class Admins extends Controller
             'users' => $users,
             'count' => $count,
             'role' => 'users',
-            'page' => $this->page,
+            'page_url' => $_ENV['URL_ROOT'] ."/admin/users",
+            'current_page' => $this->page,
             'total_pages' => $total_pages,
             'i' => $i,
         ]);
@@ -140,7 +141,8 @@ class Admins extends Controller
         return $this->view('admins/all-papers', [
             'papers' => $papers,
             'count' => $count,
-            'page' => $this->page,
+            'current_page' => $this->page,
+            'page_url' => $_ENV['URL_ROOT'] ."/admin/papers",
             'total_pages' => $total_pages,
             'i'=> $i,
         ]);
@@ -217,7 +219,8 @@ class Admins extends Controller
             'users' => $users,
             'count' => $count,
             'role' => 'instructors',
-            'page' => $this->page,
+            'page_url' => $_ENV['URL_ROOT'] ."/admin/instructors",
+            'current_page' => $this->page,
             'total_pages' => $total_pages,
             'i' => $i
         ]);
@@ -242,8 +245,9 @@ class Admins extends Controller
         return $this->view('admins/all-users', [
             'users' => $users,
             'count' => $count,
-            'role' => 'students',            
-            'page' => $this->page,
+            'role' => 'students', 
+            'page_url' => $_ENV['URL_ROOT'] ."/admin/students",
+            'current_page' => $this->page,
             'total_pages' => $total_pages,
             'i' => $i
         ]);
@@ -269,7 +273,8 @@ class Admins extends Controller
             'users' => $users,
             'count' => $count,
             'role' => 'admins',
-            'page' => $this->page,
+            'page_url' => $_ENV['URL_ROOT'] ."/admin/admins",
+            'current_page' => $this->page,
             'total_pages' => $total_pages,
             'i' => $i
         ]);

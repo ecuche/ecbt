@@ -42,6 +42,7 @@ class Student extends Model
             $end_time =  (int) $paper->time * 60 + time();
             $this->insert([
                 'user_id'=> $_SESSION['id'],
+                'instructor_id' => $paper->user_id,
                 'paper_id'=> $paper->id,
                 'poll'=> $paper->poll,
                 'score'=> 0,
@@ -196,7 +197,7 @@ class Student extends Model
         return (Object) $this->getErrors();
     }
 
-    public function getUserResults($user_id): object
+    public function getUserResults($user_id, int $limit = 10, int $offset = 0) : object
     {
         $sql = "SELECT *,
         result.id as userId,
@@ -222,7 +223,7 @@ class Student extends Model
         AND result.deleted_on IS NULL 
         AND paper.deleted_on IS NULL
         AND user.deleted_on IS NULL
-        ORDER BY result.created_on DESC";
+        ORDER BY result.created_on DESC LIMIT {$limit} OFFSET {$offset}";
     
         $result = $this->findByQueryString($sql);
         return (object) $result;

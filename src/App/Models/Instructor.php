@@ -12,15 +12,18 @@ class Instructor extends Model
 {
     // protected $table = "instructor";
 
+
+    protected string $sql = "";
+
     public function instructorAuth($code): object | bool       
     {
         $paper = $this->findByField("code", $code, 'paper');
         if(empty($paper)) {
             Session::set('warning','Paper does not exist');
-            Redirect::to('instructor/dashboard');
+            Redirect::to('/instructor/dashboard');
         }elseif($paper->user_id !== Session::get('id')){
             Session::set('warning','Paper authorization error');
-            Redirect::to('instructor/dashboard');
+            Redirect::to('/instructor/dashboard');
         }else{
             return $paper;
         }
@@ -141,14 +144,18 @@ class Instructor extends Model
     }
 
 
-    public function getAllMyStudents($user_id): array | object
+    public function getAllMyStudents($user_id, int $limit = 10, int $offset = 0): array | object
     {
-        $sql = "SELECT * FROM `user` WHERE id IN (
-                    SELECT user_id  FROM `result` WHERE paper_id IN (
-                        SELECT id FROM `paper` WHERE user_id = {$user_id})) ORDER BY user.name ASC";
-    
-        $result = $this->findByQueryString($sql);
+        $this->sql = "SELECT * FROM `user` WHERE id IN (
+                SELECT user_id  FROM `result` WHERE paper_id IN (
+                SELECT id FROM `paper` WHERE user_id = {$user_id})) ";
+        $result = $this->findByQueryString($this->sql." ORDER BY user.name ASC LIMIT {$limit} OFFSET {$offset}");
         return (object) $result;
+    }
+
+    public function countAllMyStudents(): int
+    {
+        return  $this->countThisSql();
     }
 
     public function getAllTestStudents($paper_id): array | object
@@ -204,10 +211,10 @@ class Instructor extends Model
         return (object) $result;
     }
 
-    public function myStudentResult($student_id): array | object
+    public function myStudentResult($student_id, int $limit = 10, int $offset = 0): array | object
     {
         $teacher_id = Session::get('id');
-        $sql = "SELECT result.*, paper.*,
+        $this->sql = "SELECT result.*, paper.*,
         result.id as resultId,
         result.user_id as resultUserId,
         result.poll as resultPoll,
@@ -225,10 +232,19 @@ class Instructor extends Model
         WHERE paper.user_id = {$teacher_id} 
         AND result.user_id = {$student_id}
         AND result.deleted_on IS NULL 
-        AND paper.deleted_on IS NULL
-        ORDER BY paper.name ASC";
+        AND paper.deleted_on IS NULL";
 
-        $result = $this->findByQueryString($sql);
+        $result = $this->findByQueryString($this->sql." ORDER BY paper.name ASC LIMIT {$limit} OFFSET {$offset}");
         return (object) $result;
+    }
+
+    public function countMyStudentResult(): int
+    {
+        return  $this->countThisSql();
+    }
+
+    public function countThisSql(): int
+    {
+        return  $this->rowTotalByQueryString($this->sql);
     }
 }

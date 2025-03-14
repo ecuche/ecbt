@@ -549,6 +549,7 @@ abstract class Model
         return (int) $row->total;	
     }
 
+    
     public function rowTotalByField(string $field, mixed $value, string $table = null): int
     {
         $table ??= $this->getTable();
@@ -557,6 +558,14 @@ abstract class Model
         $stmt = $conn->query($sql);
         $row = $stmt->fetch(PDO::FETCH_OBJ);
         return (int) $row->total;	
+    }
+
+    public function rowTotalByQueryString(string $sql): int
+    {
+        $conn = $this->database->getConnection();
+        $stmt = $conn->query($sql);
+        $result =  $stmt->fetchAll(PDO::FETCH_OBJ);
+        return (int) count($result);	
     }
 
     public function fieldValueExists(string $field, mixed $value, string $table = null): bool

@@ -1,116 +1,95 @@
 {% extends "base" %}
 {% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
-{% block body %}   
+{% block body %}
 
 <div class="row table-responsive rounded-4 col-lg-8 col-md-11 col-sm-12 mt-5 mb-5">
-  
-{% if(!empty($alert)): %}
-  {% foreach($alert as $key => $value): %}
-    <alert color="{{ $key }}">{{ $value }}</alert>
-  {% endforeach %}
-{% endif; %}
 
-<div class="row col-lg-6 col-md-8">
-<div class="card w-100">
-        <div class="card-body">
-          <div class="d-flex mb-3 align-items-center">
-            <h4 class="card-title mb-0">Search student</h4>
-          </div>
-            <form action="{{URL_ROOT}}/search/mystudent/test-results/all" method="post">
-              <div class="input-group mb-3">
-                {! $CSRF !}
-                <input type="email" class="form-control {% echo !empty($email_errors) ? 'is-invalid' : ''; %}" value="{{$student->email}}" name="email" placeholder="Enter Student email" required>
-                <button type="submit" class="input-group-text"><i class="ti ti-search fs-4"></i></button>
-              </div>
-              <div class="mb-3 text-danger" id="passwordHelpBlock">{{$email_errors}}</div>
-            </form>
+  {% if(!empty($alert)): %}
+    {% foreach($alert as $key => $value): %}
+      <alert color="{{ $key }}">{{ $value }}</alert>
+    {% endforeach %}
+  {% endif %}
+
+  <div class="col-lg-7 col-md-8">
+    <div class="card w-100">
+      <div class="card-body">
+        <div class="d-flex mb-3 align-items-center">
+          <h4 class="card-title mb-0">Search student</h4>
         </div>
+        <form action="{{URL_ROOT}}/search/mystudent/test-results/all" method="post">
+          <div class="input-group mb-3">
+            {! $CSRF !}
+            <input type="email" class="form-control {% echo !empty($email_errors) ? 'is-invalid' : ''; %}" value="{{$student->email}}" name="email" placeholder="Enter Student email" required>
+            <button type="submit" class="input-group-text"><i class="ti ti-search fs-4"></i></button>
+          </div>
+          <div class="mb-3 text-danger" id="passwordHelpBlock">{{$email_errors}}</div>
+        </form>
       </div>
-      </div>
-
-  <table class="table text-nowrap mb-0 align-middle">
-    <thead class="text-dark fs-4">
-    <tr>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">#</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">Student Name</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">email</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">Institution ID</h6>
-        </th>
-        <th>
-          <h6 class="fs-4 fw-semibold mb-0">Test(s)</h6>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {% $i = 1; %}
-      {% foreach($students as $key => $student): %}
-      <tr>
-        <td>
-          <div class="d-flex align-items-center">
-            <h6 class="fw-semibold">{{$i}}</h6>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex align-items-center">
-            <h6 class="fw-semibold mb-1">{= $student->name =}</h6>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex align-items-center">
-            <h6 class="fw-semibold mb-1">{{$student->email}}</h6>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex align-items-center">
-            <h6 class="fw-semibold mb-1">{{$student->reg_no}}</h6>
-          </div>
-        </td>
-        <td>
-          <div class="d-flex align-items-center">
-            <a href="{{URL_ROOT}}/student/{{ $student->email }}/instructor/tests"><h6 class="fw-semibold mb-1">View results</h6></a>
-           
-          </div>
-        </td>
-      </tr>
-      {% $i++ %}
-      {% endforeach; %}
-    </tbody>
-  </table>
-
-  <div class="col-lg-12 d-flex align-items-stretch">
-  <!--  start Right Alignment Pagination -->
-  <div class="card w-100">
-    <div class="card-body">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-end">
-          <li class="page-item disabled">
-            <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-disabled="true">Previous</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="javascript:void(0)">1</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="javascript:void(0)">2</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="javascript:void(0)">3</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="javascript:void(0)">Next</a>
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
-  <!--  end Right Alignment Pagination -->
-</div>
+
+  <div class="col-lg-12">
+  <h4>Page {{ $current_page }} of {{ $total_pages }} </h4>
+    <div class="card w-100">
+      <div class="card-body">
+        <table class="table text-nowrap mb-0 align-middle">
+          <thead class="text-dark fs-4">
+            <tr>
+              <th>
+                <h6 class="fs-4 fw-semibold mb-0">#</h6>
+              </th>
+              <th>
+                <h6 class="fs-4 fw-semibold mb-0">Student Name</h6>
+              </th>
+              <th>
+                <h6 class="fs-4 fw-semibold mb-0">email</h6>
+              </th>
+              <th>
+                <h6 class="fs-4 fw-semibold mb-0">Institution ID</h6>
+              </th>
+              <th>
+                <h6 class="fs-4 fw-semibold mb-0">Test(s)</h6>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% foreach($students as $key => $student): %}
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  <h6 class="fw-semibold">{{$i}}</h6>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <h6 class="fw-semibold mb-1">{= $student->name =}</h6>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <h6 class="fw-semibold mb-1">{{$student->email}}</h6>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <h6 class="fw-semibold mb-1">{{$student->reg_no}}</h6>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                <a href="{{URL_ROOT}}/instructor/my-student/{{ $student->email }}/results"><h6 class="fw-semibold mb-1">View results</h6></a>
+                </div>
+              </td>
+            </tr>
+            {% $i++ %}
+            {% endforeach; %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  {% include "shared/pagination" %}
 
 </div>
 

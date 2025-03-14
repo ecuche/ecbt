@@ -68,7 +68,8 @@ $router->add('/users/show', ["controller" => "users", "method" => "show"]);
 //students Routes
 $router->add("student", ["controller" => "students", "method" => "dashboard",  "auth"=>true]);
 $router->add("student/dashboard", ["controller" => "students", "method" => "dashboard",  "auth"=>true]);
-$router->add("results/show/all", ["controller" => "students", "method" => "show-all-results",  "auth"=>true]);
+$router->add("results/show", ["controller" => "students", "method" => "show-results",  "auth"=>true]);
+$router->add("results/show/page/{page:[1-9]\d*}", ["controller" => "students", "method" => "show-results-page",  "auth"=>true]);
 $router->add("paper/{code:[A-Z0-9]{6}}/result/show", ["controller" => "students", "method" => "show-test-result",  "auth"=>true]);
 $router->add("paper/{code:[A-Z0-9]{6}}/result/review", ["controller" => "students", "method" => "review-test-result",  "auth"=>true]);
 $router->add("paper/{code:[A-Z0-9]{6}}/result/view/{id:\d+}", ["controller" => "students", "method" => "view-question-result",  "auth"=>true]);
@@ -103,7 +104,9 @@ $router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/update/question", ["c
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/delete/question", ["controller" => "instructors", "method" => "delete-question",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/{id:\d+}/delete-question-image", ["controller" => "instructors", "method" => "delete-question-image",  "auth"=>true]);
 $router->add("instructor/my-students", ["controller" => "instructors", "method" => "my-students",  "auth"=>true]);
-$router->add("student/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/instructor/tests", ["controller" => "instructors", "method" => "student-tests",  "auth"=>true]);
+$router->add("instructor/my-students/page/{page:[1-9]\d*}", ["controller" => "instructors", "method" => "my-students-page",  "auth"=>true]);
+$router->add("instructor/my-student/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/results", ["controller" => "instructors", "method" => "student-tests",  "auth"=>true]);
+$router->add("instructor/my-student/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}/results/page/{page:[1-9]\d*}", ["controller" => "instructors", "method" => "student-tests-page",  "auth"=>true]);
 
 // Generic Controllers CRUD Routes
 $router->add('/{controller}/show/{id:\d+}', ["method" => "show", "middleware"=>"deny"]);

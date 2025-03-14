@@ -97,7 +97,7 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/results/show/all" aria-expanded="false"><iconify-icon icon="solar:box-minimalistic-line-duotone"></iconify-icon>
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/results/show" aria-expanded="false"><iconify-icon icon="solar:box-minimalistic-line-duotone"></iconify-icon>
                 <span class="hide-menu">My Results</span>
               </a>
             </li>

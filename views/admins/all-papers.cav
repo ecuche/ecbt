@@ -77,46 +77,7 @@
     </tbody>
   </table>
 
-  <div class="col-lg-12 d-flex align-items-stretch">
-    <!--  start Right Alignment Pagination -->
-    <div class="card w-100">
-      <div class="card-body">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-end">
-            <li class="page-item {% echo $page <= 1 || $page > $total_pages ? 'disabled' : '' %}">
-              <a class="page-link link" href="{{ URL_ROOT }}/admin/papers/page/1" aria-label="Next">
-                <span aria-hidden="true">
-                <i class="ti ti-chevrons-left fs-4"></i>
-                </span>
-              </a>
-            </li>
-            <li class="page-item {% echo $page <= 1 || $page > $total_pages ? 'disabled' : '' %}">
-              <a class="page-link link" href="{{ URL_ROOT }}/admin/papers/page/{% echo  $page - 1 %}" aria-label="Next">
-                <span aria-hidden="true">
-                <i class="ti ti-chevron-left fs-4"></i>
-                </span>
-              </a>
-            </li>
-            <li class="page-item {% echo $page >= $total_pages || $page < 1 ? 'disabled' : '' %}">
-              <a class="page-link link" href="{{ URL_ROOT }}/admin/papers/page/{% echo  $page + 1 %}" aria-label="Next">
-                <span aria-hidden="true">
-                <i class="ti ti-chevron-right fs-4"></i>
-                </span>
-              </a>
-            </li>
-            <li class="page-item {% echo $page >= $total_pages || $page < 1  ? 'disabled' : '' %}">
-              <a class="page-link link" href="{{ URL_ROOT }}/admin/papers/page/{{ $total_pages }}" aria-label="Next">
-                <span aria-hidden="true">
-                <i class="ti ti-chevrons-right fs-4"></i>
-                </span>
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-    <!--  end Right Alignment Pagination -->
-  </div>
+{% include "shared/pagination" %}
 
 </div>
 {% endblock %}

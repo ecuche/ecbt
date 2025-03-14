@@ -1,0 +1,74 @@
+<div class="col-lg-12 d-flex align-items-stretch">
+    <!--  start Right Alignment Pagination -->
+    <div class="card w-100">
+      <div class="card-body">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-end">
+			
+			<li class="page-item {% echo $current_page <= 1 || $current_page > $total_pages ? 'disabled' : '' %}">
+				<a class="page-link link" href="{{ $page_url }}/page/1" aria-label="Next">
+					<span aria-hidden="true">
+					<i class="ti ti-chevrons-left fs-4"></i>
+					</span>
+				</a>
+			</li>
+			<li class="page-item {% echo $current_page <= 1 || $current_page > $total_pages ? 'disabled' : '' %}">
+				<a class="page-link link" href="{{ $page_url }}/page/{% echo $current_page - 1 %}" aria-label="Next">
+					<span aria-hidden="true">
+					<i class="ti ti-chevron-left fs-4"></i>
+					</span>
+				</a>
+			</li>
+
+			{% if( $total_pages <= 3): %}
+				{% for($x = 1; $x <= 3; $x++) :%}
+					{% if( $x <= $total_pages): %}
+						<li class="page-item {% echo $current_page == $x ? 'active' : '' %}">
+							<a class="page-link" href="{{ $page_url }}/page/{{ $x }}">{{ $x }}</a>
+						</li>
+					{% endif; %}
+				{% endfor; %}
+			{% else: %}
+				{% if( $current_page == 1): %}
+					{% for($x = 1; $x <= 3; $x++) :%}
+						<li class="page-item {% echo $current_page == $x ? 'active' : '' %}">
+							<a class="page-link" href="{{ $page_url }}/page/{{ $x }}">{{ $x }}</a>
+						</li>
+					{% endfor; %}
+				{% elseif( $current_page == $total_pages): %}
+					{% for($x = $total_pages - 2; $x <= $total_pages; $x++) :%}
+						<li class="page-item {% echo $current_page == $x ? 'active' : '' %}">
+							<a class="page-link" href="{{ $page_url }}/page/{{ $x }}">{{ $x }}</a>
+						</li>
+					{% endfor; %}
+				{% else: %}
+					{% for($x = $current_page - 1; $x <= $current_page + 1; $x++) :%}
+						<li class="page-item {% echo $current_page == $x ? 'active' : '' %}">
+							<a class="page-link" href="{{ $page_url }}/page/{{ $x }}">{{ $x }}</a>
+						</li>
+					{% endfor; %}
+            	{% endif; %}
+            {% endif; %}
+
+
+           
+			<li class="page-item {% echo $current_page >= $total_pages || $current_page < 1 ? 'disabled' : '' %}">
+				<a class="page-link link" href="{{ $page_url }}/page/{% echo  $current_page + 1 %}" aria-label="Next">
+					<span aria-hidden="true">
+					<i class="ti ti-chevron-right fs-4"></i>
+					</span>
+				</a>
+			</li>
+			<li class="page-item {% echo $current_page >= $total_pages || $current_page < 1  ? 'disabled' : '' %}">
+				<a class="page-link link" href="{{ $page_url }}/page/{{ $total_pages }}" aria-label="Next">
+					<span aria-hidden="true">
+					<i class="ti ti-chevrons-right fs-4"></i>
+					</span>
+				</a>
+			</li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!--  end Right Alignment Pagination -->
+  </div>

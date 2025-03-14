@@ -90,79 +90,8 @@
     </tbody>
   </table>
 
-  <div class="col-lg-12 d-flex align-items-stretch">
-    <!--  start Right Alignment Pagination -->
-    <div class="card w-100">
-      <div class="card-body">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-end">
-			
-			<li class="page-item {% echo $page <= 1 || $page > $total_pages ? 'disabled' : '' %}">
-				<a class="page-link link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/1" aria-label="Next">
-					<span aria-hidden="true">
-					<i class="ti ti-chevrons-left fs-4"></i>
-					</span>
-				</a>
-			</li>
-			<li class="page-item {% echo $page <= 1 || $page > $total_pages ? 'disabled' : '' %}">
-				<a class="page-link link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{% echo $page - 1 %}" aria-label="Next">
-					<span aria-hidden="true">
-					<i class="ti ti-chevron-left fs-4"></i>
-					</span>
-				</a>
-			</li>
+  {% include "shared/pagination" %}
 
-			{% if( $total_pages <= 3): %}
-				{% for($x = 1; $x <= 3; $x++) :%}
-					{% if( $x <= $total_pages): %}
-						<li class="page-item {% echo $page == $x ? 'active' : '' %}">
-							<a class="page-link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{{ $x }}">{{ $x }}</a>
-						</li>
-					{% endif; %}
-				{% endfor; %}
-			{% else: %}
-				{% if( $page == 1): %}
-					{% for($x = 1; $x <= 3; $x++) :%}
-						<li class="page-item {% echo $page == $x ? 'active' : '' %}">
-							<a class="page-link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{{ $x }}">{{ $x }}</a>
-						</li>
-					{% endfor; %}
-				{% elseif( $page == $total_pages): %}
-					{% for($x = $total_pages - 2; $x <= $total_pages; $x++) :%}
-						<li class="page-item {% echo $page == $x ? 'active' : '' %}">
-							<a class="page-link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{{ $x }}">{{ $x }}</a>
-						</li>
-					{% endfor; %}
-				{% else: %}
-					{% for($x = $page - 1; $x <= $page + 1; $x++) :%}
-						<li class="page-item {% echo $page == $x ? 'active' : '' %}">
-							<a class="page-link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{{ $x }}">{{ $x }}</a>
-						</li>
-					{% endfor; %}
-            	{% endif; %}
-            {% endif; %}
-
-
-           
-			<li class="page-item {% echo $page >= $total_pages || $page < 1 ? 'disabled' : '' %}">
-				<a class="page-link link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{% echo  $page + 1 %}" aria-label="Next">
-					<span aria-hidden="true">
-					<i class="ti ti-chevron-right fs-4"></i>
-					</span>
-				</a>
-			</li>
-			<li class="page-item {% echo $page >= $total_pages || $page < 1  ? 'disabled' : '' %}">
-				<a class="page-link link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{{ $total_pages }}" aria-label="Next">
-					<span aria-hidden="true">
-					<i class="ti ti-chevrons-right fs-4"></i>
-					</span>
-				</a>
-			</li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-    <!--  end Right Alignment Pagination -->
-  </div>
+  
 </div>
 {% endblock %}
