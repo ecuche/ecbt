@@ -88,6 +88,16 @@ class Users extends Controller
         ]);
     }
 
+    public function  viewProfileByEmail(string $email): Response
+    {
+        $user = $this->usersModel->getByField('email', $email);
+        return $this->view('users/view-public-profile', [
+            'user' => (object) $user,
+            'alert' => Session::flash(['success', 'warning', 'danger']),
+            'time_ago' => Data::timeAgo($user->created_on)
+        ]);
+    }
+
     public function passwordUpdate(): Response
     {
         $user = $this->user;

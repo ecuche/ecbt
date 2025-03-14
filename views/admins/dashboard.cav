@@ -1,0 +1,13 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}  
+  
+<div class="row col-lg-6 col-md-8">
+  {% if(!empty($alert)): %}
+    {% foreach($alert as $key => $value): %}
+      <alert color="{{ $key }}">{{ $value }}</alert>
+    {% endforeach %}
+  {% endif; %}
+</div> 
+
+{% endblock %}

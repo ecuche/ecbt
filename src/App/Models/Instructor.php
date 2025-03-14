@@ -173,13 +173,15 @@ class Instructor extends Model
         return (object) $result;
     }
 
-    public function getAllTestStudentByDate(int $paper_id, string $date = ""): array | object
+    public function getAllTestStudentByDate(int $paper_id, mixed $date = "", $limit = 10, $offset = 0): array | object
     {
         $add = "";
+        $limit = " LIMIT {$limit} OFFSET {$offset} ";
         if(!empty($date)){
             $date = strtotime($date);
             $date = date("Y-m-d", $date);
             $add = " AND DATE(result.start_time) = '{$date}' ";
+            $limit = "";
         }
         $sql = "SELECT DISTINCT *,
         result.id as resultId,
@@ -196,7 +198,7 @@ class Instructor extends Model
         AND result.deleted_on IS NULL
         {$add}
         AND user.deleted_on IS NULL
-        ORDER BY user.name ASC";
+        ORDER BY user.name ASC {$limit} ";
 
         $result = $this->findByQueryString($sql);
         return (object) $result;

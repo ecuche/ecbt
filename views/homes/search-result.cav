@@ -1,0 +1,142 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}   
+
+<div class="bg-light-subtle w-100 d-flex align-items-center justify-content-center mt-5 mb-5">
+  <div class="row w-70 mt-5 d-flex justify-content-center">
+
+    <div class="row col-md-10 col-lg-8 d-flex align-items-stretch justify-content-center">
+      <!-- start Input Addons Both Side Icon -->
+      <div class="card w-100">
+        <div class="card-body">
+          <div class="d-flex mb-3 align-items-center">
+            <h4 class="card-title mb-0">Enter Test code</h4>
+          </div>
+          <form action="{{URL_ROOT}}/search/test" method="post">
+            <div class="input-group mb-3">
+              {! $CSRF !}
+              <input type="text" class="form-control" value="{{$paper->code}}" name="code" placeholder="Enter Test Code" maxlength="6" pattern=".{6}" style="text-transform:uppercase" required>
+              <button type="submit" class="input-group-text"><i class="ti ti-search fs-4"></i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- end Input Addons Both Side Icon -->
+
+      <div class="row card">
+        <div class="card-body">
+          <h4 class="card-title">Search Result For "{{$paper->code}}"</h4>
+          <div class="vstack gap-3">
+            <div class="pb-3 border-bottom">
+              <a href="javascript:void(0)" class="text-dark fw-semibold link-primary fs-5">{{$paper->name}}</a>
+              <p class="d-flex">
+                By &nbsp; <a href="javascript:void(0)" class="text-primary d-block"> {= $instructor->name =}</a>
+              </p>
+              <p class="mb-0">
+                {{ $paper->description}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row card pt-2">
+        {% if(!empty($result) && empty($rem_time)): %}
+        <div class="d-flex card-header text-bg-warning">
+          <h5 class="col-8 mb-0 text-white">You have already written this exam</h5>
+          <a class="btn btn-info" href="{{URL_ROOT}}/paper/{!$paper->code!}/result/show">View Result</a>
+        </div>
+        {% endif; %}
+        <div class="form-horizontal">
+          <div class="form-body">
+            <div class="card-body">
+              <h5 class="card-title mb-0">Test Info</h5>
+            </div>
+            <hr class="m-0">
+            <div class="row">
+              <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                      <div class="card shadow-none border">
+                        <div class="card-body">
+                          <div class="vstack gap-3 mt-2">
+                            <div class="hstack gap-6">
+                              Test Title:
+                              <h6 class="mb-0">{{$paper->name}}</h6>
+                            </div>
+                            <div class="hstack gap-6">
+                              Instructor:
+                              <h6 class="mb-0">{=$instructor->name=}</h6>
+                            </div>
+                            <div class="hstack gap-6">
+                              Total Questions:
+                              <h6 class="mb-0">{{$paper->poll}}</h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6 col-md-12">
+                      <div class="card shadow-none border">
+                        <div class="card-body">
+                          <div class="vstack gap-3 mt-2">
+                            <div class="hstack gap-6">
+                              Code:
+                              <h6 class="mb-0">{{$paper->code}}</h6>
+                            </div>
+                            <div class="hstack gap-6">
+                              Status:
+                              <h6 class="mb-0">
+                                {% if($paper->status === 1): %}
+                                <span class="badge bg-success rounded-pill">Approved</span>
+                                {% elseif($paper->status === 0): %}
+                                <span class="badge bg-info rounded-pill">Pending</span>
+                                {% else: %}
+                                <span class="badge bg-danger rounded-pill">Suspended</span>
+                                {% endif; %}
+                              </h6>
+                            </div>
+                            <div class="hstack gap-6">
+                              Test Time:
+                              <h6 class="mb-0">{{$paper->time}} Minutes</h6>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% if(empty($result) || !empty($rem_time)): %}
+            <div class="form-actions border-top">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-xl-6">
+                    <div class="row">
+                      <div class="col-xl-offset-3 col-xl-9">
+                        <form action="{{URL_ROOT}}/paper/{!$paper->code!}/test/start" method="post" id="form">
+                          {! $CSRF !}
+                          <button type="button" class="btn px-4 fs-4 bg-primary fw-medium text-body {% echo $paper->status !== 1 ? ' disabled' : '' %}" id="progress-bar">
+                            <i class="ti ti-edit fs-5"></i>
+                            start
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-6"></div>
+                </div>
+              </div>
+            </div>
+            {% endif; %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

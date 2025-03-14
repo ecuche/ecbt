@@ -26,13 +26,18 @@ $router->add('/test', ["controller" => "homes", "method" => "test"]);
 // Admin Routes
 $router->add('/admin', ["namespace" => "Admin", "controller" => "admins", "method" => "dashboard", "auth"=>true]);
 $router->add('/admin/dashboard', ["namespace" => "Admin", "controller" => "admins", "method" => "dashboard", "auth"=>true]);
-$router->add('/admin/all-users', ["namespace" => "Admin", "controller" => "admins", "method" => "all-users", "auth"=>true]);
-$router->add('/admin/instructors/all', ["namespace" => "Admin", "controller" => "admins", "method" => "all-instructors", "auth"=>true]);
-$router->add('/admin/students/all', ["namespace" => "Admin", "controller" => "admins", "method" => "all-students", "auth"=>true]);
-$router->add('/admin/admins/all', ["namespace" => "Admin", "controller" => "admins", "method" => "all-admins", "auth"=>true]);
+$router->add('/admin/users/page/{page:[1-9]\d*}', ["namespace" => "Admin", "controller" => "admins", "method" => "all-users-page", "auth"=>true]);
+$router->add('/admin/users', ["namespace" => "Admin", "controller" => "admins", "method" => "all-users", "auth"=>true]);
+$router->add('/admin/instructors/page/{page:[1-9]\d*}', ["namespace" => "Admin", "controller" => "admins", "method" => "all-instructors-page", "auth"=>true]);
+$router->add('/admin/instructors', ["namespace" => "Admin", "controller" => "admins", "method" => "all-instructors", "auth"=>true]);
+$router->add('/admin/students/page/{page:[1-9]\d*}', ["namespace" => "Admin", "controller" => "admins", "method" => "all-students-page", "auth"=>true]);
+$router->add('/admin/students', ["namespace" => "Admin", "controller" => "admins", "method" => "all-students", "auth"=>true]);
+$router->add('/admin/admins/page/{page:[1-9]\d*}', ["namespace" => "Admin", "controller" => "admins", "method" => "all-admins-page", "auth"=>true]);
+$router->add('/admin/admins', ["namespace" => "Admin", "controller" => "admins", "method" => "all-admins", "auth"=>true]);
 $router->add('/admin/find-user', ["namespace" => "Admin", "controller" => "admins", "method" => "find-user", "auth"=>true]);
 $router->add('/admin/get-user', ["namespace" => "Admin", "controller" => "admins", "method" => "get-user", "auth"=>true, 'form'=>'post']);
-$router->add('/admin/all-papers', ["namespace" => "Admin", "controller" => "admins", "method" => "all-papers", "auth"=>true]);
+$router->add('/admin/papers/page/{page:[1-9]\d*}', ["namespace" => "Admin", "controller" => "admins", "method" => "all-papers-page", "auth"=>true]);
+$router->add('/admin/papers', ["namespace" => "Admin", "controller" => "admins", "method" => "all-papers", "auth"=>true]);
 $router->add('/admin/edit/paper/{code:[A-Z0-9]{6}}', ["namespace" => "Admin", "controller" => "admins", "method" => "edit-paper", "auth"=>true]);
 $router->add('/admin/update/paper/{code:[A-Z0-9]{6}}', ["namespace" => "Admin", "controller" => "admins", "method" => "update-paper", "auth"=>true, 'form'=>'post']);
 $router->add('/admin/paper/{code:[A-Z0-9]{6}}/questions-list', ["namespace" => "Admin", "controller" => "admins", "method" => "questions-List", "auth"=>true]);
@@ -46,16 +51,12 @@ $router->add("/admin/paper/{code:[A-Z0-9]{6}}/{id:\d+}/ban/question", ["namespac
 $router->add("/admin/paper/{code:[A-Z0-9]{6}}/view/question/{id:\d+}", ["namespace" => "Admin", "controller" => "admins", "method" => "view-question", "auth"=>true]);
 
 
-
-http://localhost/ecbt/
-
-
-
 // Users Routes
 $router->add("/dashboard", ["controller" => "users", "method" => "dashboard"]);
 $router->add("/profile/update", ["controller" => "users", "method" => "update-profile", "auth"=>true]);
 $router->add("/update/profile", ["controller" => "users", "method" => "profile-update", "form" => "post"]);
 $router->add("/profile/view", ["controller" => "users", "method" => "view-profile", "auth"=>true]);
+$router->add("/profile/{email:\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*}", ["controller" => "users", "method" => "view-profile-by-email"]);
 $router->add("/update/password", ["controller" => "users", "method" => "password-update", "auth"=>true]);
 $router->add("/password/update", ["controller" => "users", "method" => "update-password", "form" => "post"]);
 $router->add("/users/profile/{username:\w+([-+.+@']\w+)*}", ["controller" => "users", "method" => "profile"]);
@@ -83,6 +84,7 @@ $router->add("instructor", ["controller" => "instructors", "method" => "dashboar
 $router->add("instructor/dashboard", ["controller" => "instructors", "method" => "dashboard",  "auth"=>true]);
 $router->add("instructor/new-test", ["controller" => "instructors", "method" => "new-test",  "auth"=>true]);
 $router->add("instructor/papers", ["controller" => "instructors", "method" => "papers-list",  "auth"=>true]);
+$router->add("instructor/papers/page/{page:[1-9]\d*}", ["controller" => "instructors", "method" => "papers-list-page",  "auth"=>true]);
 $router->add("instructor/new-test/submit", ["controller" => "instructors", "method" => "insert-new-test",  "auth"=>true, "form"=>"post"]);
 $router->add("search/mystudent/test-results/all", ["controller" => "instructors", "method" => "search-my-student",  "auth"=>true, "form"=>"post"]);
 
@@ -92,6 +94,7 @@ $router->add("instructor/paper/{code:[A-Z0-9]{6}}/list", ["controller" => "instr
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/status/{status:[\w-]+}", ["controller" => "instructors", "method" => "change-paper-status",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/delete", ["controller" => "instructors", "method" => "delete-paper",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/participants/show", ["controller" => "instructors", "method" => "show-participants",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/participants/show/page/{page:[1-9]\d*}", ["controller" => "instructors", "method" => "show-participants-page",  "auth"=>true]);
 
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/create/questions", ["controller" => "instructors", "method" => "create-questions",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/add/question", ["controller" => "instructors", "method" => "add-question",  "auth"=>true, "form"=>"post"]);

@@ -51,7 +51,7 @@
                     </td>
                     <td>
                       <div class="d-flex align-items-center">
-                      <span class="fw-normal">{= $result->userName =}</span>
+                      <span class="fw-normal"><a href="{{URL_ROOT}}/profile/{{ $result->email }}" hovertext="view Profile">{= $result->userName =}</a></span>
                       </div>
                     </td>
                     </td>

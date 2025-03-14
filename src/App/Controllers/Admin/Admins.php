@@ -14,6 +14,10 @@ use App\Models\User;
 
 class Admins extends Controller
 {
+
+    protected int $page = 1;
+    protected int $limit = 1;
+
     public function __construct(private Admin $adminModel, private User $userModel)
     {
         Auth::failRedirect('','You need to be logged in to access this page');
@@ -26,18 +30,39 @@ class Admins extends Controller
     public function dashboard(): Response
     {
         return $this->view('admins/dashboard', [
+            'alert' => Session::flash(['warning', 'danger', 'success', 'info']),
         ]);
+    }
+
+    protected function offset(): int
+    {
+        return $this->page * $this->limit - $this->limit;
     }
 
     public function allUsers(): Response
     {
-        $users = $this->userModel->pullAllByLimit();
+        $offset = $this->offset();
+        $users = $this->userModel->pullAllByLimit($this->limit, $offset);
+        $i = $offset + 1;
         $count = $this->adminModel->rowTotal('user');
+        $total_pages = ceil($count / $this->limit);
+        if($this->page > $total_pages){
+            return $this->redirect("/admin/users/page/{$total_pages}"); 
+        }
         return $this->view('admins/all-users', [
             'users' => $users,
             'count' => $count,
-            'offset' => 1
+            'role' => 'users',
+            'page' => $this->page,
+            'total_pages' => $total_pages,
+            'i' => $i,
         ]);
+    }
+
+    public function allUsersPage($page = 1): Response
+    {
+        $this->page = (int) $page;
+        return $this->allUsers();
     }
 
     public function findUser(): Response
@@ -104,12 +129,27 @@ class Admins extends Controller
 
     public function allPapers(): Response
     {
-        $papers = $this->adminModel->allPapersByLimit();
-        $count = $this->adminModel->rowTotal('user');
+        $offset = $this->offset();
+        $i = $offset + 1;
+        $papers = $this->adminModel->allPapersByLimit( $this->limit, $offset);
+        $count = $this->adminModel->rowTotal('paper');
+        $total_pages = ceil($count / $this->limit);
+        if($this->page > $total_pages){
+            return $this->redirect("/admin/papers/page/{$total_pages}"); 
+        }
         return $this->view('admins/all-papers', [
             'papers' => $papers,
-            'count' => $count
+            'count' => $count,
+            'page' => $this->page,
+            'total_pages' => $total_pages,
+            'i'=> $i,
         ]);
+    }
+
+    public function allPapersPage($page = 1): Response
+    {
+        $this->page = (int) $page;
+        return $this->allPapers();
     }
 
     public function editPaper($code): Response
@@ -165,35 +205,80 @@ class Admins extends Controller
 
     public function allInstructors(): Response
     {
-        $users = $this->adminModel->pullAllByField('role', 'instructor', 'user');
-        $count = (array) $users;
-        return $this->view('admins/all-instructors', [
+        $offset = $this->offset();
+        $users = $this->adminModel->pullAllByFieldAndLimit('role', 'instructor', $this->limit, $offset, 'user');
+        $i = $offset + 1;
+        $count = $this->adminModel->rowTotalByField('role','instructor', 'user');
+        $total_pages = ceil($count / $this->limit);
+        if($this->page > $total_pages){
+            return $this->redirect("/admin/instructors/page/{$total_pages}"); 
+        }
+        return $this->view('admins/all-users', [
             'users' => $users,
             'count' => $count,
-            'offset' => 1
+            'role' => 'instructors',
+            'page' => $this->page,
+            'total_pages' => $total_pages,
+            'i' => $i
         ]);
+    }
+
+    public function allInstructorsPage($page = 1): Response
+    {
+        $this->page = (int) $page;
+        return $this->allInstructors();
     }
 
     public function allStudents(): Response
     {
-        $users = $this->adminModel->pullAllByField('role', 'student', 'user');
-        $count = (array) $users;
-        return $this->view('admins/all-instructors', [
+        $offset = $this->offset();
+        $users = $this->adminModel->pullAllByFieldAndLimit('role', 'student', $this->limit, $offset, 'user');
+        $i = $offset + 1;
+        $count = $this->adminModel->rowTotalByField('role','instructor', 'user');
+        $total_pages = ceil($count / $this->limit);
+        if($this->page > $total_pages){
+            return $this->redirect("/admin/students/page/{$total_pages}"); 
+        }
+        return $this->view('admins/all-users', [
             'users' => $users,
             'count' => $count,
-            'offset' => 1
+            'role' => 'students',            
+            'page' => $this->page,
+            'total_pages' => $total_pages,
+            'i' => $i
         ]);
+    }
+
+    public function allStudentsPage($page = 1): Response
+    {
+        $this->page = (int) $page;
+        return $this->allStudents();
     }
 
     public function allAdmins(): Response
     {
-        $users = $this->adminModel->pullAllByField('role', 'admin', 'user');
-        $count = (array) $users;
-        return $this->view('admins/all-instructors', [
+        $offset = $this->offset();
+        $users = $this->adminModel->pullAllByFieldAndLimit('role', 'admin', $this->limit, $offset, 'user');
+        $i = $offset + 1;
+        $count = $this->adminModel->rowTotalByField('role','admin', 'user');
+        $total_pages = ceil($count / $this->limit);
+        if($this->page > $total_pages){
+            return $this->redirect("/admin/admins/page/{$total_pages}"); 
+        }
+        return $this->view('admins/all-users', [
             'users' => $users,
             'count' => $count,
-            'offset' => 1
+            'role' => 'admins',
+            'page' => $this->page,
+            'total_pages' => $total_pages,
+            'i' => $i
         ]);
+    }
+
+    public function allAdminsPage($page = 1): Response
+    {
+        $this->page = (int) $page;
+        return $this->allAdmins();
     }
 
     public function questionsList($code): Response

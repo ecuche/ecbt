@@ -1,0 +1,45 @@
+{% extends "base" %}
+{% block title %} Welcome | LogIn {% endblock %}
+{% block body %}   
+  <div class="d-flex align-items-center justify-content-center w-100">
+    <div class="row justify-content-center w-100">
+      <div class="col-md-8 col-lg-6 col-xxl-3 auth-card">
+        <div class="card mb-0 auth-card">
+          <div class="py-4 px-5">
+            {% if(!empty($alert)): %}
+              {% foreach($alert as $key => $value): %}
+                <alert color="{{ $key }}">{{ $value }}</alert>
+              {% endforeach %}
+            {% endif; %}
+            <form method="POST" action="{{URL_ROOT}}/log-in-user">
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email</label>
+                <input type="email" class="form-control {% echo !empty($errors->email) || !empty($errors->login) ? 'is-invalid' : '' %}" name="email" value="{{$user->email}}" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                <div class="invalid-feedback">{{$errors->email}}</div>
+              </div>
+              <label for="exampleInputPassword1" class="form-label">Password</label>
+              <div class="mb-4 input-group">
+                <input type="password" class="form-control {% echo !empty($errors->password) || !empty($errors->login) ? 'is-invalid' : '' %}" name="password" id="password" data-bs-theme="dark" minlength="8" aria-describedby="passwordHelpBlock" required>
+                <i class="input-group-text bi-eye-slash-fill hide-show-password"></i>
+              </div>
+              {! $CSRF !}
+              <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <div class="form-check form-switch">
+                  <input class="form-check-input primary" name="remember_me" type="checkbox" role="switch" value="" id="flexCheckChecked">
+                  <label class="form-check-label text-dark" for="flexCheckChecked"> Remember me </label>
+                </div>
+                <a class="text-primary fw-medium" href="{{URL_ROOT}}/forgot-password">Forgot Password ?</a>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 py-8 mb-4 rounded-2">Sign In</button>
+              <div class="d-sm-flex align-items-center justify-content-center">
+                <p class="fs-4 mb-0 fw-medium">New to {{SITE_NAME}}?</p>
+                <a class="text-primary fw-medium ms-2" href="{{URL_ROOT}}/register">Create an account</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+

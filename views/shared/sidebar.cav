@@ -36,22 +36,22 @@
 
             {% if($_SESSION['role'] === "admin"): %}
             <li class="sidebar-item">
-              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/all-users" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/users" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
                 <span class="hide-menu">All Users</span>
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/admins/all" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/admins" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
                 <span class="hide-menu">All Admins</span>
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/instructors/all" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/instructors" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
                 <span class="hide-menu">All Instructors</span>
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/students/all" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/students" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
                 <span class="hide-menu">All Students</span>
               </a>
             </li>
@@ -61,7 +61,7 @@
               </a>
             </li>
             <li class="sidebar-item">
-              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/all-papers" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
+              <a class="sidebar-link waves-effect waves-dark" href="{{URL_ROOT}}/admin/papers" aria-expanded="false"><iconify-icon icon="solar:atom-line-duotone"></iconify-icon>
                 <span class="hide-menu">All Tests</span>
               </a>
             </li>

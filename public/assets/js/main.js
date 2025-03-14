@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    // Toastr start
     if($('alert').length){
         var alerts = $('alert').toArray();
         alerts.forEach(function(alert) {
@@ -20,7 +21,9 @@ $(document).ready(function () {
             
         });
     }
-    
+    // Toastr end
+
+    // Hovertext start
     $('body').append('<div id="hoverdiv"></div>');
     $('#hoverdiv').css({'display':'none', 'position':'absolute', 'font-size': '14px', 'background-color': '#fff', 'color': '#404040', 'border': '1px solid #999', 'padding': '7px' });
     $(document).on('mousemove', '[hovertext]', function(e){
@@ -31,16 +34,20 @@ $(document).ready(function () {
     $(document).on('mouseout', '[hovertext]', function(e){
         $('#hoverdiv').hide();
     });
+    // Hovertext end
     
     home_url = $('#home_url').attr('href')
 
+    // zoomable image start
     $(document).on('click', '.zoomable-image', function () {
         const imgSrc = $(this).attr('src');
         $('#modalImage').attr('src', imgSrc);
         $('#imageModal').modal('show');
     });
+    // zoomable image end
 
 
+    // hide show password start
     $('.hide-show-password').css('cursor', 'pointer');
     $(document).on('click', '.hide-show-password', function (e) { 
         e.preventDefault();
@@ -54,7 +61,9 @@ $(document).ready(function () {
             $(this).siblings('#password').attr('type', 'password');;
         }
     });
+    // hide show password end
 
+    // checkbox to input start
     $(document).on('change', '.checkbox', function(e) {
         e.preventDefault();
         if ($(this).is(':checked')) {
@@ -63,13 +72,9 @@ $(document).ready(function () {
             $(this).siblings('#correct').val(0);
         }
     });
+    // checkbox to input end
 
-    $(document).on('click', '.mymodal', function (e) { 
-        e.preventDefault();
-        var val = $(this).attr('href');
-        $('.mymodalpop').attr('href', val);
-    });
-
+    // add and remove option field start
     $(document).on('click', '.addOptionField', function (e) { 
         e.preventDefault();
         var content =   
@@ -95,6 +100,7 @@ $(document).ready(function () {
         </div>`;
         $('.answerOptions').append(content);
     });
+    // add and remove option field end
 
     $(document).on('click', '.removeOptionField', function (e) { 
         e.preventDefault();
@@ -174,5 +180,11 @@ $(document).ready(function () {
         printWindow.print();
         printWindow.close();
    
+    });
+
+    $(document).on('click', '.mymodal', function (e) { 
+        e.preventDefault();
+        var val = $(this).attr('href');
+        $('.mymodalpop').attr('href', val);
     });
 });

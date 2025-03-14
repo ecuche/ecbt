@@ -1,0 +1,92 @@
+{% extends "base" %}
+
+{% block title %} View Profile {% endblock %}
+{% block body %}
+<div class="container-fluid col-lg-8 col-md-10 mt-5 mb-5">
+    
+{% if(!empty($alert)): %}
+  {% foreach($alert as $key => $value): %}
+    <alert color="{{ $key }}">{{ $value }}</alert>
+  {% endforeach %}
+{% endif; %}
+
+<div class="container-fluid">
+          <div class=" shadow-none position-relative overflow-hidden mb-4 card">
+            <div class="card-body">
+              <div class="d-sm-flex justify-content-between align-items-center">
+                <h4 class=" mb-0">
+                  <span class="lstick d-inline-block align-middle"></span>Profile
+                </h4>
+                <nav aria-label="breadcrumb" class="d-flex align-items-center">
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a class="text-primary text-decoration-none" href="{{URL_ROOT}}">Home
+                      </a>
+                    </li>
+                    <li class="breadcrumb-item" aria-current="page">Profile</li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+          <div class="card overflow-hidden">
+            <div class="card-body p-0 mb-3">
+              <img src="{{URL_ROOT}}/assets/images/backgrounds/profilebg.jpg" alt="adminpro-img" class="img-fluid">
+              <div class="row align-items-center">
+                <div class="col-lg-4 order-lg-1 order-2">
+                 
+                </div>
+                <div class="col-lg-4 mt-n3 order-lg-2 order-1">
+                  <div class="mt-n5">
+                    <div class="d-flex align-items-center justify-content-center mb-2">
+                      <div class="d-flex align-items-center justify-content-center round-110">
+                        <div class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden round-100">
+                          <img src="{{URL_ROOT}}/assets/images/profile/user-1.jpg" alt="adminpro-img" class="w-100 h-100">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-center">
+                      <h5 class="mb-0">{= $user->name =}</h5>
+                      <p class="mb-0">{= $user->role =}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="card shadow-none border">
+                    <div class="card-body">
+                      <h4 class="mb-3">Profile Info</h4>
+                      <div class="vstack gap-3 mt-4">
+                       
+                        <div class="hstack gap-6">
+                          <i class="ti ti-mail text-dark fs-6"></i>
+                          <h6 class=" mb-0">{{ $user->email}}</h6>
+                        </div>
+                        <div class="hstack gap-6">
+                          <i class="ti ti-phone text-dark fs-6"></i>
+                          <h6 class=" mb-0">{{ $user->phone}}</h6>
+                        </div>
+                        <div class="hstack gap-6">
+                        Joined:
+                        <h6 class=" mb-0">{{$time_ago}}</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                 
+                </div>
+               
+              </div>
+            </div>
+          
+          </div>
+        </div>
+    <!-- start Form with view only -->
+</div>  
+{% endblock %}

@@ -58,7 +58,7 @@ abstract class Model
         return $this->findAll($table);
     }
 
-    public function pullAllByLimit(int $limit = 10, int $offset = 0, string $table = null): array|object
+    public function pullAllByLimit(int $limit = 2, int $offset = 0, string $table = null): array|object
     {
         $table ??= $this->getTable();
         $conn = $this->database->getConnection();
@@ -305,6 +305,23 @@ abstract class Model
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
+    public function findAllByFieldAndLimit(string $field, mixed $value, int $limit, int $offset, string $table = null): mixed
+    {
+        $table ??= $this->getTable();
+        $sql = "SELECT * FROM {$table} WHERE {$field} = :field AND deleted_on IS NULL ";
+        $type = match(gettype($value)){
+            "boolean" => PDO::PARAM_BOOL,
+            "integer" => PDO::PARAM_INT,
+            "NULL" => PDO::PARAM_NULL,
+            default => PDO::PARAM_STR
+        };
+        $conn = $this->database->getConnection();
+        $stmt = $conn->prepare($sql. " LIMIT {$limit} OFFSET {$offset}");
+        $stmt->bindValue(":field", $value, $type);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
     public function pullAllByField(string $field, mixed $value, string $table = null): mixed
     {
         $table ??= $this->getTable();
@@ -317,6 +334,23 @@ abstract class Model
         };
         $conn = $this->database->getConnection();
         $stmt = $conn->prepare($sql);
+        $stmt->bindValue(":field", $value, $type);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    public function pullAllByFieldAndLimit(string $field, mixed $value, int $limit, int $offset, string $table = null): mixed
+    {
+        $table ??= $this->getTable();
+        $sql = "SELECT * FROM {$table} WHERE {$field} = :field ";
+        $type = match(gettype($value)){
+            "boolean" => PDO::PARAM_BOOL,
+            "integer" => PDO::PARAM_INT,
+            "NULL" => PDO::PARAM_NULL,
+            default => PDO::PARAM_STR
+        };
+        $conn = $this->database->getConnection();
+        $stmt = $conn->prepare($sql."LIMIT {$limit} OFFSET {$offset}");
         $stmt->bindValue(":field", $value, $type);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -499,6 +533,26 @@ abstract class Model
     {
         $table ??= $this->getTable();
         $sql = "SELECT COUNT(*) AS total FROM {$table} ";
+        $conn = $this->database->getConnection();
+        $stmt = $conn->query($sql);
+        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        return (int) $row->total;	
+    }
+
+    public function rowCountByField(string $field, mixed $value, string $table = null): int
+    {
+        $table ??= $this->getTable();
+        $sql = "SELECT COUNT(*) AS total FROM {$table} WHERE {$field} = '{$value}' AND deleted_on IS NULL";
+        $conn = $this->database->getConnection();
+        $stmt = $conn->query($sql);
+        $row = $stmt->fetch(PDO::FETCH_OBJ);
+        return (int) $row->total;	
+    }
+
+    public function rowTotalByField(string $field, mixed $value, string $table = null): int
+    {
+        $table ??= $this->getTable();
+        $sql = "SELECT COUNT(*) AS total FROM {$table} WHERE {$field} = '{$value}' ";
         $conn = $this->database->getConnection();
         $stmt = $conn->query($sql);
         $row = $stmt->fetch(PDO::FETCH_OBJ);

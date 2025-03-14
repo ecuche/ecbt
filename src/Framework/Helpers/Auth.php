@@ -47,6 +47,7 @@ class Auth
         $email = Session::set('email', $user->email);
         $name = Session::set('name', $user->name);
         $role = Session::set('role', $user->role);
+        $role_id = Session::set('role_id', $user->role_id);
         return $id && $email && $name ? true : false;
     }
 

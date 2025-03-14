@@ -12,10 +12,11 @@ use Framework\Helpers\CSRF;
 use Framework\Helpers\Mail;
 use Framework\Helpers\Token;
 use App\Models\Student;
+use App\Models\Home;
 
 class Homes extends Controller
 {
-    public function __construct(private User $usersModel, private Student $studentModel)
+    public function __construct(private User $usersModel, private Student $studentModel, private Home $homeModel)
     {
         if(!Auth::isLoggedIn()){
             if($usersModel->loginFromRemeberCookie()){
@@ -54,7 +55,8 @@ class Homes extends Controller
         $this->usersModel->validateRegistration($data);
 
         if(empty($this->usersModel->getErrors())){
-            $data->password = password_hash($data->password, PASSWORD_DEFAULT); 
+            $data->password = password_hash($data->password, PASSWORD_DEFAULT);
+            $data->role_id = 3; 
             if($this->usersModel->insert($data)){
                 $user = $this->usersModel->findByField('email', $data->email);
                 $this->usersModel->sendActivation($user);
@@ -84,7 +86,8 @@ class Homes extends Controller
         $data = (object)$data;
         $this->usersModel->validateLogIn($data);
         if(empty($this->usersModel->getErrors())){
-            $user = $this->usersModel->loginUser($data); 
+            $user = $this->usersModel->loginUser($data);
+            $user->role = $this->homeModel->getByField('id',$user->role_id,'role')->name;
             if(!empty($user)){
                 if($user->active === 0){
                     Session::set('warning','Account not activated. Kindly check your mail for activation');

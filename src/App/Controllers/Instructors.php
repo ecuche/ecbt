@@ -16,6 +16,9 @@ use App\Models\Instructor;
 class Instructors extends Controller
 {
     private $user;
+    protected int $page = 1;
+    protected int $limit = 1;
+
     public function __construct(private Instructor $instructorsModel){
         $this->user = $this->instructorsModel->findById($_SESSION['id'], 'user');
         if ($this->user->role !== 'instructor') {
@@ -47,14 +50,36 @@ class Instructors extends Controller
         ]); 
     }
 
+    protected function offset(): int
+    {
+        return $this->page * $this->limit - $this->limit;
+    }
+
     public function papersList(): Response
     {
-        $papers = $this->instructorsModel->findAllByField('user_id', $this->user->id, 'paper');
+        $offset = $this->offset();
+        $papers = $this->instructorsModel->findAllByFieldAndLimit('user_id', $this->user->id, $this->limit, $offset, 'paper');
+        $count = $this->instructorsModel->rowCountByField('user_id',$this->user->id, 'paper');
+        $i = $offset + 1;
+        $total_pages = ceil($count / $this->limit);
+        if($this->page > $total_pages){
+            return $this->redirect("/instructor/papers/page/{$total_pages}"); 
+        }
         return $this->view('instructors/papers', [
             'user'=> $this->user,
             'CSRF' => CSRF::generate(),
             'papers'=> $papers,
+            'count' => $count,
+            'page' => $this->page,
+            'total_pages' => $total_pages,
+            'i' => $i
         ]);
+    }
+
+    public function papersListPage($page = 1): Response
+    {
+        $this->page = (int) $page;
+        return $this->papersList();
     }
 
     public function insertNewTest(): Response
@@ -373,15 +398,36 @@ class Instructors extends Controller
 
     public function showParticipants($code): Response 
     {
+        $offset = $this->offset();
         $paper = $this->instructorsModel->instructorAuth( $code);
-        $students = !empty($_POST['date']) ? $this->instructorsModel->getAllTestStudentByDate($paper->id, date: $_POST['date']) : $this->instructorsModel->getAllTestStudentByDate($paper->id);
+        if(!empty($_POST['date'])){
+            $students = $this->instructorsModel->getAllTestStudentByDate($paper->id, $_POST['date'], $this->limit, $offset);
+        }else{
+            $students = $this->instructorsModel->getAllTestStudentByDate($paper->id, null, $this->limit, $offset);
+        }
+        $count = $this->instructorsModel->rowCountByField('paper_id',$paper->id, 'result');
+        $i = $offset + 1;
+        $total_pages = ceil($count / $this->limit);
+        if($this->page > $total_pages){
+            return $this->redirect("/instructor/paper/{$code}/participants/show/page/{$total_pages}"); 
+        }
         return $this->view('instructors/show-participants', [
             'user'=> $this->user,
             'students'=> $students,
             'page'=>'date_format',
             'paper'=> $paper,
-            'date' => $_POST['date'] ?? null,   
+            'date' => $_POST['date'] ?? null,  
+            'count' => $count,
+            'current_page' => $this->page,
+            'total_pages' => $total_pages,
+            'i' => $i 
         ]);
+    }
+
+    public function showParticipantsPage($code, $page): Response
+    {
+        $this->page = (int) $page;
+        return $this->showParticipants($code);
     }
 
     public function studentTests($email): Response

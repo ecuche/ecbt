@@ -1,0 +1,168 @@
+{% extends "base" %}
+{% block title %} {{SITE_NAME}} | Dashboard {% endblock %}
+{% block body %}
+
+<div class="table-responsive rounded-4 col-lg-8 col-md-11 col-sm-12 mt-5 mb-5">
+  <table class="table text-nowrap mb-0 align-middle">
+    <thead class="text-dark fs-4 justify-content-end">
+      <a class="page-link" href="javascript:void(0)">Page {{ $page }} of {{ $total_pages }}</a>
+    </thead>
+    <thead class="text-dark fs-4">
+      <tr>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">#</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">email</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Name</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Role</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">status</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Institution ID</h6>
+        </th>
+        <th>
+          <h6 class="fs-4 fw-semibold mb-0">Date joined</h6>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% foreach($users as $key => $user): %}
+      <tr>
+        <td>
+          <div class="d-flex align-items-center">
+            <h6 class="fw-semibold">{{$i}}</h6>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex align-items-center">
+            <a href="{{URL_ROOT}}/admin/edit/user/{{ $user->email }}" hovertext="click to edit {{$user->name}}">
+              <h6 class="fw-semibold">{{ $user->email }}</h6>
+            </a>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex align-items-center">
+            <a href="{{URL_ROOT}}/admin/edit/user/{{ $user->email }}" hovertext="click to edit {{$user->name}}">
+              <h6 class="fw-semibold">{{ $user->name }}</h6>
+            </a>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex align-items-center">
+            <a href="{{URL_ROOT}}/admin/{{ $user->role }}s" hovertext="click to view all {{$user->role}}">
+              <h6 class="fw-semibold">{{ $user->role }}</h6>
+            </a>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex align-items-center">
+            <h6 class="fw-semibold">
+              {% if(!empty($user->deleted_on)): %}
+              <span class="badge bg-danger rounded-pill">Deleted</span>
+              {% elseif(empty($user->active)): %}
+              <span class="badge bg-warning rounded-pill">Not Active</span>
+              {% elseif(!empty($user->active)): %}
+              <span class="badge bg-success rounded-pill">Active</span>
+              {% endif; %}
+            </h6>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex align-items-center">
+            <h6 class="fw-semibold">{{$user->reg_no}}</h6>
+          </div>
+        </td>
+        <td>
+          <div class="d-flex align-items-center">
+            <h6 class="fw-semibold">{% echo date('jS-M-Y', strtotime($user->created_on)) %}</h6>
+          </div>
+        </td>
+      </tr>
+      {% $i++ %}
+      {% endforeach; %}
+    </tbody>
+  </table>
+
+  <div class="col-lg-12 d-flex align-items-stretch">
+    <!--  start Right Alignment Pagination -->
+    <div class="card w-100">
+      <div class="card-body">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-end">
+			
+			<li class="page-item {% echo $page <= 1 || $page > $total_pages ? 'disabled' : '' %}">
+				<a class="page-link link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/1" aria-label="Next">
+					<span aria-hidden="true">
+					<i class="ti ti-chevrons-left fs-4"></i>
+					</span>
+				</a>
+			</li>
+			<li class="page-item {% echo $page <= 1 || $page > $total_pages ? 'disabled' : '' %}">
+				<a class="page-link link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{% echo $page - 1 %}" aria-label="Next">
+					<span aria-hidden="true">
+					<i class="ti ti-chevron-left fs-4"></i>
+					</span>
+				</a>
+			</li>
+
+			{% if( $total_pages <= 3): %}
+				{% for($x = 1; $x <= 3; $x++) :%}
+					{% if( $x <= $total_pages): %}
+						<li class="page-item {% echo $page == $x ? 'active' : '' %}">
+							<a class="page-link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{{ $x }}">{{ $x }}</a>
+						</li>
+					{% endif; %}
+				{% endfor; %}
+			{% else: %}
+				{% if( $page == 1): %}
+					{% for($x = 1; $x <= 3; $x++) :%}
+						<li class="page-item {% echo $page == $x ? 'active' : '' %}">
+							<a class="page-link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{{ $x }}">{{ $x }}</a>
+						</li>
+					{% endfor; %}
+				{% elseif( $page == $total_pages): %}
+					{% for($x = $total_pages - 2; $x <= $total_pages; $x++) :%}
+						<li class="page-item {% echo $page == $x ? 'active' : '' %}">
+							<a class="page-link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{{ $x }}">{{ $x }}</a>
+						</li>
+					{% endfor; %}
+				{% else: %}
+					{% for($x = $page - 1; $x <= $page + 1; $x++) :%}
+						<li class="page-item {% echo $page == $x ? 'active' : '' %}">
+							<a class="page-link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{{ $x }}">{{ $x }}</a>
+						</li>
+					{% endfor; %}
+            	{% endif; %}
+            {% endif; %}
+
+
+           
+			<li class="page-item {% echo $page >= $total_pages || $page < 1 ? 'disabled' : '' %}">
+				<a class="page-link link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{% echo  $page + 1 %}" aria-label="Next">
+					<span aria-hidden="true">
+					<i class="ti ti-chevron-right fs-4"></i>
+					</span>
+				</a>
+			</li>
+			<li class="page-item {% echo $page >= $total_pages || $page < 1  ? 'disabled' : '' %}">
+				<a class="page-link link" href="{{ URL_ROOT }}/admin/{{ $role }}/page/{{ $total_pages }}" aria-label="Next">
+					<span aria-hidden="true">
+					<i class="ti ti-chevrons-right fs-4"></i>
+					</span>
+				</a>
+			</li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <!--  end Right Alignment Pagination -->
+  </div>
+</div>
+{% endblock %}

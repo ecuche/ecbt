@@ -1,0 +1,15 @@
+{% extends "base" %}
+{% block title %} About Us {% endblock %}
+{% block body %}
+<section class="py-5">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2>LogReg</h2>
+                <p>Creating most reliable MVC framework.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

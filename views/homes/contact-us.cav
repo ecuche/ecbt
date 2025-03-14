@@ -1,0 +1,118 @@
+{% extends "base" %}
+{% block title %} Contact Us {% endblock %}
+{% block body %}
+
+<div class="row col-lg-8 justify-content-center">
+    <div class="card col-lg-6">
+    <div class="px-4 py-3 border-bottom">
+        <h4 class="card-title mb-0">Contact Us</h4>
+    </div>
+    <div class="card-body p-4">
+        <form  method="post" action="{{URL_ROOT}}/contact-us">
+        <div class="mb-4">
+        <label class="form-label">Full Name</label>
+        <div class="input-group">
+            <span class="input-group-text px-6" id="basic-addon1">
+            <i class="ti ti-user fs-6"></i>
+            </span>
+            <input type="text" name="name" class="form-control ps-2 {% echo  !empty($errors->name) ? 'is-invalid' : '' %}" value="{{$contact->name}}" placeholder="Full Name" required>
+            <div class="invalid-feedback">{{$errors->name}}</div>
+        </div>
+        </div>
+        <div class="mb-4">
+        <label class="form-label">Email</label>
+        <div class="input-group">
+            <span class="input-group-text px-6" id="basic-addon1">
+            <i class="ti ti-mail fs-6"></i>
+            </span>
+            <input type="text" name="email" class="form-control ps-2 {% echo !empty($errors->email) ? 'is-invalid' : '' %}" value="{{$contact->email}}" placeholder="Email" required>
+            <div class="invalid-feedback">{{$errors->email}}</div>
+        </div>
+        </div>
+        <div class="mb-4">
+        <label class="form-label">Phone No</label>
+        <div class="input-group">
+            <span class="input-group-text px-6" id="basic-addon1">
+            <i class="ti ti-phone fs-6"></i>
+            </span>
+            <input type="phone" name="phone" class="form-control ps-2 {% echo !empty($errors->phone) ? 'is-invalid' : '' %}" value="{{$contact->phone}}" placeholder="Phone Number" required>
+            <div class="invalid-feedback">{{$errors->phone}}</div>
+        </div>
+        </div>
+        <div class="mb-4">
+        <label class="form-label">Subject</label>
+        <div class="input-group">
+            <span class="input-group-text px-6" id="basic-addon1">
+            <i class="ti ti-message fs-6"></i>
+            </span>
+            <input type="text" name="subject" class="form-control ps-2 {% echo !empty($errors->subject) ? 'is-invalid' : '' %}" value="{{$contact->subject}}" placeholder="Subject" required>
+            <div class="invalid-feedback">{{$errors->subject}}</div>
+        </div>
+        </div>
+        <div class="mb-4">
+        <label class="form-label">Message</label>
+        <div class="input-group">
+            <span class="input-group-text px-6" id="basic-addon1">
+            <i class="ti ti-message-2 fs-6"></i>
+            </span>
+            <textarea class="form-control p-7 ps-2 {% echo !empty($errors->message) ? 'is-invalid' : '' %}" name="message" id="" cols="20" rows="1" placeholder="Enter Message Here" required>{{$contact->message}}</textarea>
+            <div class="invalid-feedback">{{$errors->message}}</div>
+        </div>
+        </div>
+        {! $CSRF !}
+        <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+    </div>
+    <div class="col-lg-4">
+    <div class="card">
+            <form class="form-horizontal" >
+              <div class="form-body">
+                <div class="card-body">
+                  <h5 class="card-title mb-0">Contact Us</h5>
+                </div>
+                <hr class="m-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="">
+                      <div class="form-group row">
+                        <i class="bi bi-telephone col-md-1"></i>
+                        <label class="form-label text-end col-md-3">Phone:</label>
+                        <div class="col-md-8">
+                          <p>{{SITE_PHONE}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="">
+                      <div class="form-group row">
+                      <i class="bi bi-envelope col-md-1"></i>
+                        <label class="form-label text-end col-md-3">Email:</label>
+                        <div class="col-md-8">
+                          <p>{{SITE_EMAIL}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                    <div class="row">
+                    <div class="">
+                      <div class="form-group row">
+                        <i class="bi bi-pin col-md-1"></i>
+                        <label class="form-label text-end col-md-3">Location:</label>
+                        <div class="col-md-8">
+                          <p>{{SITE_ADDRESS}}</p>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                </div>
+                
+                
+                </div>
+            </form>
+          </div>
+    </div>
+</div>
+{% endblock %}
+
