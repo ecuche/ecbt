@@ -3,13 +3,6 @@
 {% block title %} View Profile {% endblock %}
 {% block body %}
 <div class="container-fluid col-lg-8 col-md-10 mt-5 mb-5">
-    
-{% if(!empty($alert)): %}
-  {% foreach($alert as $key => $value): %}
-    <alert color="{{ $key }}">{{ $value }}</alert>
-  {% endforeach %}
-{% endif; %}
-
 <div class="container-fluid">
           <div class=" shadow-none position-relative overflow-hidden mb-4 card">
             <div class="card-body">

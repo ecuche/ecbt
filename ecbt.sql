@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 14, 2025 at 03:29 PM
+-- Generation Time: Mar 14, 2025 at 09:59 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -130,6 +130,7 @@ CREATE TABLE `remembered_logins` (
 CREATE TABLE `result` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
+  `instructor_id` int(11) NOT NULL,
   `paper_id` int(11) NOT NULL,
   `poll` int(11) NOT NULL,
   `score` int(11) NOT NULL,
@@ -148,17 +149,17 @@ CREATE TABLE `result` (
 -- Dumping data for table `result`
 --
 
-INSERT INTO `result` (`id`, `user_id`, `paper_id`, `poll`, `score`, `percent`, `start_time`, `end_time`, `grade`, `remark`, `csv`, `created_on`, `updated_on`, `deleted_on`) VALUES
-(37, 1, 1, 10, 4, 40.00, '2025-01-21 13:20:43', '2025-01-22 10:28:46', 'D', 'Pass', '8D66B9_1_13PVG9', '2025-01-21 13:20:43', '2025-01-24 15:43:39', NULL),
-(38, 1, 2, 3, 2, 66.67, '2025-01-21 14:04:17', '2025-01-22 13:05:38', 'B', 'Very Good', 'F7OB62_1_3DD9DJ', '2025-01-22 14:04:17', '2025-01-24 15:38:27', NULL),
-(40, 14, 4, 5, 5, 100.00, '2025-01-23 14:49:21', '2025-01-23 13:50:03', 'A', 'Excellent', 'E3UCVU_14_3SRR8Z', '2025-01-23 14:49:21', '2025-01-23 14:50:03', NULL),
-(41, 22, 1, 10, 4, 40.00, '2025-01-22 13:20:43', '2025-01-22 10:28:46', 'D', 'Pass', '8D66B9_1_13PVG9', '2025-01-21 13:20:43', '2025-01-24 15:43:59', NULL),
-(42, 17, 3, 5, 2, 40.00, '2025-03-11 12:17:37', '2025-03-11 11:19:27', 'D', 'Pass', '437DGV_17_CPBVUD', '2025-03-11 12:17:37', '2025-03-11 12:19:27', NULL),
-(43, 17, 1, 10, 6, 60.00, '2025-03-11 12:20:38', '2025-03-11 11:22:45', 'B', 'Very Good', '8D66B9_17_A1GPLN', '2025-03-11 12:20:38', '2025-03-11 12:22:45', NULL),
-(44, 24, 5, 10, 10, 100.00, '2025-03-11 12:48:55', '2025-03-11 11:50:32', 'A', 'Excellent', 'XPHJ1Q_24_9KTYGN', '2025-03-11 12:48:55', '2025-03-11 12:50:32', NULL),
-(45, 17, 5, 10, 8, 80.00, '2025-03-11 12:52:15', '2025-03-11 11:53:05', 'A', 'Excellent', 'XPHJ1Q_17_FPE3MV', '2025-03-11 12:52:15', '2025-03-11 12:53:05', NULL),
-(46, 1, 5, 10, 8, 80.00, '2025-03-12 08:56:12', '2025-03-12 07:58:17', 'A', 'Excellent', 'XPHJ1Q_1_GWGU06', '2025-03-12 08:56:12', '2025-03-12 08:58:17', NULL),
-(47, 24, 1, 10, 4, 40.00, '2025-03-12 15:00:36', '2025-03-12 14:01:31', 'D', 'Pass', '8D66B9_24_RGNC86', '2025-03-12 15:00:36', '2025-03-12 15:01:31', NULL);
+INSERT INTO `result` (`id`, `user_id`, `instructor_id`, `paper_id`, `poll`, `score`, `percent`, `start_time`, `end_time`, `grade`, `remark`, `csv`, `created_on`, `updated_on`, `deleted_on`) VALUES
+(37, 1, 1, 1, 10, 4, 40.00, '2025-01-21 13:20:43', '2025-01-22 10:28:46', 'D', 'Pass', '8D66B9_1_13PVG9', '2025-01-21 13:20:43', '2025-03-14 21:30:37', NULL),
+(38, 1, 1, 2, 3, 2, 66.67, '2025-01-21 14:04:17', '2025-01-22 13:05:38', 'B', 'Very Good', 'F7OB62_1_3DD9DJ', '2025-01-22 14:04:17', '2025-03-14 21:30:37', NULL),
+(40, 14, 14, 4, 5, 5, 100.00, '2025-01-23 14:49:21', '2025-01-23 13:50:03', 'A', 'Excellent', 'E3UCVU_14_3SRR8Z', '2025-01-23 14:49:21', '2025-03-14 21:34:29', NULL),
+(41, 22, 1, 1, 10, 4, 40.00, '2025-01-22 13:20:43', '2025-01-22 10:28:46', 'D', 'Pass', '8D66B9_1_13PVG9', '2025-01-21 13:20:43', '2025-03-14 21:30:37', NULL),
+(42, 17, 14, 3, 5, 2, 40.00, '2025-03-11 12:17:37', '2025-03-11 11:19:27', 'D', 'Pass', '437DGV_17_CPBVUD', '2025-03-11 12:17:37', '2025-03-14 21:33:44', NULL),
+(43, 17, 1, 1, 10, 6, 60.00, '2025-03-11 12:20:38', '2025-03-11 11:22:45', 'B', 'Very Good', '8D66B9_17_A1GPLN', '2025-03-11 12:20:38', '2025-03-14 21:30:37', NULL),
+(44, 24, 14, 5, 10, 10, 100.00, '2025-03-11 12:48:55', '2025-03-11 11:50:32', 'A', 'Excellent', 'XPHJ1Q_24_9KTYGN', '2025-03-11 12:48:55', '2025-03-14 21:34:46', NULL),
+(45, 17, 14, 5, 10, 8, 80.00, '2025-03-11 12:52:15', '2025-03-11 11:53:05', 'A', 'Excellent', 'XPHJ1Q_17_FPE3MV', '2025-03-11 12:52:15', '2025-03-14 21:34:53', NULL),
+(46, 1, 14, 5, 10, 8, 80.00, '2025-03-12 08:56:12', '2025-03-12 07:58:17', 'A', 'Excellent', 'XPHJ1Q_1_GWGU06', '2025-03-12 08:56:12', '2025-03-14 21:35:00', NULL),
+(47, 24, 1, 1, 10, 4, 40.00, '2025-03-12 15:00:36', '2025-03-12 14:01:31', 'D', 'Pass', '8D66B9_24_RGNC86', '2025-03-12 15:00:36', '2025-03-14 21:30:37', NULL);
 
 -- --------------------------------------------------------
 
@@ -256,7 +257,8 @@ ALTER TABLE `remembered_logins`
 ALTER TABLE `result`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `paper_id` (`paper_id`);
+  ADD KEY `paper_id` (`paper_id`),
+  ADD KEY `instructor_id` (`instructor_id`);
 
 --
 -- Indexes for table `role`
@@ -326,6 +328,7 @@ ALTER TABLE `remembered_logins`
 -- Constraints for table `result`
 --
 ALTER TABLE `result`
+  ADD CONSTRAINT `instructor_id` FOREIGN KEY (`instructor_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `paper_id` FOREIGN KEY (`paper_id`) REFERENCES `paper` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
 

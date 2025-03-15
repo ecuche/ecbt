@@ -180,7 +180,7 @@ class Instructor extends Model
         return (object) $result;
     }
 
-    public function getAllTestStudentByDate(int $paper_id, mixed $date = "", $limit = 10, $offset = 0): array | object
+    public function getAllTestStudentByDate(int $paper_id, mixed $date = null, $limit = 10, $offset = 0): array | object
     {
         $add = "";
         $limit = " LIMIT {$limit} OFFSET {$offset} ";
@@ -188,9 +188,8 @@ class Instructor extends Model
             $date = strtotime($date);
             $date = date("Y-m-d", $date);
             $add = " AND DATE(result.start_time) = '{$date}' ";
-            $limit = "";
         }
-        $sql = "SELECT DISTINCT *,
+        $this->sql = "SELECT DISTINCT *,
         result.id as resultId,
         result.created_on as resultCreatedOn,
         result.updated_on as resultUpdatedOn,
@@ -204,11 +203,15 @@ class Instructor extends Model
         WHERE result.paper_id = {$paper_id}
         AND result.deleted_on IS NULL
         {$add}
-        AND user.deleted_on IS NULL
-        ORDER BY user.name ASC {$limit} ";
+        AND user.deleted_on IS NULL ";
 
-        $result = $this->findByQueryString($sql);
+        $result = $this->findByQueryString($this->sql."  ORDER BY user.name ASC {$limit} ");
         return (object) $result;
+    }
+
+    public function countAllTestStudentByDate(): int
+    {
+        return  $this->countThisSql();
     }
 
     public function myStudentResult($student_id, int $limit = 10, int $offset = 0): array | object

@@ -30,7 +30,6 @@ class Admins extends Controller
     public function dashboard(): Response
     {
         return $this->view('admins/dashboard', [
-            'alert' => Session::flash(['warning', 'danger', 'success', 'info']),
         ]);
     }
 
@@ -95,7 +94,6 @@ class Admins extends Controller
         return $this->view('admins/edit-user', [
             'user' => $user,
             'CSRF' => CSRF::generate(),
-            'alert' => Session::flash(['warning', 'success', 'danger'])
         ]);
     }
 
@@ -189,7 +187,6 @@ class Admins extends Controller
         return $this->view('admins/edit-paper', [
             'paper' => $paper,
             'user' => $user,
-            'alert' => Session::flash(['success', 'danger', 'warning']),
             'CSRF' => CSRF::generate(),
             'settings' => json_decode($paper->settings)
         ]);
@@ -296,7 +293,6 @@ class Admins extends Controller
             'paper' => $paper,
             'user' => $user,
             'CSRF' => CSRF::generate(),
-            'alert' => Session::flash(['success', 'danger', 'warning']),
             'csv' => $csv,
         ]);
     }

@@ -9,14 +9,7 @@
       <h4 class="card-title mb-0"></h4>
       <h6 class="card-title mb-0">Add {= $paper->name =} | {= $paper->code =} Question</h6>
     </div>
-    <div class="card-body p-4 justify-content-center">
-
-    {% if(!empty($alert)): %}
-      {% foreach($alert as $key => $value): %}
-        <alert color="{{ $key }}">{{ $value }}</alert>
-      {% endforeach %}
-    {% endif; %}
-    
+    <div class="card-body p-4 justify-content-center">    
       <form  action="{{URL_ROOT}}/instructor/paper/{!$paper->code!}/add/question" method="post" enctype="multipart/form-data">
         <div class="mb-4">
           <label class="form-label">Question</label>

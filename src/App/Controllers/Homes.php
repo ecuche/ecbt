@@ -31,7 +31,6 @@ class Homes extends Controller
         $role = $_SESSION['role'] ?? '';
         Auth::passRedirect("/{$role}/dashboard", '');
         return $this->view('homes/index', [
-            'alert' => Session::flash(['warning', 'danger', 'success']),
             'CSRF'=>CSRF::generate()
         ]);
     }
@@ -114,7 +113,6 @@ class Homes extends Controller
             Session::set("danger", $errors->login ?? null);
             return $this->view('homes/index', [
                 'errors'=> $errors,
-                'alert'=> Session::flash(['danger', 'warning', 'success']),
                 'user' => $data,
                 'CSRF'=> CSRF::generate()
             ]);
@@ -172,7 +170,7 @@ class Homes extends Controller
             Session::set('warning','password reset has expired');
             return $this->redirect("");
         }else{
-            return $this->redirect("500");
+            throw new PageNotFoundException("could not reset password");
         }   
     }
 
@@ -227,12 +225,14 @@ class Homes extends Controller
                         return $this->redirect('');
                     }
                 }
-                return $this->redirect("500");
+                Session::set('danger','wrong token');
+                return $this->redirect("");
             }
             Session::set('success','Account is active. Kindly login');
             return $this->redirect("");
         }else{
-            return $this->redirect("500");
+            Session::set('warning','user does not exist');
+            return $this->redirect("");
         }
     }
 
@@ -293,7 +293,7 @@ class Homes extends Controller
     public function contact(): Response
     {
         return $this->view('homes/contact-us', [
-            'CSRF'=> CSRF::generate()
+            'CSRF'=> CSRF::generate(),
         ]);
     }
 
@@ -323,7 +323,8 @@ class Homes extends Controller
                 Session::set('success','Message sent. Thanks for contacting us');
                 return $this->redirect("");
             }else{
-                return $this->redirect("500");
+                Session::set('warning','Message Failed. Try again');
+                return $this->redirect("contact");
             }
         }else{
             return $this->view('homes/contact-us', [

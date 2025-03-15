@@ -3,6 +3,8 @@ declare(strict_types=1);
 namespace Framework\Helpers;
 
 use Framework\Helpers\Session;
+use Framework\Exceptions\PageNotFoundException;
+
 class CSRF{
 
 	public static function generate(): string
@@ -20,8 +22,7 @@ class CSRF{
 			Session::delete($tokenName);
 			return true;
 		}
-		Redirect::to('/500');
-		return false;
+		throw new PageNotFoundException("visit page properly please");
 	}
 
 	public static function generateMethod(): string

@@ -94,8 +94,10 @@ $router->add("instructor/paper/{code:[A-Z0-9]{6}}/update", ["controller" => "ins
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/list", ["controller" => "instructors", "method" => "questions-list",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/status/{status:[\w-]+}", ["controller" => "instructors", "method" => "change-paper-status",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/delete", ["controller" => "instructors", "method" => "delete-paper",  "auth"=>true]);
-$router->add("instructor/paper/{code:[A-Z0-9]{6}}/participants/show", ["controller" => "instructors", "method" => "show-participants",  "auth"=>true]);
-$router->add("instructor/paper/{code:[A-Z0-9]{6}}/participants/show/page/{page:[1-9]\d*}", ["controller" => "instructors", "method" => "show-participants-page",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/participants", ["controller" => "instructors", "method" => "show-participants",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/participants/page/{page:[1-9]\d*}", ["controller" => "instructors", "method" => "show-participants-page",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/participants/date/{date:(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])-\d{4}}/page/{page:[1-9]\d*}", ["controller" => "instructors", "method" => "show-participants-by-date-page",  "auth"=>true]);
+$router->add("instructor/paper/{code:[A-Z0-9]{6}}/participants/get-date", ["controller" => "instructors", "method" => "show-participants-get-date",  "auth"=>true, "form"=>"post"]);
 
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/create/questions", ["controller" => "instructors", "method" => "create-questions",  "auth"=>true]);
 $router->add("instructor/paper/{code:[A-Z0-9]{6}}/add/question", ["controller" => "instructors", "method" => "add-question",  "auth"=>true, "form"=>"post"]);

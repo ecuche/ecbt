@@ -25,11 +25,6 @@
         <div class="tab-content" id="pills-tabContent">
         <div class="tab-pane fade active show" id="pills-account" role="tabpanel" aria-labelledby="pills-account-tab" tabindex="0">
             <div class="row">
-            {% if(!empty($alert)): %}
-                {% foreach($alert as $key => $value): %}
-                <alert color="{{ $key }}">{{ $value }}</alert>
-                {% endforeach %}
-            {% endif; %}
             <div class="col-lg-6 d-flex align-items-stretch">
                 <div class="card w-100 border position-relative overflow-hidden">
                     <div class="card-body p-4">

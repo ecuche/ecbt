@@ -6,11 +6,6 @@
       <div class="col-md-8 col-lg-6 col-xxl-3 auth-card">
         <div class="card mb-0 auth-card">
           <div class="py-4 px-5">
-            {% if(!empty($alert)): %}
-              {% foreach($alert as $key => $value): %}
-                <alert color="{{ $key }}">{{ $value }}</alert>
-              {% endforeach %}
-            {% endif; %}
             <form method="POST" action="{{URL_ROOT}}/log-in-user">
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email</label>

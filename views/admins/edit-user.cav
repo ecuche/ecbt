@@ -48,11 +48,6 @@
                 </div>
             </div>
             <div class="col-lg-6 d-flex align-items-stretch">
-            {% if(!empty($alert)): %}
-                {% foreach($alert as $key => $value): %}
-                <alert color="{{ $key }}">{{ $value }}</alert>
-                {% endforeach %}
-            {% endif; %}
             </div>
             <div class="col-12">
                 <div class="card w-100 border position-relative overflow-hidden mb-0">

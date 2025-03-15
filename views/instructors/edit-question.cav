@@ -9,12 +9,6 @@
       <h6 class="card-title mb-0">Add {= $paper->name =} | {= $paper->code =} question</h6>
     </div>
     <div class="card-body p-4 justify-content-center">
-    {% if(!empty($alert)): %}
-      {% foreach($alert as $key => $value): %}
-        <alert color="{{ $key }}">{{ $value }}</alert>
-      {% endforeach %}
-    {% endif; %}
-
       {% if(!empty($question->ban)): %}
       <div class="alert alert-danger" role="alert">
         Banned Question

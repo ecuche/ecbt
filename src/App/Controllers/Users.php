@@ -25,7 +25,6 @@ class Users extends Controller
         Auth::failRedirect("", "Kindly login to access your dashboard");
         return $this->view('users/dashboard', [
             'user' => $this->user,
-            'alert' => Session::flash(['success', 'warning', 'danger'])
         ]);
     }
    
@@ -83,7 +82,6 @@ class Users extends Controller
         $user = $this->user;
         return $this->view('users/view-profile', [
             'user' => (object) $user,
-            'alert' => Session::flash(['success', 'warning', 'danger']),
             'time_ago' => Data::timeAgo($user->created_on)
         ]);
     }
@@ -93,7 +91,6 @@ class Users extends Controller
         $user = $this->usersModel->getByField('email', $email);
         return $this->view('users/view-public-profile', [
             'user' => (object) $user,
-            'alert' => Session::flash(['success', 'warning', 'danger']),
             'time_ago' => Data::timeAgo($user->created_on)
         ]);
     }

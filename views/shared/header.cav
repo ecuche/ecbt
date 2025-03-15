@@ -12,6 +12,11 @@
   <title>{% yield title %}</title>
 </head>
 <body>
+{% if(!empty($alert)): %}
+    {% foreach($alert as $key => $value): %}
+      <alert color="{{ $key }}" hidden>{{ $value }}</alert>
+    {% endforeach %}
+{% endif; %}
   <div class="preloader">
     <img src="{{URL_ROOT}}/assets/images/logos/logo-icon.svg" alt="loader" class="lds-ripple img-fluid" />
   </div>

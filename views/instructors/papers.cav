@@ -58,7 +58,7 @@
           <p class="mb-0 fw-normal">{{$paper->code}}</p>
         </td>
         <td>
-          <a href="{{URL_ROOT}}/instructor/paper/{!$paper->code!}/participants/show"><span class="text-warning">View Student</span></a>
+          <a href="{{URL_ROOT}}/instructor/paper/{!$paper->code!}/participants"><span class="text-warning">View Student</span></a>
         </td>
         <td>
           <div class="dropdown dropstart">

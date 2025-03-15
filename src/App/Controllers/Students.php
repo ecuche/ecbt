@@ -36,7 +36,6 @@ class Students extends Controller
     {
         return $this->view('students/dashboard', [
             'user' => $this->user,
-            'alert' => Session::flash(['success', 'danger', 'warning', 'info']),
         ]);
     }
 

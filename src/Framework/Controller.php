@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace Framework;
 
+use Framework\Helpers\Session;
+
 abstract class Controller
 {
     protected Request $request;
@@ -25,6 +27,7 @@ abstract class Controller
 
     protected function view(string $template, array $data = []) : Response
     {
+        $data['alert'] = Session::flash(['success', 'danger', 'info', 'warning']);
         $this->response->setBody($this->viewer->render($template, $data));
         return $this->response;
     }
@@ -37,6 +40,7 @@ abstract class Controller
 
     public function raw(string $template, array $data = []) : string
     {
+        $data['alert'] = Session::flash(['success', 'danger', 'info', 'warning']);
         return $this->viewer->render($template, $data);
     }
 }

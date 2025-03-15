@@ -1,6 +1,7 @@
 // Date Picker
 jQuery(".mydatepicker, #datepicker, .input-group.date").datepicker();
 jQuery("#datepicker-autoclose").datepicker({
+  format: "dd-mm-yyyy",
   autoclose: true,
   todayHighlight: true,
 });

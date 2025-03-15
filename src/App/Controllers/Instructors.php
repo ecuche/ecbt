@@ -38,7 +38,6 @@ class Instructors extends Controller
     {
         return $this->view('instructors/dashboard', [
             'user' => $this->user,
-            'alert' => Session::flash(['success'])
         ]);
     }
 
@@ -63,7 +62,7 @@ class Instructors extends Controller
         $i = $offset + 1;
         $total_pages = ceil($count / $this->limit);
         if($this->page > $total_pages){
-            return $this->redirect("/instructor/papers/page/{$total_pages}"); 
+            return $this->redirect("instructor/papers/page/{$total_pages}"); 
         }
         return $this->view('instructors/papers', [
             'user'=> $this->user,
@@ -127,7 +126,6 @@ class Instructors extends Controller
         $paper = $this->instructorsModel->instructorAuth( $code);
         return $this->view('instructors/edit-test', [
             'user'=> $this->user,
-            'alert' => Session::flash(['warning', 'danger', 'success']),
             'CSRF' => CSRF::generate(),
             'paper'=> $paper,
             'settings' => json_decode($paper->settings),
@@ -198,7 +196,6 @@ class Instructors extends Controller
             'user'=> $this->user,
             'CSRF' => CSRF::generate(),
             'paper'=> $paper,
-            'alert'=> Session::flash(['success', 'danger', 'warning']),
         ]);
     }
 
@@ -267,7 +264,6 @@ class Instructors extends Controller
             'image'=> $image,
             'question' => $question,
             'answers' => json_decode($question->answers),
-            'alert' => Session::flash(['success']),
             'CSRF' => CSRF::generate()
         ]);
     }
@@ -394,12 +390,11 @@ class Instructors extends Controller
         $count = $this->instructorsModel->countAllMyStudents();
         $total_pages = ceil($count / $this->limit);
         if($this->page > $total_pages){
-            return $this->redirect("/instructor/my-students/{$total_pages}"); 
+            return $this->redirect("instructor/my-students/{$total_pages}"); 
         }
         return $this->view('instructors/my-students', [
             'user'=> $this->user,
             'students' => $students,
-            'alert' => Session::flash(['warning', 'danger', 'success']),
             'CSRF' => CSRF::generate(),
             'count' => $count,
             'page_url' => $_ENV['URL_ROOT'] ."/instructor/my-students",
@@ -415,28 +410,71 @@ class Instructors extends Controller
         return $this->myStudents();
     }
 
+    public function showParticipantsGetDate($code): Response
+    {
+        CSRF::check($this->request->post['csrf_token']);
+        $paper = $this->instructorsModel->instructorAuth( $code);
+        $date = $this->request->post['date'];
+        if(empty($date)){
+            Session::set('warning', 'kindly select a date');
+            return $this->redirect("instructor/paper/{$code}/participants");
+        }
+        $date = str_replace("/",'-', $date);
+        return $this->redirect("instructor/paper/{$code}/participants/date/{$date}/page/1");
+    }
+
+    public function showParticipantsByDatePage($code, $date, $page = 1): Response
+    {
+        $date = str_replace("-",'/',$date);
+        $this->page = (int) $page;
+        $offset = $this->offset();
+        $paper = $this->instructorsModel->instructorAuth( $code);
+        $students = $this->instructorsModel->getAllTestStudentByDate($paper->id, $date, $this->limit, $offset);
+        $count = $this->instructorsModel->countAllTestStudentByDate();
+        $i = $offset + 1;
+        $total_pages = ceil($count / $this->limit);
+        $url_date = str_replace('/','-',$date);
+        if($total_pages == 0){
+            Session::set('warning', 'No result found');
+            return $this->redirect("instructor/paper/{$code}/participants");
+        }elseif($this->page > $total_pages){
+            return $this->redirect("instructor/paper/{$code}/participants/date/{$url_date}/page/{$total_pages}"); 
+        }
+        return $this->view('instructors/show-participants', [
+            'user' => $this->user,
+            'students' => $students,
+            'CSRF' => CSRF::generate(),
+            'page' => 'date_format',
+            'paper' => $paper,
+            'date' => $date ?? null,  
+            'count' => $count,
+            'page_url' => $_ENV['URL_ROOT'] ."/instructor/paper/{$code}/participants/date/{$url_date}",
+            'current_page' => $this->page,
+            'total_pages' => $total_pages,
+            'i' => $i 
+        ]);
+    }
+
     public function showParticipants($code): Response 
     {
         $offset = $this->offset();
         $paper = $this->instructorsModel->instructorAuth( $code);
-        if(!empty($_POST['date'])){
-            $students = $this->instructorsModel->getAllTestStudentByDate($paper->id, $_POST['date'], $this->limit, $offset);
-        }else{
-            $students = $this->instructorsModel->getAllTestStudentByDate($paper->id, null, $this->limit, $offset);
-        }
+        $students = $this->instructorsModel->getAllTestStudentByDate($paper->id, null, $this->limit, $offset);
         $count = $this->instructorsModel->rowCountByField('paper_id',$paper->id, 'result');
         $i = $offset + 1;
         $total_pages = ceil($count / $this->limit);
         if($this->page > $total_pages){
-            return $this->redirect("/instructor/paper/{$code}/participants/show/page/{$total_pages}"); 
+            return $this->redirect("instructor/paper/{$code}/participants/page/{$total_pages}"); 
         }
         return $this->view('instructors/show-participants', [
-            'user'=> $this->user,
-            'students'=> $students,
-            'page'=>'date_format',
-            'paper'=> $paper,
+            'user' => $this->user,
+            'students' => $students,
+            'CSRF' => CSRF::generate(),
+            'page' => 'date_format',
+            'paper' => $paper,
             'date' => $_POST['date'] ?? null,  
             'count' => $count,
+            'page_url' => $_ENV['URL_ROOT'] ."/instructor/paper/{$code}/participants",
             'current_page' => $this->page,
             'total_pages' => $total_pages,
             'i' => $i 
@@ -455,14 +493,14 @@ class Instructors extends Controller
         $student = $this->instructorsModel->findByField('email', $email, 'user');
         if(empty($student)){
             Session::set('warning','student does not exist');
-            return $this->redirect('/instructor/my-students');
+            return $this->redirect('instructor/my-students');
         }
         $results = $this->instructorsModel->myStudentResult($student->id, $this->limit, $offset);
         $i = $offset + 1;
         $count = $this->instructorsModel->countMyStudentResult();
         $total_pages = ceil($count / $this->limit);
         if($this->page > $total_pages){
-            return $this->redirect("/instructor/my-student/{$email}/results/page/{$total_pages}"); 
+            return $this->redirect("instructor/my-student/{$email}/results/page/{$total_pages}"); 
         }
         return $this->view('instructors/student-tests', [
             'user'=> $this->user,
