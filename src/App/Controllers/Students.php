@@ -91,7 +91,6 @@ class Students extends Controller
             'paper' => $paper,
             'instructor' => $instructor,
             'result' => $result,
-            'CSRF' => CSRF::generate(),
             'score' => $this->studentModel->grade($result->score, $result->poll)
         ]);
     }
@@ -100,7 +99,6 @@ class Students extends Controller
     {
         CSRF::checkMethod(Session::get('method_csrf_token'));
         $this->csrf_token ??= $this->request->post['csrf_token'] ?? null;
-        CSRF::check($this->csrf_token);
         $paper = $this->studentModel->paperAuth($code);
         Session::set('paper', $paper);
         $result = $this->studentModel->findByFields(['paper_id'=> $paper->id, 'user_id'=> $this->user->id], 'result');
@@ -140,8 +138,7 @@ class Students extends Controller
             'question' => $question,
             'questions' =>  (object) $questions,
             'count_answered' => $count_answered,
-            'image' => $question->image ? Media::questionImage( $question->image ) : null,
-            'CSRF' => CSRF::generate()
+            'image' => $question->image ? Media::questionImage( $question->image ) : null
         ]);
     }
 
@@ -175,7 +172,6 @@ class Students extends Controller
             'questions' =>  (object) $questions,
             'count_answered' => $count_answered,
             'image' => $question->image ? Media::questionImage( $question->image ) : null,
-            'CSRF' => CSRF::generate()
         ]);
         exit;
     }
@@ -220,7 +216,6 @@ class Students extends Controller
     {
         
         $this->csrf_token ??= $this->request->post['csrf_token'] ?? null;
-        CSRF::check($this->csrf_token);
         $paper = $this->studentModel->findByField('code', $code, 'paper');
         $result = $this->studentModel->findByFields(['paper_id' => $paper->id, 'user_id'=>$this->user->id], 'result');
         $test_name = $result->csv; 

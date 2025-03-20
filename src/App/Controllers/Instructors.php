@@ -45,7 +45,6 @@ class Instructors extends Controller
     {
         return $this->view('instructors/new-test', [
             'user' => $this->user,
-            'CSRF' => CSRF::generate(),
         ]); 
     }
 
@@ -66,7 +65,6 @@ class Instructors extends Controller
         }
         return $this->view('instructors/papers', [
             'user'=> $this->user,
-            'CSRF' => CSRF::generate(),
             'papers'=> $papers,
             'count' => $count,
             'page_url' => $_ENV['URL_ROOT'] ."/instructor/papers",
@@ -84,7 +82,6 @@ class Instructors extends Controller
 
     public function insertNewTest(): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $paper = [
             'name' => ucwords($this->request->post['name']),
             'time' => $this->request->post['time'],
@@ -113,7 +110,6 @@ class Instructors extends Controller
         }else{
             return $this->view('instructors/new-test', [
                 'user'=> $this->user,
-                'CSRF' => CSRF::generate(),
                 'paper'=> $paper,
                 'settings' => json_decode($paper->settings),
                 'errors' => $errors
@@ -126,7 +122,6 @@ class Instructors extends Controller
         $paper = $this->instructorsModel->instructorAuth( $code);
         return $this->view('instructors/edit-test', [
             'user'=> $this->user,
-            'CSRF' => CSRF::generate(),
             'paper'=> $paper,
             'settings' => json_decode($paper->settings),
         ]);
@@ -134,7 +129,6 @@ class Instructors extends Controller
 
     public function updatePaper($code): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $db_paper = $this->instructorsModel->instructorAuth( $code);
         $paper = [
             'name' => $this->request->post['name'] ?? '',
@@ -165,7 +159,6 @@ class Instructors extends Controller
             $paper->name = $db_paper->name;
             return $this->view('instructors/edit-test', [
                 'user'=> $this->user,
-                'CSRF' => CSRF::generate(),
                 'paper'=> $paper,
                 'settings' => json_decode($paper->settings),
                 'errors' => $errors
@@ -182,7 +175,6 @@ class Instructors extends Controller
         }
         return $this->view('instructors/questions-list', [
             'user'=> $this->user,
-            'CSRF' => CSRF::generate(),
             'paper'=> $paper,
             'csv' => (object) $csv->getRow(),
             'paper_code'=> $code
@@ -194,14 +186,12 @@ class Instructors extends Controller
         $paper = $this->instructorsModel->instructorAuth( $code);
         return $this->view('instructors/create-questions', [
             'user'=> $this->user,
-            'CSRF' => CSRF::generate(),
             'paper'=> $paper,
         ]);
     }
 
     public function addQuestion($code): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $paper = $this->instructorsModel->instructorAuth( $code);
         $post = [
             'question' => $this->request->post['question'],
@@ -242,7 +232,6 @@ class Instructors extends Controller
             else_part:
             return $this->view('instructors/create-questions', [
                 'user'=> $this->user,
-                'CSRF' => CSRF::generate(),
                 'paper'=> $paper,
                 'errors' => $errors,
                 'question' => (object)$post,
@@ -264,13 +253,11 @@ class Instructors extends Controller
             'image'=> $image,
             'question' => $question,
             'answers' => json_decode($question->answers),
-            'CSRF' => CSRF::generate()
         ]);
     }
 
     public function updateQuestion($code, $id): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $paper = $this->instructorsModel->instructorAuth( $code);
         $csv = new CSV($code,'papers');
         $question = $csv->getRow((int)$id); 
@@ -323,7 +310,6 @@ class Instructors extends Controller
             $errors->image ??= "Image was not added";
             return $this->view('instructors/edit-question', [
                 'user'=> $this->user,
-                'CSRF' => CSRF::generate(),
                 'paper'=> $paper,
                 'answers' => (object) $answers,
                 'errors' => $errors,
@@ -395,7 +381,6 @@ class Instructors extends Controller
         return $this->view('instructors/my-students', [
             'user'=> $this->user,
             'students' => $students,
-            'CSRF' => CSRF::generate(),
             'count' => $count,
             'page_url' => $_ENV['URL_ROOT'] ."/instructor/my-students",
             'current_page' => $this->page,
@@ -412,7 +397,6 @@ class Instructors extends Controller
 
     public function showParticipantsGetDate($code): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $paper = $this->instructorsModel->instructorAuth( $code);
         $date = $this->request->post['date'];
         if(empty($date)){
@@ -443,7 +427,6 @@ class Instructors extends Controller
         return $this->view('instructors/show-participants', [
             'user' => $this->user,
             'students' => $students,
-            'CSRF' => CSRF::generate(),
             'page' => 'date_format',
             'paper' => $paper,
             'date' => $date ?? null,  
@@ -469,7 +452,6 @@ class Instructors extends Controller
         return $this->view('instructors/show-participants', [
             'user' => $this->user,
             'students' => $students,
-            'CSRF' => CSRF::generate(),
             'page' => 'date_format',
             'paper' => $paper,
             'date' => $_POST['date'] ?? null,  
@@ -522,7 +504,6 @@ class Instructors extends Controller
 
     public function searchMyStudent(): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $email =  $this->request->post['email'];
         $student = $this->instructorsModel->findByField('email', $email, 'user');
         if(empty($student)){
@@ -536,7 +517,6 @@ class Instructors extends Controller
                 'user'=> $this->user,
                 'students' => $students,
                 'email_errors' => 'No result found',
-                'CSRF' => CSRF::generate()
             ]);
         }
         return $this->studentTests($email);

@@ -33,13 +33,11 @@ class Users extends Controller
         $user = $this->user;
         return $this->view('users/update-profile', [
             'user' => (object) $user,
-            'CSRF' => CSRF::generate()
         ]);
     }
 
     public function profileUpdate(): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $user = $this->user;
         $data = [
             'id' => $user->id,
@@ -72,7 +70,6 @@ class Users extends Controller
             return $this->view('users/update-profile', [
                 'errors'=> (object) $this->usersModel->getErrors(),
                 'user' => $user,
-                'CSRF'=> CSRF::generate()
             ]);
         }
     }
@@ -100,13 +97,11 @@ class Users extends Controller
         $user = $this->user;
         return $this->view('users/change-password', [
             'user' => (object) $user,
-            'CSRF' => CSRF::generate()
         ]);
     }
 
     public function updatePassword(): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $user = $this->user;
         $data = [
             'old_password' => $this->request->post['old_password'],
@@ -134,7 +129,6 @@ class Users extends Controller
             return $this->view('users/change-password', [
                 'errors'=> (object) $this->usersModel->getErrors(),
                 'user' => $user,
-                'CSRF'=> CSRF::generate()
             ]);
         }
     }

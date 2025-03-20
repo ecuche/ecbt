@@ -31,52 +31,11 @@ class Homes extends Controller
         $role = $_SESSION['role'] ?? '';
         Auth::passRedirect("/{$role}/dashboard", '');
         return $this->view('homes/index', [
-            'CSRF'=>CSRF::generate()
         ]);
-    }
-
-    public function register(): Response
-    {
-        return $this->view('homes/register', [
-            'CSRF'=>CSRF::generate()
-        ]);
-    }
-
-    public function registerNewUser(): Response
-    {
-        CSRF::check($this->request->post['csrf_token']);
-        $data = [
-            'name' => ucwords($this->request->post['name']),	
-            'email' => $this->request->post['email'],
-            'password' => $this->request->post['password'],
-        ];
-        $data = (object)$data;
-        $this->usersModel->validateRegistration($data);
-
-        if(empty($this->usersModel->getErrors())){
-            $data->password = password_hash($data->password, PASSWORD_DEFAULT);
-            $data->role_id = 3; 
-            if($this->usersModel->insert($data)){
-                $user = $this->usersModel->findByField('email', $data->email);
-                $this->usersModel->sendActivation($user);
-                Session::set('success','Registration successful: Check your email for verification');
-                return $this->redirect("");
-            }else{
-                throw new PageNotFoundException("could not register user");
-            }
-        }else{
-            unset($data->password);
-            return $this->view('homes/register', [
-                'errors'=> (object) $this->usersModel->getErrors(),
-                'user' => $data,
-                'CSRF'=> CSRF::generate()
-            ]);
-        }
     }
 
     public function logInUser(): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $data = [
             'email' => $this->request->post['email'],
             'password' => $this->request->post['password'],
@@ -114,7 +73,42 @@ class Homes extends Controller
             return $this->view('homes/index', [
                 'errors'=> $errors,
                 'user' => $data,
-                'CSRF'=> CSRF::generate()
+            ]);
+        }
+    }
+
+    public function register(): Response
+    {
+        return $this->view('homes/register', [
+        ]);
+    }
+
+    public function registerNewUser(): Response
+    {
+        $data = [
+            'name' => ucwords($this->request->post['name']),	
+            'email' => $this->request->post['email'],
+            'password' => $this->request->post['password'],
+        ];
+        $data = (object)$data;
+        $this->usersModel->validateRegistration($data);
+
+        if(empty($this->usersModel->getErrors())){
+            $data->password = password_hash($data->password, PASSWORD_DEFAULT);
+            $data->role_id = 3; 
+            if($this->usersModel->insert($data)){
+                $user = $this->usersModel->findByField('email', $data->email);
+                $this->usersModel->sendActivation($user);
+                Session::set('success','Registration successful: Check your email for verification');
+                return $this->redirect("");
+            }else{
+                throw new PageNotFoundException("could not register user");
+            }
+        }else{
+            unset($data->password);
+            return $this->view('homes/register', [
+                'errors'=> (object) $this->usersModel->getErrors(),
+                'user' => $data,
             ]);
         }
     }
@@ -130,13 +124,11 @@ class Homes extends Controller
     public function forgotPassword(): Response
     {
         return $this->view('homes/forgot-password', [
-            'CSRF'=>CSRF::generate()
         ]);
     }
 
     public function recoverAccount(): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $data = [
             'email' => $this->request->post['email'],
         ];
@@ -150,7 +142,6 @@ class Homes extends Controller
             return $this->view('homes/forgot-password', [
                 'errors'=> (object) $this->usersModel->getErrors(),
                 'user' => $data,
-                'CSRF'=>CSRF::generate()
             ]);
         }
     }
@@ -163,8 +154,7 @@ class Homes extends Controller
             if (strtotime($hash_row->expiry) > time()) {
                 return $this->view('homes/reset-password', [
                     'user' => $user,
-                    'hash'=> $hash_row,
-                    'CSRF'=>CSRF::generate()
+                    'hash'=> $hash_row
                 ]);
             }
             Session::set('warning','password reset has expired');
@@ -176,7 +166,6 @@ class Homes extends Controller
 
     public function passwordReset($email, $hash): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $user = $this->usersModel->findByField('email', $email);
         $hash_row = $this->usersModel->findByField('user_id', $user->id,  'password_reset');
         $data = [
@@ -206,7 +195,6 @@ class Homes extends Controller
                 'errors'=> (object) $this->usersModel->getErrors(),
                 'user' => $user,
                 'hash'=> $hash_row,
-                'CSRF'=> CSRF::generate()
             ]);
         }
     }
@@ -239,7 +227,6 @@ class Homes extends Controller
     public function findTest(): Response
     {
         return $this->view('homes/find-test', [
-            'CSRF' => CSRF::generate(),
         ]);
     }
 
@@ -262,13 +249,11 @@ class Homes extends Controller
             'instructor' => $instructor,
             'result' => $result ?? null,
             'rem_time' => $rem_time ?? false,
-            'CSRF' => CSRF::generate()
         ]);
     }
 
     public function searchTest(): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $post = (object) ['code' => $this->request->post['code']];
         $post->code = strtoupper($post->code);
         $errors = $this->usersModel->validateCode($post);
@@ -277,7 +262,6 @@ class Homes extends Controller
             return $this->redirect("test/{$paper->code}/search/result");
         } else {
             return $this->view('homes/find-test', [
-                'CSRF' => CSRF::generate(),
                 'paper' => $post->code,
                 'errors' => $errors
             ]);
@@ -293,13 +277,11 @@ class Homes extends Controller
     public function contact(): Response
     {
         return $this->view('homes/contact-us', [
-            'CSRF'=> CSRF::generate(),
         ]);
     }
 
     public function contactUs(): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $data = [
             'email' => $this->request->post['email'],
             'name' => $this->request->post['name'],
@@ -330,7 +312,6 @@ class Homes extends Controller
             return $this->view('homes/contact-us', [
                 'errors'=> (object) $this->usersModel->getErrors(),
                 'contact' => $data,
-                'CSRF'=> CSRF::generate()
             ]);
         }
     }
@@ -345,25 +326,15 @@ class Homes extends Controller
         return $this->view('500', []);
     }
 
-    public function test()  
+    public function test(): Response  
     {
-        if(!empty($_POST)){
-            $date = $_POST['date'];
-            $dateTime = strtotime($date);
-            echo $dateTime;
-            echo "<br>";
-            echo date("Y-m-d", $dateTime);
-            echo "<br>";
-            echo $date;
-            exit;
-        }
-        return $this->view('homes/test', [
-            'page'=>'date_format'
-        ]);
 
-        //always leave this exit line if you will not use template
-        // exit;
+        $url = substr($_SERVER['REQUEST_URI'], 1);;
+        echo $url;
+        // return $this->view('homes/test', [
+        //     'page'=>'date_format'
+        // ]);
+        // always leave this exit line if you will not use template
+        exit;
     }
-
-
 }

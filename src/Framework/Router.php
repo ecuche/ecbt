@@ -2,6 +2,8 @@
 declare(strict_types=1);
 namespace Framework;
 use Framework\Helpers\Auth;
+use Framework\Helpers\CSRF;
+
 class Router
 {
     private array $routes = [];
@@ -32,6 +34,11 @@ class Router
                 }
                 if(array_key_exists("form", $params)){                 
                     if(strtolower($form) !== strtolower($params["form"])){
+                        continue;
+                    }
+                }
+                if(array_key_exists("csrf", $params) && $params["csrf"] === true){
+                    if(CSRF::autoCheck() !== true){
                         continue;
                     }
                 }

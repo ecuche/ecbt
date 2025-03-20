@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Framework;
 
 use Framework\Helpers\Session;
+use Framework\Helpers\CSRF;
 
 abstract class Controller
 {
@@ -28,6 +29,7 @@ abstract class Controller
     protected function view(string $template, array $data = []) : Response
     {
         $data['alert'] = Session::flash(['success', 'danger', 'info', 'warning']);
+        $data['CSRF'] = CSRF::generate();
         $this->response->setBody($this->viewer->render($template, $data));
         return $this->response;
     }
@@ -41,6 +43,7 @@ abstract class Controller
     public function raw(string $template, array $data = []) : string
     {
         $data['alert'] = Session::flash(['success', 'danger', 'info', 'warning']);
+        $data['CSRF'] = CSRF::generate();
         return $this->viewer->render($template, $data);
     }
 }

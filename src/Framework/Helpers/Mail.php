@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace Framework\Helpers;
 use Framework\Helpers\Data;
+use Framework\Helpers\Redirect;
 class Mail
 {
     protected array $errors = [];
@@ -190,12 +191,13 @@ class Mail
 
     public function send(): bool|array|string
     {
+        $url = "";
         $this->prepare();
-        $mail = @mail($this->to, $this->subject, $this->message,  $this->headers) ? true : false;
-        if($mail){
+        if(mail($this->to, $this->subject, $this->message,  $this->headers)){
             return true;
         }
-        return $this->errors;
+        Session::set("danger", "Email not sent");
+        Redirect::to($url);
     }
 }
 

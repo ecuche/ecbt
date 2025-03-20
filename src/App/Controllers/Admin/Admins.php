@@ -68,13 +68,11 @@ class Admins extends Controller
     public function findUser(): Response
     {
         return $this->view('admins/find-user', [
-            'CSRF'=> CSRF::generate(),
         ]);
     }
 
     public function getUser(): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $post = [
             'email' => $this->request->post['email'],
         ];
@@ -83,7 +81,6 @@ class Admins extends Controller
             return $this->redirect("admin/edit/user/{$post['email']}");
         }
         return $this->view('admins/find-user', [
-            'CSRF'=> CSRF::generate(),
             'errors'=> (object) $this->adminModel->getErrors(),
         ]);
     }
@@ -93,7 +90,6 @@ class Admins extends Controller
         $user = $this->adminModel->authUserEmail($email);
         return $this->view('admins/edit-user', [
             'user' => $user,
-            'CSRF' => CSRF::generate(),
         ]);
     }
 
@@ -114,13 +110,11 @@ class Admins extends Controller
     public function findPaper(): Response
     {
         return $this->view('admins/find-paper', [
-            'CSRF' => CSRF::generate()
         ]);
     }
 
     public function getPaper(): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $code = $this->request->post['code'];
         $paper = $this->adminModel->authPaper($code);
         return  $this->redirect("admin/edit/paper/{$paper->code}");
@@ -159,14 +153,12 @@ class Admins extends Controller
         return $this->view('admins/edit-paper', [
             'paper' => $paper,
             'user' => $user,
-            'CSRF' => CSRF::generate(),
             'settings' => json_decode($paper->settings)
         ]);
     }
 
     public function updatePaper($code): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         $paper = $this->adminModel->authPaper($code);
         $user = $this->adminModel->getById($paper->user_id, 'user');
         $post = [
@@ -187,7 +179,6 @@ class Admins extends Controller
         return $this->view('admins/edit-paper', [
             'paper' => $paper,
             'user' => $user,
-            'CSRF' => CSRF::generate(),
             'settings' => json_decode($paper->settings)
         ]);
     }
@@ -292,14 +283,12 @@ class Admins extends Controller
         return $this->view('admins/questions-list', [
             'paper' => $paper,
             'user' => $user,
-            'CSRF' => CSRF::generate(),
             'csv' => $csv,
         ]);
     }
 
     public function banQuestion($code, $id): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         if(file_exists("{$_ENV['CSV_PATH']}/papers/{$code}.csv")){
             $csv = new CSV($code, 'papers');
             $csv->updateRows(['ban'=>1], $id);
@@ -312,7 +301,6 @@ class Admins extends Controller
 
     public function unbanQuestion($code, $id): Response
     {
-        CSRF::check($this->request->post['csrf_token']);
         if(file_exists("{$_ENV['CSV_PATH']}/papers/{$code}.csv")){
             $csv = new CSV($code, 'papers');
             $csv->updateRows(['ban'=>0], $id);

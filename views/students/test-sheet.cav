@@ -113,7 +113,7 @@
               <ul class="pagination pagination-md flex-wrap">
                 {% $i = 1 %}
                 {% foreach($questions as $key => $value): %}
-                  <li class="page-item{% echo $question->id == $i ? ' disabled' : ''; %}" aria-current="page">
+                  <li class="anchor-pointer page-item{% echo $question->id == $i ? ' disabled' : ''; %}" aria-current="page">
                     {% if($question->id == $i){$color = 'secondary';}elseif(!empty($value['chosen'])){$color = 'success';}else{$color = 'danger';} %}
                     <a class="page-link pagi text-bg-{{$color}}" value="{{ $value['id'] }}">{{ $i }}</a>
                   </li>

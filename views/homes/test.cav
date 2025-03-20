@@ -1,39 +1,17 @@
 {% extends "base" %}
 {% block title %} Welcome | LogIn {% endblock %}
 {% block body %}   
-
 <div class="container-fluid col-lg-6">
-         
   <!-- Card -->
   <div class="card">
     <div class="card-body">
       <div class="row">
         <div class="col-12">
-          <div class="example">
-            <h4 class="card-title">Default Datepicker</h4>
-            <p class="card-subtitle mb-2">
-              just add class <code>.mydatepicker</code> to create
-              it.
-            </p>
-            <form action="" method="post">
-              <div class="input-group">
-                <input type="text" name="date" class="form-control mydatepicker" placeholder="mm/dd/yyyy">
-
-                <span class="input-group-text">
-                  <i class="ti ti-calendar fs-5"></i>
-                </span>
-              </div>
-              <input type="submit" value="submit">
-            </form>
-            
-          </div>
-        
+          
         </div>
-        
       </div>
     </div>
   </div>
 </div>
-
 {% endblock %}
 
